@@ -1,26 +1,122 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11106"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="tne-QT-ifu">
+        <!--Home-->
+        <scene sceneID="5DR-Fe-lKk">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomeViewController" id="7Ol-0w-SaP" customClass="HomeViewController" customModule="AppFlowController" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                        <viewControllerLayoutGuide type="top" id="gLd-zG-e42"/>
+                        <viewControllerLayoutGuide type="bottom" id="ng1-BX-Mem"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                    <view key="view" contentMode="scaleToFill" id="8TW-sH-HX3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zvm-8x-U79">
+                                <state key="normal" title="Login"/>
+                                <connections>
+                                    <action selector="loginAction:" destination="7Ol-0w-SaP" eventType="touchUpInside" id="ZBW-Fu-9kG"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dhe-bz-8HH">
+                                <state key="normal" title="Registration"/>
+                                <connections>
+                                    <action selector="registrationAction:" destination="7Ol-0w-SaP" eventType="touchUpInside" id="J9f-fi-Xai"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.37647058820000001" green="0.77647058820000003" blue="0.70980392160000005" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="dhe-bz-8HH" firstAttribute="centerX" secondItem="8TW-sH-HX3" secondAttribute="centerX" id="83P-PI-yXw"/>
+                            <constraint firstItem="dhe-bz-8HH" firstAttribute="top" secondItem="zvm-8x-U79" secondAttribute="bottom" constant="8" id="LuS-V1-aiU"/>
+                            <constraint firstItem="zvm-8x-U79" firstAttribute="centerY" secondItem="8TW-sH-HX3" secondAttribute="centerY" constant="-20" id="NHx-Ne-Oj1"/>
+                            <constraint firstItem="zvm-8x-U79" firstAttribute="centerX" secondItem="8TW-sH-HX3" secondAttribute="centerX" id="dFD-F7-w9J"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Home" id="XKq-LA-KjK"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eGY-Ra-Bpd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="-1079" y="101"/>
+        </scene>
+        <!--Login-->
+        <scene sceneID="a3a-xD-1EZ">
+            <objects>
+                <viewController storyboardIdentifier="LoginViewController" id="sdM-VL-i7f" customClass="LoginViewController" customModule="AppFlowController" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Abt-RU-NPJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="W4b-Ef-3sG"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="as2-lh-tYY">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.94117647059999998" green="0.72156862749999995" blue="0.1960784314" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Login" id="bEn-1y-FOu"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gn6-wB-qhF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-362" y="100"/>
+        </scene>
+        <!--Registration-->
+        <scene sceneID="bda-VW-hM4">
+            <objects>
+                <viewController storyboardIdentifier="RegistrationViewController" id="p4C-FL-Rzf" customClass="RegistrationViewController" customModule="AppFlowController" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="sSq-da-ZFr"/>
+                        <viewControllerLayoutGuide type="bottom" id="xU3-K8-hf6"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="bqk-XI-df5">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3w6-Fr-lxu">
+                                <state key="normal" title="Forgot password?"/>
+                                <connections>
+                                    <action selector="forgotPasswordAction:" destination="p4C-FL-Rzf" eventType="touchUpInside" id="QKk-wF-LcO"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="0.38431372549999998" blue="0.1450980392" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="3w6-Fr-lxu" firstAttribute="centerY" secondItem="bqk-XI-df5" secondAttribute="centerY" id="RSh-8W-VnV"/>
+                            <constraint firstItem="3w6-Fr-lxu" firstAttribute="centerX" secondItem="bqk-XI-df5" secondAttribute="centerX" id="dll-xI-cLw"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Registration" id="j0D-pv-f7z"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vac-Ge-TZX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="409" y="99"/>
+        </scene>
+        <!--Forgot password-->
+        <scene sceneID="mgt-cP-nil">
+            <objects>
+                <viewController storyboardIdentifier="ForgotPasswordViewController" id="p0O-7X-BQT" customClass="ForgotPasswordViewController" customModule="AppFlowController" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nmc-1c-bmV"/>
+                        <viewControllerLayoutGuide type="bottom" id="NyG-nL-t1g"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Tav-p4-HlE">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.0" green="0.46666666670000001" blue="0.70980392160000005" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Forgot password" id="8GJ-qO-2hb"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="b0E-eJ-Pkz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1129" y="99"/>
         </scene>
     </scenes>
 </document>
