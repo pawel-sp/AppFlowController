@@ -102,7 +102,6 @@ class AppFlowController {
     // parametry
     // custom transition
     // push no modalu?
-    // go back?
     
     func prepare(forWindow window:UIWindow) {
         self.rootNavigationController = UINavigationController()
@@ -135,6 +134,8 @@ class AppFlowController {
         }
         
     }
+    
+    // MARK: - Navigation
     
     func show(item:AppFlowControllerItem) {
         if let found = rootPathStep?.search(item: item), let rootNavigationController = rootNavigationController {
@@ -197,6 +198,15 @@ class AppFlowController {
             
         } else {
             print("AppFlowController: Unregistered path for item \(item.name)")
+        }
+    }
+    
+    func goBack() {
+        if let presentingViewController = rootNavigationController?.visibleViewController?.presentingViewController {
+            // modal
+            presentingViewController.dismiss(animated: true, completion: nil)
+        } else {
+            rootNavigationController?.popViewController(animated: true)
         }
     }
 }
