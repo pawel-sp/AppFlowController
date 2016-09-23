@@ -13,6 +13,7 @@ protocol AppFlowControllerItem {
     var name:String { get }
     var viewController:UIViewController { get }
     var viewControllerType: UIViewController.Type { get }
+    var isModal:Bool { get }
     
     func isEqual(item:AppFlowControllerItem) -> Bool
     
@@ -96,13 +97,12 @@ class AppFlowController {
     
     // MARK: - Setup
 
-    // co jak itemy maja te same nazwy? dawaj jakis fatal error
     // universal linki do tego
     // animacje przejscia naprzod i w tyl
     // parametry
     // custom transition
-    // modal vs push
-    // modal kilka krokow do przodu
+    // push no modalu?
+    // go back?
     
     func prepare(forWindow window:UIWindow) {
         self.rootNavigationController = UINavigationController()
@@ -110,26 +110,26 @@ class AppFlowController {
     }
     
     func register(path:AppFlowControllerItem) {
-        register(pathArray:[path])
+        register(path:[path])
     }
     
-    func register(pathArray:[AppFlowControllerItem]) {
+    func register(path:[AppFlowControllerItem]) {
         
-        if let lastPath = pathArray.last, rootPathStep?.search(item: lastPath) != nil {
+        if let lastPath = path.last, rootPathStep?.search(item: lastPath) != nil {
             assert(false, "AppFlowController: \(lastPath.name) is already registered, if you want to register the same UIViewController for presenting it in a different way you need to create separate AppFlowControllerItem case with the same UIViewController")
         }
         
         var previousStep:PathStep?
         
-        for path in pathArray {
-            if let found = rootPathStep?.search(item: path) {
+        for element in path {
+            if let found = rootPathStep?.search(item: element) {
                 previousStep = found
                 continue
             } else {
                 if let previousStep = previousStep {
-                    previousStep.add(item: path)
+                    previousStep.add(item: element)
                 } else {
-                    rootPathStep = PathStep(item: path)
+                    rootPathStep = PathStep(item: element)
                 }
             }
         }
@@ -137,10 +137,10 @@ class AppFlowController {
     }
     
     func show(item:AppFlowControllerItem) {
-        if let found = rootPathStep?.search(item: item) {
+        if let found = rootPathStep?.search(item: item), let rootNavigationController = rootNavigationController {
             
             var items:[AppFlowControllerItem] = rootPathStep?.itemsFrom(step: found) ?? []
-            let currentViewControllers = rootNavigationController?.viewControllers ?? []
+            let currentViewControllers = rootNavigationController.viewControllers + (rootNavigationController.presentedViewController != nil ? [rootNavigationController.presentedViewController!] : [])
             let numberOfVCToPop = max(0, currentViewControllers.count - items.count)
             var numberOfDeleted = 0
             
@@ -155,21 +155,44 @@ class AppFlowController {
             
             if numberOfVCToPop > 0 {
                 // >=1 to pop
+                if let presentingViewController = rootNavigationController.visibleViewController?.presentingViewController {
+                    // modal
+                    presentingViewController.dismiss(animated: true, completion: nil)
+                }
                 let currentViewControllersCount = currentViewControllers.count
                 let targetViewControllerIndex = max(0, currentViewControllersCount - numberOfVCToPop - 1)
-                if let targetViewController = rootNavigationController?.viewControllers[targetViewControllerIndex] {
-                    rootNavigationController?.popToViewController(targetViewController, animated: true)
+                let targetViewController = rootNavigationController.viewControllers[targetViewControllerIndex]
+                rootNavigationController.popToViewController(targetViewController, animated: true)
+            } else if let item = items.first, items.count == 1 {
+                // 1 to push/present
+                if item.isModal {
+                    rootNavigationController.present(item.viewController, animated: true, completion: nil)
+                } else {
+                    rootNavigationController.pushViewController(item.viewController, animated: true)
                 }
-            } else if items.count == 1 {
-                // 1 to push
-                rootNavigationController?.pushViewController(items.first!.viewController, animated: true)
             } else if items.count > 1 {
-                // >1 to push
-                rootNavigationController?.pushViewController(items.last!.viewController, animated: true)
-                let insertIndex = max(0, (rootNavigationController?.viewControllers.count ?? 0) - 1)
-                let insertCount = items.count - 1
-                let insertItems = items.prefix(insertCount)
-                rootNavigationController?.viewControllers.insert(contentsOf: insertItems.map({ $0.viewController }), at: insertIndex)
+                // >1 to push/present
+                if let lastItem = items.last {
+                    let completionBlock = {
+                        let insertIndex = max(0, rootNavigationController.viewControllers.count - (lastItem.isModal ? 0 : 1))
+                        let insertCount = items.count - 1
+                        let insertItems = items.prefix(insertCount)
+                        rootNavigationController.viewControllers.insert(contentsOf: insertItems.map({ $0.viewController }), at: insertIndex)
+                    }
+                    if lastItem.isModal {
+                        if currentViewControllers.count == 0 {
+                            completionBlock()
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                rootNavigationController.present(lastItem.viewController, animated: true, completion: nil)
+                            }
+                        } else {
+                            rootNavigationController.present(lastItem.viewController, animated: true, completion: completionBlock)
+                        }
+                    } else {
+                        rootNavigationController.pushViewController(lastItem.viewController, animated: true)
+                        completionBlock()
+                    }
+                }
             }
             
         } else {

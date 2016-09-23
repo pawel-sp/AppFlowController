@@ -14,4 +14,7 @@ class LoginViewController: BaseViewController {
          AppFlowController.sharedController.show(item: TestAppFlowControllerItems.forgotPassword)
     }
 
+    @IBAction func forgotPasswordAlertAction(_ sender: AnyObject) {
+        AppFlowController.sharedController.show(item: TestAppFlowControllerItems.forgotPasswordAlert)
+    }
 }

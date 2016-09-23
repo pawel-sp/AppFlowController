@@ -19,10 +19,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let flowController = AppFlowController.sharedController
         flowController.prepare(forWindow:window!)
         flowController.register(path: TestAppFlowControllerItems.home)
-        flowController.register(pathArray:  TestAppFlowControllerItems.home => TestAppFlowControllerItems.login)
-        flowController.register(pathArray:  TestAppFlowControllerItems.home => TestAppFlowControllerItems.registration)
-        flowController.register(pathArray:  TestAppFlowControllerItems.home => TestAppFlowControllerItems.login => TestAppFlowControllerItems.forgotPassword)
-        flowController.show(item:TestAppFlowControllerItems.home)
+        flowController.register(path: TestAppFlowControllerItems.home => TestAppFlowControllerItems.login)
+        flowController.register(path: TestAppFlowControllerItems.home => TestAppFlowControllerItems.registration)
+        flowController.register(path: TestAppFlowControllerItems.home => TestAppFlowControllerItems.login => TestAppFlowControllerItems.forgotPassword)
+        flowController.register(path: TestAppFlowControllerItems.home => TestAppFlowControllerItems.login => TestAppFlowControllerItems.forgotPasswordAlert)
+        flowController.show(item:TestAppFlowControllerItems.forgotPasswordAlert)
         
         return true
     }
@@ -31,10 +32,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 enum TestAppFlowControllerItems: String, AppFlowControllerItem {
     
-    case home           = "home"
-    case login          = "sign_in"
-    case registration   = "sign_up"
-    case forgotPassword = "forgot_password"
+    case home                = "home"
+    case login               = "sign_in"
+    case registration        = "sign_up"
+    case forgotPassword      = "forgot_password"
+    case forgotPasswordAlert = "forgot_password_alert"
     
     var name: String {
         return self.rawValue
@@ -42,19 +44,28 @@ enum TestAppFlowControllerItems: String, AppFlowControllerItem {
     
     var viewController: UIViewController {
         switch self {
-            case .home:           return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "HomeViewController")
-            case .login:          return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginViewController")
-            case .registration:   return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RegistrationViewController")
-            case .forgotPassword: return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ForgotPasswordViewController")
+            case .home:                return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "HomeViewController")
+            case .login:               return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginViewController")
+            case .registration:        return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RegistrationViewController")
+            case .forgotPassword:      return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ForgotPasswordViewController")
+            case .forgotPasswordAlert: return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ForgotPasswordViewController")
         }
     }
     
     var viewControllerType: UIViewController.Type {
         switch self {
-            case .home:           return HomeViewController.self
-            case .login:          return LoginViewController.self
-            case .registration:   return RegistrationViewController.self
-            case .forgotPassword: return ForgotPasswordViewController.self
+            case .home:                return HomeViewController.self
+            case .login:               return LoginViewController.self
+            case .registration:        return RegistrationViewController.self
+            case .forgotPassword:      return ForgotPasswordViewController.self
+            case .forgotPasswordAlert: return ForgotPasswordViewController.self
+        }
+    }
+    
+    var isModal:Bool {
+        switch self {
+            case .forgotPasswordAlert: return true
+            default:                   return false
         }
     }
 

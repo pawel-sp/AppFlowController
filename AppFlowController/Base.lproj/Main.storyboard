@@ -65,11 +65,19 @@
                                     <action selector="forgotPasswordAction:" destination="sdM-VL-i7f" eventType="touchUpInside" id="zZb-oD-bn0"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mem-wU-8uy">
+                                <state key="normal" title="Forgot password alert"/>
+                                <connections>
+                                    <action selector="forgotPasswordAlertAction:" destination="sdM-VL-i7f" eventType="touchUpInside" id="gTJ-is-XYY"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.94117647059999998" green="0.72156862749999995" blue="0.1960784314" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="3w6-Fr-lxu" firstAttribute="centerX" secondItem="as2-lh-tYY" secondAttribute="centerX" id="8Qp-B4-24D"/>
-                            <constraint firstItem="3w6-Fr-lxu" firstAttribute="centerY" secondItem="as2-lh-tYY" secondAttribute="centerY" id="uha-d8-DqT"/>
+                            <constraint firstItem="Mem-wU-8uy" firstAttribute="top" secondItem="3w6-Fr-lxu" secondAttribute="bottom" constant="8" id="EjE-dr-262"/>
+                            <constraint firstItem="Mem-wU-8uy" firstAttribute="centerX" secondItem="as2-lh-tYY" secondAttribute="centerX" id="jDP-XR-hH3"/>
+                            <constraint firstItem="3w6-Fr-lxu" firstAttribute="centerY" secondItem="as2-lh-tYY" secondAttribute="centerY" constant="-20" id="uha-d8-DqT"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Login" id="bEn-1y-FOu"/>
