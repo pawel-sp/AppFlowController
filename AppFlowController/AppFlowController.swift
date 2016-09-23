@@ -12,6 +12,7 @@ protocol AppFlowControllerItem {
     
     var name:String { get }
     var viewController:UIViewController { get }
+    var viewControllerType: UIViewController.Type { get }
     
     func isEqual(item:AppFlowControllerItem) -> Bool
     
@@ -71,6 +72,16 @@ class AppFlowController {
                 return nil
             }
         }
+        
+        func itemsFrom(step:PathStep) -> [AppFlowControllerItem] {
+            var items:[AppFlowControllerItem] = [step.current]
+            var current = step
+            while let parent = current.parent {
+                current = parent
+                items.insert(parent.current, at: 0)
+            }
+            return items
+        }
     }
     
     // MARK: - Properties
@@ -125,23 +136,39 @@ class AppFlowController {
     func show(item:AppFlowControllerItem) {
         if let found = rootPathStep?.search(item: item) {
             
-            var viewControllers:[UIViewController] = [found.current.viewController]
+            var items:[AppFlowControllerItem] = rootPathStep?.itemsFrom(step: found) ?? []
             let currentViewControllers = rootNavigationController?.viewControllers ?? []
+            let numberOfVCToPop = max(0, currentViewControllers.count - items.count)
+            var numberOfDeleted = 0
             
-            var current = found
+            for (index, item) in items.enumerated() {
+                if index < currentViewControllers.count {
+                    if currentViewControllers[index].isKind(of: item.viewControllerType) {
+                        items.remove(at: index - numberOfDeleted)
+                        numberOfDeleted += 1
+                    }
+                }
+            }
             
-//            while let parent = current.parent {
-//                current = parent
-//                viewControllers.insert(parent.current.viewController, at: 0)
-//            }
+            if numberOfVCToPop > 0 {
+                // >=1 to pop
+                let currentViewControllersCount = currentViewControllers.count
+                let targetViewControllerIndex = max(0, currentViewControllersCount - numberOfVCToPop - 1)
+                if let targetViewController = rootNavigationController?.viewControllers[targetViewControllerIndex] {
+                    rootNavigationController?.popToViewController(targetViewController, animated: true)
+                }
+            } else if items.count == 1 {
+                // 1 to push
+                rootNavigationController?.pushViewController(items.first!.viewController, animated: true)
+            } else if items.count > 1 {
+                // >1 to push
+                rootNavigationController?.pushViewController(items.last!.viewController, animated: true)
+                let insertIndex = max(0, (rootNavigationController?.viewControllers.count ?? 0) - 1)
+                let insertCount = items.count - 1
+                let insertItems = items.prefix(insertCount)
+                rootNavigationController?.viewControllers.insert(contentsOf: insertItems.map({ $0.viewController }), at: insertIndex)
+            }
             
-            rootNavigationController?.setViewControllers(viewControllers, animated: true)
-            
-            // 1. sa dokladnie takie same
-            // 2. trzeba sie cofnac o 1
-            // 3. trzeba sie cofnac o kilka
-            // 4. trzeba push o 1
-            // 5. trzeba push o kilka
         } else {
             print("AppFlowController: Unregistered path for item \(item.name)")
         }

@@ -49,4 +49,13 @@ enum TestAppFlowControllerItems: String, AppFlowControllerItem {
         }
     }
     
+    var viewControllerType: UIViewController.Type {
+        switch self {
+            case .home:           return HomeViewController.self
+            case .login:          return LoginViewController.self
+            case .registration:   return RegistrationViewController.self
+            case .forgotPassword: return ForgotPasswordViewController.self
+        }
+    }
+
 }

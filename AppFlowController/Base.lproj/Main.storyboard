@@ -57,7 +57,20 @@
                     <view key="view" contentMode="scaleToFill" id="as2-lh-tYY">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3w6-Fr-lxu">
+                                <state key="normal" title="Forgot password?"/>
+                                <connections>
+                                    <action selector="forgotPasswordAction:" destination="p4C-FL-Rzf" eventType="touchUpInside" id="QKk-wF-LcO"/>
+                                    <action selector="forgotPasswordAction:" destination="sdM-VL-i7f" eventType="touchUpInside" id="zZb-oD-bn0"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" red="0.94117647059999998" green="0.72156862749999995" blue="0.1960784314" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="3w6-Fr-lxu" firstAttribute="centerX" secondItem="as2-lh-tYY" secondAttribute="centerX" id="8Qp-B4-24D"/>
+                            <constraint firstItem="3w6-Fr-lxu" firstAttribute="centerY" secondItem="as2-lh-tYY" secondAttribute="centerY" id="uha-d8-DqT"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Login" id="bEn-1y-FOu"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
@@ -77,19 +90,7 @@
                     <view key="view" contentMode="scaleToFill" id="bqk-XI-df5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3w6-Fr-lxu">
-                                <state key="normal" title="Forgot password?"/>
-                                <connections>
-                                    <action selector="forgotPasswordAction:" destination="p4C-FL-Rzf" eventType="touchUpInside" id="QKk-wF-LcO"/>
-                                </connections>
-                            </button>
-                        </subviews>
                         <color key="backgroundColor" red="1" green="0.38431372549999998" blue="0.1450980392" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstItem="3w6-Fr-lxu" firstAttribute="centerY" secondItem="bqk-XI-df5" secondAttribute="centerY" id="RSh-8W-VnV"/>
-                            <constraint firstItem="3w6-Fr-lxu" firstAttribute="centerX" secondItem="bqk-XI-df5" secondAttribute="centerX" id="dll-xI-cLw"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Registration" id="j0D-pv-f7z"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
@@ -109,7 +110,31 @@
                     <view key="view" contentMode="scaleToFill" id="Tav-p4-HlE">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0wP-Gr-hs2">
+                                <state key="normal" title="Back">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="backAction:" destination="p0O-7X-BQT" eventType="touchUpInside" id="MPF-aJ-ZFT"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S0r-z7-qN6">
+                                <state key="normal" title="Back to Home">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="backToHomeAction:" destination="p0O-7X-BQT" eventType="touchUpInside" id="npN-EB-wfT"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" red="0.0" green="0.46666666670000001" blue="0.70980392160000005" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="0wP-Gr-hs2" firstAttribute="centerX" secondItem="Tav-p4-HlE" secondAttribute="centerX" id="MJd-cC-ikW"/>
+                            <constraint firstItem="0wP-Gr-hs2" firstAttribute="centerY" secondItem="Tav-p4-HlE" secondAttribute="centerY" constant="-20" id="Mr6-jU-THh"/>
+                            <constraint firstItem="S0r-z7-qN6" firstAttribute="centerX" secondItem="Tav-p4-HlE" secondAttribute="centerX" id="Qra-G7-5MQ"/>
+                            <constraint firstItem="S0r-z7-qN6" firstAttribute="top" secondItem="0wP-Gr-hs2" secondAttribute="bottom" constant="2" id="scB-yn-Lje"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Forgot password" id="8GJ-qO-2hb"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>

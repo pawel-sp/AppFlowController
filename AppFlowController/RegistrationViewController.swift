@@ -8,10 +8,4 @@
 
 import UIKit
 
-class RegistrationViewController: BaseViewController {
-
-    @IBAction func forgotPasswordAction(_ sender: AnyObject) {
-        AppFlowController.sharedController.show(item: TestAppFlowControllerItems.registration)
-    }
-
-}
+class RegistrationViewController: BaseViewController {}

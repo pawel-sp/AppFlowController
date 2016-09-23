@@ -8,4 +8,10 @@
 
 import UIKit
 
-class LoginViewController: BaseViewController {}
+class LoginViewController: BaseViewController {
+
+    @IBAction func forgotPasswordAction(_ sender: AnyObject) {
+         AppFlowController.sharedController.show(item: TestAppFlowControllerItems.forgotPassword)
+    }
+
+}
