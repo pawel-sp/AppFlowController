@@ -98,12 +98,11 @@ class AppFlowController {
 
     // co jak itemy maja te same nazwy? dawaj jakis fatal error
     // universal linki do tego
-    // co jak chce pokazac ten sam ekran ale z innej sciezki?
     // animacje przejscia naprzod i w tyl
     // parametry
     // custom transition
     // modal vs push
-    // przy pushu zeby nie tworzyl na nowo poprzednich vcs
+    // modal kilka krokow do przodu
     
     func prepare(forWindow window:UIWindow) {
         self.rootNavigationController = UINavigationController()
@@ -115,6 +114,10 @@ class AppFlowController {
     }
     
     func register(pathArray:[AppFlowControllerItem]) {
+        
+        if let lastPath = pathArray.last, rootPathStep?.search(item: lastPath) != nil {
+            assert(false, "AppFlowController: \(lastPath.name) is already registered, if you want to register the same UIViewController for presenting it in a different way you need to create separate AppFlowControllerItem case with the same UIViewController")
+        }
         
         var previousStep:PathStep?
         
