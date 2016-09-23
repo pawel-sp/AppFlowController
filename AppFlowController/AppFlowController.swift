@@ -99,9 +99,11 @@ class AppFlowController {
 
     // universal linki do tego
     // animacje przejscia naprzod i w tyl
-    // parametry
     // custom transition
     // push no modalu?
+    // kolejne ekrany po parametrach
+    // kilka parametrow
+    // podziel na pliki
     
     func prepare(forWindow window:UIWindow) {
         self.rootNavigationController = UINavigationController()
@@ -137,7 +139,7 @@ class AppFlowController {
     
     // MARK: - Navigation
     
-    func show(item:AppFlowControllerItem) {
+    func show(item:AppFlowControllerItem, withParameter parameter:String? = nil) {
         if let found = rootPathStep?.search(item: item), let rootNavigationController = rootNavigationController {
             
             var items:[AppFlowControllerItem] = rootPathStep?.itemsFrom(step: found) ?? []
@@ -166,14 +168,18 @@ class AppFlowController {
                 rootNavigationController.popToViewController(targetViewController, animated: true)
             } else if let item = items.first, items.count == 1 {
                 // 1 to push/present
+                let viewController = item.viewController
+                viewController.setParameter(parameter)
                 if item.isModal {
-                    rootNavigationController.present(item.viewController, animated: true, completion: nil)
+                    rootNavigationController.present(viewController, animated: true, completion: nil)
                 } else {
-                    rootNavigationController.pushViewController(item.viewController, animated: true)
+                    rootNavigationController.pushViewController(viewController, animated: true)
                 }
             } else if items.count > 1 {
                 // >1 to push/present
                 if let lastItem = items.last {
+                    let viewController = lastItem.viewController
+                    viewController.setParameter(parameter)
                     let completionBlock = {
                         let insertIndex = max(0, rootNavigationController.viewControllers.count - (lastItem.isModal ? 0 : 1))
                         let insertCount = items.count - 1
@@ -184,20 +190,20 @@ class AppFlowController {
                         if currentViewControllers.count == 0 {
                             completionBlock()
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                rootNavigationController.present(lastItem.viewController, animated: true, completion: nil)
+                                rootNavigationController.present(viewController, animated: true, completion: nil)
                             }
                         } else {
-                            rootNavigationController.present(lastItem.viewController, animated: true, completion: completionBlock)
+                            rootNavigationController.present(viewController, animated: true, completion: completionBlock)
                         }
                     } else {
-                        rootNavigationController.pushViewController(lastItem.viewController, animated: true)
+                        rootNavigationController.pushViewController(viewController, animated: true)
                         completionBlock()
                     }
                 }
             }
             
         } else {
-            print("AppFlowController: Unregistered path for item \(item.name)")
+            assert(false, "AppFlowController: Unregistered path for item \(item.name)")
         }
     }
     
@@ -209,4 +215,10 @@ class AppFlowController {
             rootNavigationController?.popViewController(animated: true)
         }
     }
+}
+
+extension UIViewController {
+    
+    func setParameter(_ parameter:String?) {}
+    
 }

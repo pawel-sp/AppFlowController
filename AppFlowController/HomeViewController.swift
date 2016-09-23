@@ -18,4 +18,7 @@ class HomeViewController: BaseViewController {
         AppFlowController.sharedController.show(item: TestAppFlowControllerItems.registration)
     }
 
+    @IBAction func itemsAction(_ sender: AnyObject) {
+        AppFlowController.sharedController.show(item: TestAppFlowControllerItems.items)
+    }
 }

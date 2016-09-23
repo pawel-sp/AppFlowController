@@ -23,7 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         flowController.register(path: TestAppFlowControllerItems.home => TestAppFlowControllerItems.registration)
         flowController.register(path: TestAppFlowControllerItems.home => TestAppFlowControllerItems.login => TestAppFlowControllerItems.forgotPassword)
         flowController.register(path: TestAppFlowControllerItems.home => TestAppFlowControllerItems.login => TestAppFlowControllerItems.forgotPasswordAlert)
-        flowController.show(item:TestAppFlowControllerItems.forgotPasswordAlert)
+        flowController.register(path: TestAppFlowControllerItems.home => TestAppFlowControllerItems.items)
+        flowController.register(path: TestAppFlowControllerItems.home => TestAppFlowControllerItems.items => TestAppFlowControllerItems.details)
+        flowController.show(item:TestAppFlowControllerItems.details, withParameter: "red")
         
         return true
     }
@@ -37,6 +39,8 @@ enum TestAppFlowControllerItems: String, AppFlowControllerItem {
     case registration        = "sign_up"
     case forgotPassword      = "forgot_password"
     case forgotPasswordAlert = "forgot_password_alert"
+    case items               = "items"
+    case details             = "details"
     
     var name: String {
         return self.rawValue
@@ -49,6 +53,8 @@ enum TestAppFlowControllerItems: String, AppFlowControllerItem {
             case .registration:        return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RegistrationViewController")
             case .forgotPassword:      return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ForgotPasswordViewController")
             case .forgotPasswordAlert: return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ForgotPasswordViewController")
+            case .items:               return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ItemsTableViewController")
+            case .details:             return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailsViewController")
         }
     }
     
@@ -59,6 +65,8 @@ enum TestAppFlowControllerItems: String, AppFlowControllerItem {
             case .registration:        return RegistrationViewController.self
             case .forgotPassword:      return ForgotPasswordViewController.self
             case .forgotPasswordAlert: return ForgotPasswordViewController.self
+            case .items:               return ItemsTableViewController.self
+            case .details:             return DetailsViewController.self
         }
     }
     

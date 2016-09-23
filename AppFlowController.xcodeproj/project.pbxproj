@@ -17,6 +17,9 @@
 		A4927B811D93E38E001115BD /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4927B801D93E38E001115BD /* RegistrationViewController.swift */; };
 		A4927B831D93E39C001115BD /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4927B821D93E39C001115BD /* ForgotPasswordViewController.swift */; };
 		A4927B861D952496001115BD /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4927B851D952496001115BD /* BaseViewController.swift */; };
+		A4927B881D955C66001115BD /* ItemsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4927B871D955C66001115BD /* ItemsTableViewController.swift */; };
+		A4927B8A1D955DFD001115BD /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4927B891D955DFD001115BD /* DetailsViewController.swift */; };
+		A4927B8D1D95618A001115BD /* ColorsDataBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4927B8C1D95618A001115BD /* ColorsDataBase.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +35,9 @@
 		A4927B801D93E38E001115BD /* RegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		A4927B821D93E39C001115BD /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
 		A4927B851D952496001115BD /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		A4927B871D955C66001115BD /* ItemsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsTableViewController.swift; sourceTree = "<group>"; };
+		A4927B891D955DFD001115BD /* DetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
+		A4927B8C1D95618A001115BD /* ColorsDataBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorsDataBase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,8 +70,9 @@
 		A44C3B4A1D93AFE000C6D979 /* AppFlowController */ = {
 			isa = PBXGroup;
 			children = (
+				A4927B8E1D956273001115BD /* Classes */,
+				A4927B8B1D95617C001115BD /* Common */,
 				A4927B7B1D93E356001115BD /* View Controllers */,
-				A44C3B5D1D93B55900C6D979 /* AppFlowController.swift */,
 				A44C3B4B1D93AFE000C6D979 /* AppDelegate.swift */,
 				A44C3B4F1D93AFE000C6D979 /* Main.storyboard */,
 				A44C3B521D93AFE000C6D979 /* Assets.xcassets */,
@@ -83,8 +90,26 @@
 				A4927B7E1D93E37D001115BD /* LoginViewController.swift */,
 				A4927B801D93E38E001115BD /* RegistrationViewController.swift */,
 				A4927B821D93E39C001115BD /* ForgotPasswordViewController.swift */,
+				A4927B871D955C66001115BD /* ItemsTableViewController.swift */,
+				A4927B891D955DFD001115BD /* DetailsViewController.swift */,
 			);
 			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		A4927B8B1D95617C001115BD /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				A4927B8C1D95618A001115BD /* ColorsDataBase.swift */,
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
+		A4927B8E1D956273001115BD /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				A44C3B5D1D93B55900C6D979 /* AppFlowController.swift */,
+			);
+			name = Classes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -162,6 +187,9 @@
 			files = (
 				A4927B7F1D93E37D001115BD /* LoginViewController.swift in Sources */,
 				A44C3B5E1D93B55900C6D979 /* AppFlowController.swift in Sources */,
+				A4927B8A1D955DFD001115BD /* DetailsViewController.swift in Sources */,
+				A4927B881D955C66001115BD /* ItemsTableViewController.swift in Sources */,
+				A4927B8D1D95618A001115BD /* ColorsDataBase.swift in Sources */,
 				A4927B831D93E39C001115BD /* ForgotPasswordViewController.swift in Sources */,
 				A44C3B4C1D93AFE000C6D979 /* AppDelegate.swift in Sources */,
 				A4927B7D1D93E368001115BD /* HomeViewController.swift in Sources */,
