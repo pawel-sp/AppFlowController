@@ -18,50 +18,65 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let flowController = AppFlowController.sharedController
         flowController.prepare(forWindow:window!)
-        flowController.register(path: TestAppFlowControllerItem.home)
-        flowController.register(path: TestAppFlowControllerItem.home => DefaultPushPopAppFlowControllerTransition => TestAppFlowControllerItem.login)
-        flowController.register(path: TestAppFlowControllerItem.home => DefaultPushPopAppFlowControllerTransition => TestAppFlowControllerItem.registration)
-        flowController.register(path: TestAppFlowControllerItem.home => DefaultPushPopAppFlowControllerTransition => TestAppFlowControllerItem.login => DefaultPushPopAppFlowControllerTransition => TestAppFlowControllerItem.forgotPassword)
-        flowController.register(path: TestAppFlowControllerItem.home => DefaultPushPopAppFlowControllerTransition => TestAppFlowControllerItem.login => DefaultModalFlowControllerTransition => TestAppFlowControllerItem.forgotPasswordAlert)
-        flowController.register(path: TestAppFlowControllerItem.home => DefaultPushPopAppFlowControllerTransition => TestAppFlowControllerItem.items)
-        flowController.register(path: TestAppFlowControllerItem.home => DefaultPushPopAppFlowControllerTransition => TestAppFlowControllerItem.items => DefaultPushPopAppFlowControllerTransition => TestAppFlowControllerItem.details)
-        flowController.show(item:TestAppFlowControllerItem.home)
+        flowController.register(path: AppPage.home)
+        flowController.register(path: AppPage.home => DefaultPushPopAppFlowControllerTransition => AppPage.login)
+        flowController.register(path: AppPage.home => DefaultPushPopAppFlowControllerTransition => AppPage.registration)
+        flowController.register(path: AppPage.home => DefaultPushPopAppFlowControllerTransition => AppPage.login => DefaultPushPopAppFlowControllerTransition => AppPage.forgotPassword)
+        flowController.register(path: AppPage.home => DefaultPushPopAppFlowControllerTransition => AppPage.login => DefaultModalFlowControllerTransition => AppPage.forgotPasswordAlert)
+        flowController.register(path: AppPage.home => DefaultPushPopAppFlowControllerTransition => AppPage.items)
+        flowController.register(path: AppPage.home => DefaultPushPopAppFlowControllerTransition => AppPage.items => DefaultPushPopAppFlowControllerTransition => AppPage.details)
+        flowController.show(item:AppPage.home)
         
         return true
     }
 
 }
 
-class TestAppFlowControllerItem:AppFlowControllerItem {
+class AppPage:AppFlowControllerPage {
     
-    // MARK: - Properties
+    // MARK: - Pages
+
+    static let home = AppPage(
+        name: "home",
+        viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "HomeViewController") },
+        viewControllerType: HomeViewController.self
+    )
     
-    var name:String
-    var viewController: UIViewController
-    var viewControllerType: UIViewController.Type
-    var forwardTransition: AppFlowControllerForwardTransition?
-    var backwardTransition: AppFlowControllerBackwardTransition?
+    static let login = AppPage(
+        name: "sign_in",
+        viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginViewController") },
+        viewControllerType: LoginViewController.self
+    )
     
-    static let home                = TestAppFlowControllerItem(name: "home", viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "HomeViewController") }, viewControllerType: HomeViewController.self)
-    static let login               = TestAppFlowControllerItem(name: "sign_in", viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginViewController") }, viewControllerType: LoginViewController.self)
-    static let registration        = TestAppFlowControllerItem(name: "sign_up", viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RegistrationViewController") }, viewControllerType: RegistrationViewController.self)
-    static let forgotPassword      = TestAppFlowControllerItem(name: "forgot_password", viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ForgotPasswordViewController") }, viewControllerType: ForgotPasswordViewController.self)
-    static let forgotPasswordAlert = TestAppFlowControllerItem(name: "forgot_password_alert", viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ForgotPasswordViewController")
- }, viewControllerType: ForgotPasswordViewController.self)
-    static let items               = TestAppFlowControllerItem(name: "items", viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ItemsTableViewController") }, viewControllerType: ItemsTableViewController.self)
-    static let details             = TestAppFlowControllerItem(name: "details", viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailsViewController") }, viewControllerType: DetailsViewController.self)
+    static let registration = AppPage(
+        name: "sign_up",
+        viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RegistrationViewController") },
+        viewControllerType: RegistrationViewController.self
+    )
     
-    // MARK: - Init
+    static let forgotPassword = AppPage(
+        name: "forgot_password",
+        viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ForgotPasswordViewController") },
+        viewControllerType: ForgotPasswordViewController.self
+    )
     
-    init(
-        name:String,
-        viewControllerBlock:()->(UIViewController),
-        viewControllerType:UIViewController.Type
-        ) {
-        self.name               = name
-        self.viewController     = viewControllerBlock()
-        self.viewControllerType = viewControllerType
-    }
+    static let forgotPasswordAlert = AppPage(
+        name: "forgot_password_alert",
+        viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ForgotPasswordViewController") },
+        viewControllerType: ForgotPasswordViewController.self
+    )
+    
+    static let items = AppPage(
+        name: "items",
+        viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ItemsTableViewController") },
+        viewControllerType: ItemsTableViewController.self
+    )
+    
+    static let details = AppPage(
+        name: "details",
+        viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailsViewController") },
+        viewControllerType: DetailsViewController.self
+    )
     
 }
 

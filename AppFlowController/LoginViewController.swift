@@ -11,10 +11,10 @@ import UIKit
 class LoginViewController: BaseViewController {
 
     @IBAction func forgotPasswordAction(_ sender: AnyObject) {
-         AppFlowController.sharedController.show(item: TestAppFlowControllerItem.forgotPassword)
+         AppFlowController.sharedController.show(item: AppPage.forgotPassword)
     }
 
     @IBAction func forgotPasswordAlertAction(_ sender: AnyObject) {
-        AppFlowController.sharedController.show(item: TestAppFlowControllerItem.forgotPasswordAlert)
+        AppFlowController.sharedController.show(item: AppPage.forgotPasswordAlert)
     }
 }

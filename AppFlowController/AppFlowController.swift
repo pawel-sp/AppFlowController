@@ -145,7 +145,7 @@ class AppFlowController {
             } else if let item = items.first, items.count == 1 {
                 
                 // 1 to push/present
-                let viewController = item.viewController
+                let viewController = item.viewControllerBlock()
                 if rootNavigationController.viewControllers.count == 0 {
                     rootNavigationController.viewControllers = [viewController]
                 } else {
@@ -156,12 +156,12 @@ class AppFlowController {
                 
                 // >1 to push/present
                 if let lastItem = items.last {
-                    let viewController = lastItem.viewController
+                    let viewController = lastItem.viewControllerBlock()
                     lastItem.forwardTransition?.forwardTransitionBlock(animated: rootNavigationController.viewControllers.count > 0)(rootNavigationController, viewController)
                     let insertIndex = max(0, rootNavigationController.viewControllers.count - 1)
                     let insertCount = items.count - 1
                     let insertItems = items.prefix(insertCount)
-                    rootNavigationController.viewControllers.insert(contentsOf: insertItems.map({ $0.viewController }), at: insertIndex)
+                    rootNavigationController.viewControllers.insert(contentsOf: insertItems.map({ $0.viewControllerBlock() }), at: insertIndex)
                 }
                 
             } else {
@@ -177,7 +177,7 @@ class AppFlowController {
     
     func goBack() {
         if let lastSelectedItem = lastSelectedItem, let navigationController = rootNavigationController, let lastSelectedItemParent = rootPathStep?.search(item: lastSelectedItem)?.parent?.current {
-            let viewController = lastSelectedItemParent.viewController
+            let viewController = lastSelectedItemParent.viewControllerBlock()
             lastSelectedItem.backwardTransition?.backwardTransitionBlock(animated: true)(navigationController, viewController)
         }
     }

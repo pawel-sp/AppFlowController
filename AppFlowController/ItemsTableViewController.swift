@@ -25,7 +25,7 @@ class ItemsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        AppFlowController.sharedController.show(item: TestAppFlowControllerItem.details)
+        AppFlowController.sharedController.show(item: AppPage.details)
     }
     
 }
