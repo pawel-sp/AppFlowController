@@ -23,6 +23,7 @@
 		A4F10CD11D9D3FC700083BDA /* AppFlowControllerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4F10CD01D9D3FC700083BDA /* AppFlowControllerItem.swift */; };
 		A4F10CD31D9D3FF700083BDA /* AppFlowControllerTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4F10CD21D9D3FF700083BDA /* AppFlowControllerTransition.swift */; };
 		A4F10CD51D9D40E400083BDA /* AppFlowControllerOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4F10CD41D9D40E400083BDA /* AppFlowControllerOperators.swift */; };
+		A4F10CD71D9D5FB700083BDA /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4F10CD61D9D5FB700083BDA /* InfoViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		A4F10CD01D9D3FC700083BDA /* AppFlowControllerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowControllerItem.swift; sourceTree = "<group>"; };
 		A4F10CD21D9D3FF700083BDA /* AppFlowControllerTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowControllerTransition.swift; sourceTree = "<group>"; };
 		A4F10CD41D9D40E400083BDA /* AppFlowControllerOperators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowControllerOperators.swift; sourceTree = "<group>"; };
+		A4F10CD61D9D5FB700083BDA /* InfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 				A4927B821D93E39C001115BD /* ForgotPasswordViewController.swift */,
 				A4927B871D955C66001115BD /* ItemsTableViewController.swift */,
 				A4927B891D955DFD001115BD /* DetailsViewController.swift */,
+				A4F10CD61D9D5FB700083BDA /* InfoViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -204,6 +207,7 @@
 				A44C3B4C1D93AFE000C6D979 /* AppDelegate.swift in Sources */,
 				A4927B7D1D93E368001115BD /* HomeViewController.swift in Sources */,
 				A4F10CD51D9D40E400083BDA /* AppFlowControllerOperators.swift in Sources */,
+				A4F10CD71D9D5FB700083BDA /* InfoViewController.swift in Sources */,
 				A4927B861D952496001115BD /* BaseViewController.swift in Sources */,
 				A4F10CD11D9D3FC700083BDA /* AppFlowControllerItem.swift in Sources */,
 				A4927B811D93E38E001115BD /* RegistrationViewController.swift in Sources */,

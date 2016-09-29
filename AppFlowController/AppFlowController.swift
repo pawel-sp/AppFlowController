@@ -76,6 +76,11 @@ class AppFlowController {
     // podziel na pliki
     // dodaj info ze nie mozna pokazac details bez parametru!
     // go back
+    // klasa bazowa dla uinavigationcontroller'a dla modali
+    // pomijanie defaultowych transition?
+    // modal na modalu?
+    // side menu?
+    // go back
     
     func prepare(forWindow window:UIWindow) {
         self.rootNavigationController = UINavigationController()
@@ -133,14 +138,16 @@ class AppFlowController {
                 // >=1 to dismiss
                 if let presentingViewController = rootNavigationController.visibleViewController?.presentingViewController {
                     // modal
-                    lastSelectedItem.backwardTransition?.backwardTransitionBlock(animated: true)(rootNavigationController, presentingViewController)
+                    if let modalNavigationController = presentingViewController as? UINavigationController {
+                        lastSelectedItem.backwardTransition?.backwardTransitionBlock(animated: true)(rootNavigationController, modalNavigationController)
+                    }
                 }
                 let currentViewControllersCount = currentViewControllers.count
                 let targetViewControllerIndex   = max(0, currentViewControllersCount - numberOfVCToDismiss - 1)
                 let targetViewController        = rootNavigationController.viewControllers[targetViewControllerIndex]
                 let lastSelectedItemParent      = rootPathStep?.search(item: lastSelectedItem)?.parent?.current
                 
-                lastSelectedItemParent?.backwardTransition?.backwardTransitionBlock(animated: numberOfVCToDismiss > 1)(rootNavigationController, targetViewController)
+                lastSelectedItemParent?.backwardTransition?.backwardTransitionBlock(animated: true)(rootNavigationController, targetViewController)
                 
             } else if let item = items.first, items.count == 1 {
                 
@@ -172,13 +179,6 @@ class AppFlowController {
             
         } else {
             assert(false, "AppFlowController: Unregistered path for item \(item.name)")
-        }
-    }
-    
-    func goBack() {
-        if let lastSelectedItem = lastSelectedItem, let navigationController = rootNavigationController, let lastSelectedItemParent = rootPathStep?.search(item: lastSelectedItem)?.parent?.current {
-            let viewController = lastSelectedItemParent.viewControllerBlock()
-            lastSelectedItem.backwardTransition?.backwardTransitionBlock(animated: true)(navigationController, viewController)
         }
     }
 

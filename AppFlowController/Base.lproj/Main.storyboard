@@ -202,12 +202,22 @@
                                     <action selector="backToHomeAction:" destination="p0O-7X-BQT" eventType="touchUpInside" id="npN-EB-wfT"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jAj-L6-TDH">
+                                <state key="normal" title="Info">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="forgotPasswordAction:" destination="p0O-7X-BQT" eventType="touchUpInside" id="WU8-TN-A75"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.46666666670000001" blue="0.70980392160000005" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="0wP-Gr-hs2" firstAttribute="centerX" secondItem="Tav-p4-HlE" secondAttribute="centerX" id="MJd-cC-ikW"/>
                             <constraint firstItem="0wP-Gr-hs2" firstAttribute="centerY" secondItem="Tav-p4-HlE" secondAttribute="centerY" constant="-20" id="Mr6-jU-THh"/>
                             <constraint firstItem="S0r-z7-qN6" firstAttribute="centerX" secondItem="Tav-p4-HlE" secondAttribute="centerX" id="Qra-G7-5MQ"/>
+                            <constraint firstItem="jAj-L6-TDH" firstAttribute="centerX" secondItem="Tav-p4-HlE" secondAttribute="centerX" id="X4p-CL-lpz"/>
+                            <constraint firstItem="jAj-L6-TDH" firstAttribute="top" secondItem="S0r-z7-qN6" secondAttribute="bottom" constant="7.5" id="m3r-NM-egz"/>
                             <constraint firstItem="S0r-z7-qN6" firstAttribute="top" secondItem="0wP-Gr-hs2" secondAttribute="bottom" constant="2" id="scB-yn-Lje"/>
                         </constraints>
                     </view>
@@ -217,6 +227,26 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b0E-eJ-Pkz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1129" y="99"/>
+        </scene>
+        <!--Info-->
+        <scene sceneID="04v-XY-M7y">
+            <objects>
+                <viewController storyboardIdentifier="InfoViewController" id="zud-E5-HLZ" customClass="InfoViewController" customModule="AppFlowController" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="1cV-x7-PMn"/>
+                        <viewControllerLayoutGuide type="bottom" id="YMT-Mk-yJZ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="g1T-yI-xiA">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.60000002384185791" green="0.40000000596046448" blue="0.20000000298023224" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Info" id="v84-DE-nGc"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="huo-di-XoE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1847" y="99"/>
         </scene>
     </scenes>
 </document>

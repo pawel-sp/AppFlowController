@@ -53,7 +53,12 @@ class ModalAppFlowControllerTransition:AppFlowControllerTransition {
     
     func forwardTransitionBlock(animated: Bool) -> (UINavigationController, UIViewController) -> Void {
         return { navigationController, viewController in
-            navigationController.present(viewController, animated: animated, completion: nil)
+            if viewController.navigationController == nil {
+                let modalNavigationController = UINavigationController(rootViewController: viewController)
+                navigationController.present(modalNavigationController, animated: animated, completion: nil)
+            } else {
+                navigationController.present(viewController, animated: animated, completion: nil)
+            }
         }
     }
     

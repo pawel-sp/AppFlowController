@@ -78,5 +78,11 @@ class AppPage:AppFlowControllerPage {
         viewControllerType: DetailsViewController.self
     )
     
+    static let info = AppPage(
+        name: "info",
+        viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailsViewController") },
+        viewControllerType: InfoViewController.self
+    )
+    
 }
 
