@@ -8,38 +8,7 @@
 
 import UIKit
 
-protocol AppFlowControllerItem {
-    
-    var name:String { get }
-    var viewController:UIViewController { get }
-    var viewControllerType: UIViewController.Type { get }
-    var isModal:Bool { get }
-    
-    func isEqual(item:AppFlowControllerItem) -> Bool
-    
-}
 
-func ==(lhs:AppFlowControllerItem, rhs:AppFlowControllerItem) -> Bool {
-    return lhs.isEqual(item: rhs)
-}
-
-extension AppFlowControllerItem {
-    
-    func isEqual(item:AppFlowControllerItem) -> Bool {
-        return self.name == item.name
-    }
-    
-}
-
-infix operator =>: AdditionPrecedence
-
-func =>(lhs:AppFlowControllerItem, rhs:AppFlowControllerItem) -> [AppFlowControllerItem] {
-    return [lhs, rhs]
-}
-
-func =>(lhs:[AppFlowControllerItem], rhs:AppFlowControllerItem) -> [AppFlowControllerItem] {
-    return lhs + [rhs]
-}
 
 class AppFlowController {
 
@@ -90,6 +59,7 @@ class AppFlowController {
     static let sharedController = AppFlowController()
     private var rootPathStep:PathStep?
     private var rootNavigationController:UINavigationController?
+    private var lastSelectedItem:AppFlowControllerItem?
     
     // MARK: - Init
     
@@ -104,6 +74,8 @@ class AppFlowController {
     // kolejne ekrany po parametrach
     // kilka parametrow
     // podziel na pliki
+    // dodaj info ze nie mozna pokazac details bez parametru!
+    // go back
     
     func prepare(forWindow window:UIWindow) {
         self.rootNavigationController = UINavigationController()
@@ -139,12 +111,12 @@ class AppFlowController {
     
     // MARK: - Navigation
     
-    func show(item:AppFlowControllerItem, withParameter parameter:String? = nil) {
+    func show(item:AppFlowControllerItem) {
         if let found = rootPathStep?.search(item: item), let rootNavigationController = rootNavigationController {
             
             var items:[AppFlowControllerItem] = rootPathStep?.itemsFrom(step: found) ?? []
             let currentViewControllers = rootNavigationController.viewControllers + (rootNavigationController.presentedViewController != nil ? [rootNavigationController.presentedViewController!] : [])
-            let numberOfVCToPop = max(0, currentViewControllers.count - items.count)
+            let numberOfVCToDismiss = max(0, currentViewControllers.count - items.count)
             var numberOfDeleted = 0
             
             for (index, item) in items.enumerated() {
@@ -156,51 +128,47 @@ class AppFlowController {
                 }
             }
             
-            if numberOfVCToPop > 0 {
-                // >=1 to pop
+            if numberOfVCToDismiss > 0, let lastSelectedItem = lastSelectedItem {
+                
+                // >=1 to dismiss
                 if let presentingViewController = rootNavigationController.visibleViewController?.presentingViewController {
                     // modal
-                    presentingViewController.dismiss(animated: true, completion: nil)
+                    lastSelectedItem.backwardTransition?.backwardTransitionBlock(animated: true)(rootNavigationController, presentingViewController)
                 }
                 let currentViewControllersCount = currentViewControllers.count
-                let targetViewControllerIndex = max(0, currentViewControllersCount - numberOfVCToPop - 1)
-                let targetViewController = rootNavigationController.viewControllers[targetViewControllerIndex]
-                rootNavigationController.popToViewController(targetViewController, animated: true)
+                let targetViewControllerIndex   = max(0, currentViewControllersCount - numberOfVCToDismiss - 1)
+                let targetViewController        = rootNavigationController.viewControllers[targetViewControllerIndex]
+                let lastSelectedItemParent      = rootPathStep?.search(item: lastSelectedItem)?.parent?.current
+                
+                lastSelectedItemParent?.backwardTransition?.backwardTransitionBlock(animated: numberOfVCToDismiss > 1)(rootNavigationController, targetViewController)
+                
             } else if let item = items.first, items.count == 1 {
+                
                 // 1 to push/present
                 let viewController = item.viewController
-                viewController.setParameter(parameter)
-                if item.isModal {
-                    rootNavigationController.present(viewController, animated: true, completion: nil)
+                if rootNavigationController.viewControllers.count == 0 {
+                    rootNavigationController.viewControllers = [viewController]
                 } else {
-                    rootNavigationController.pushViewController(viewController, animated: true)
+                    item.forwardTransition?.forwardTransitionBlock(animated: rootNavigationController.viewControllers.count > 0)(rootNavigationController, viewController)
                 }
+ 
             } else if items.count > 1 {
+                
                 // >1 to push/present
                 if let lastItem = items.last {
                     let viewController = lastItem.viewController
-                    viewController.setParameter(parameter)
-                    let completionBlock = {
-                        let insertIndex = max(0, rootNavigationController.viewControllers.count - (lastItem.isModal ? 0 : 1))
-                        let insertCount = items.count - 1
-                        let insertItems = items.prefix(insertCount)
-                        rootNavigationController.viewControllers.insert(contentsOf: insertItems.map({ $0.viewController }), at: insertIndex)
-                    }
-                    if lastItem.isModal {
-                        if currentViewControllers.count == 0 {
-                            completionBlock()
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                rootNavigationController.present(viewController, animated: true, completion: nil)
-                            }
-                        } else {
-                            rootNavigationController.present(viewController, animated: true, completion: completionBlock)
-                        }
-                    } else {
-                        rootNavigationController.pushViewController(viewController, animated: true)
-                        completionBlock()
-                    }
+                    lastItem.forwardTransition?.forwardTransitionBlock(animated: rootNavigationController.viewControllers.count > 0)(rootNavigationController, viewController)
+                    let insertIndex = max(0, rootNavigationController.viewControllers.count - 1)
+                    let insertCount = items.count - 1
+                    let insertItems = items.prefix(insertCount)
+                    rootNavigationController.viewControllers.insert(contentsOf: insertItems.map({ $0.viewController }), at: insertIndex)
                 }
+                
+            } else {
+                assert(false, "AppFlowController: Internal error")
             }
+            
+            self.lastSelectedItem = item
             
         } else {
             assert(false, "AppFlowController: Unregistered path for item \(item.name)")
@@ -208,13 +176,12 @@ class AppFlowController {
     }
     
     func goBack() {
-        if let presentingViewController = rootNavigationController?.visibleViewController?.presentingViewController {
-            // modal
-            presentingViewController.dismiss(animated: true, completion: nil)
-        } else {
-            rootNavigationController?.popViewController(animated: true)
+        if let lastSelectedItem = lastSelectedItem, let navigationController = rootNavigationController, let lastSelectedItemParent = rootPathStep?.search(item: lastSelectedItem)?.parent?.current {
+            let viewController = lastSelectedItemParent.viewController
+            lastSelectedItem.backwardTransition?.backwardTransitionBlock(animated: true)(navigationController, viewController)
         }
     }
+
 }
 
 extension UIViewController {

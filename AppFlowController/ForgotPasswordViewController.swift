@@ -29,11 +29,11 @@ class ForgotPasswordViewController: BaseViewController {
     }
 
     @IBAction func backToHomeAction(_ sender: AnyObject) {
-        AppFlowController.sharedController.show(item: TestAppFlowControllerItems.home)
+        AppFlowController.sharedController.show(item: TestAppFlowControllerItem.home)
     }
     
     func dismissAction(_ sender: AnyObject) {
-        AppFlowController.sharedController.show(item: TestAppFlowControllerItems.login)
+        AppFlowController.sharedController.show(item: TestAppFlowControllerItem.login)
     }
 
 }

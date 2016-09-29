@@ -18,63 +18,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let flowController = AppFlowController.sharedController
         flowController.prepare(forWindow:window!)
-        flowController.register(path: TestAppFlowControllerItems.home)
-        flowController.register(path: TestAppFlowControllerItems.home => TestAppFlowControllerItems.login)
-        flowController.register(path: TestAppFlowControllerItems.home => TestAppFlowControllerItems.registration)
-        flowController.register(path: TestAppFlowControllerItems.home => TestAppFlowControllerItems.login => TestAppFlowControllerItems.forgotPassword)
-        flowController.register(path: TestAppFlowControllerItems.home => TestAppFlowControllerItems.login => TestAppFlowControllerItems.forgotPasswordAlert)
-        flowController.register(path: TestAppFlowControllerItems.home => TestAppFlowControllerItems.items)
-        flowController.register(path: TestAppFlowControllerItems.home => TestAppFlowControllerItems.items => TestAppFlowControllerItems.details)
-        flowController.show(item:TestAppFlowControllerItems.details, withParameter: "red")
+        flowController.register(path: TestAppFlowControllerItem.home)
+        flowController.register(path: TestAppFlowControllerItem.home => DefaultPushPopAppFlowControllerTransition => TestAppFlowControllerItem.login)
+        flowController.register(path: TestAppFlowControllerItem.home => DefaultPushPopAppFlowControllerTransition => TestAppFlowControllerItem.registration)
+        flowController.register(path: TestAppFlowControllerItem.home => DefaultPushPopAppFlowControllerTransition => TestAppFlowControllerItem.login => DefaultPushPopAppFlowControllerTransition => TestAppFlowControllerItem.forgotPassword)
+        flowController.register(path: TestAppFlowControllerItem.home => DefaultPushPopAppFlowControllerTransition => TestAppFlowControllerItem.login => DefaultModalFlowControllerTransition => TestAppFlowControllerItem.forgotPasswordAlert)
+        flowController.register(path: TestAppFlowControllerItem.home => DefaultPushPopAppFlowControllerTransition => TestAppFlowControllerItem.items)
+        flowController.register(path: TestAppFlowControllerItem.home => DefaultPushPopAppFlowControllerTransition => TestAppFlowControllerItem.items => DefaultPushPopAppFlowControllerTransition => TestAppFlowControllerItem.details)
+        flowController.show(item:TestAppFlowControllerItem.home)
         
         return true
     }
 
 }
 
-enum TestAppFlowControllerItems: String, AppFlowControllerItem {
+class TestAppFlowControllerItem:AppFlowControllerItem {
     
-    case home                = "home"
-    case login               = "sign_in"
-    case registration        = "sign_up"
-    case forgotPassword      = "forgot_password"
-    case forgotPasswordAlert = "forgot_password_alert"
-    case items               = "items"
-    case details             = "details"
+    // MARK: - Properties
     
-    var name: String {
-        return self.rawValue
+    var name:String
+    var viewController: UIViewController
+    var viewControllerType: UIViewController.Type
+    var forwardTransition: AppFlowControllerForwardTransition?
+    var backwardTransition: AppFlowControllerBackwardTransition?
+    
+    static let home                = TestAppFlowControllerItem(name: "home", viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "HomeViewController") }, viewControllerType: HomeViewController.self)
+    static let login               = TestAppFlowControllerItem(name: "sign_in", viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginViewController") }, viewControllerType: LoginViewController.self)
+    static let registration        = TestAppFlowControllerItem(name: "sign_up", viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RegistrationViewController") }, viewControllerType: RegistrationViewController.self)
+    static let forgotPassword      = TestAppFlowControllerItem(name: "forgot_password", viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ForgotPasswordViewController") }, viewControllerType: ForgotPasswordViewController.self)
+    static let forgotPasswordAlert = TestAppFlowControllerItem(name: "forgot_password_alert", viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ForgotPasswordViewController")
+ }, viewControllerType: ForgotPasswordViewController.self)
+    static let items               = TestAppFlowControllerItem(name: "items", viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ItemsTableViewController") }, viewControllerType: ItemsTableViewController.self)
+    static let details             = TestAppFlowControllerItem(name: "details", viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailsViewController") }, viewControllerType: DetailsViewController.self)
+    
+    // MARK: - Init
+    
+    init(
+        name:String,
+        viewControllerBlock:()->(UIViewController),
+        viewControllerType:UIViewController.Type
+        ) {
+        self.name               = name
+        self.viewController     = viewControllerBlock()
+        self.viewControllerType = viewControllerType
     }
     
-    var viewController: UIViewController {
-        switch self {
-            case .home:                return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "HomeViewController")
-            case .login:               return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginViewController")
-            case .registration:        return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RegistrationViewController")
-            case .forgotPassword:      return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ForgotPasswordViewController")
-            case .forgotPasswordAlert: return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ForgotPasswordViewController")
-            case .items:               return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ItemsTableViewController")
-            case .details:             return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailsViewController")
-        }
-    }
-    
-    var viewControllerType: UIViewController.Type {
-        switch self {
-            case .home:                return HomeViewController.self
-            case .login:               return LoginViewController.self
-            case .registration:        return RegistrationViewController.self
-            case .forgotPassword:      return ForgotPasswordViewController.self
-            case .forgotPasswordAlert: return ForgotPasswordViewController.self
-            case .items:               return ItemsTableViewController.self
-            case .details:             return DetailsViewController.self
-        }
-    }
-    
-    var isModal:Bool {
-        switch self {
-            case .forgotPasswordAlert: return true
-            default:                   return false
-        }
-    }
-
 }
+

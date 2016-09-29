@@ -11,14 +11,14 @@ import UIKit
 class HomeViewController: BaseViewController {
 
     @IBAction func loginAction(_ sender: AnyObject) {
-        AppFlowController.sharedController.show(item: TestAppFlowControllerItems.login)
+        AppFlowController.sharedController.show(item: TestAppFlowControllerItem.login)
     }
 
     @IBAction func registrationAction(_ sender: AnyObject) {
-        AppFlowController.sharedController.show(item: TestAppFlowControllerItems.registration)
+        AppFlowController.sharedController.show(item: TestAppFlowControllerItem.registration)
     }
 
     @IBAction func itemsAction(_ sender: AnyObject) {
-        AppFlowController.sharedController.show(item: TestAppFlowControllerItems.items)
+        AppFlowController.sharedController.show(item: TestAppFlowControllerItem.items)
     }
 }
