@@ -24,6 +24,7 @@
 		A4F10CD31D9D3FF700083BDA /* AppFlowControllerTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4F10CD21D9D3FF700083BDA /* AppFlowControllerTransition.swift */; };
 		A4F10CD51D9D40E400083BDA /* AppFlowControllerOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4F10CD41D9D40E400083BDA /* AppFlowControllerOperators.swift */; };
 		A4F10CD71D9D5FB700083BDA /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4F10CD61D9D5FB700083BDA /* InfoViewController.swift */; };
+		A4F10CD91D9E465000083BDA /* AppFlowControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4F10CD81D9E465000083BDA /* AppFlowControllerExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		A4F10CD21D9D3FF700083BDA /* AppFlowControllerTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowControllerTransition.swift; sourceTree = "<group>"; };
 		A4F10CD41D9D40E400083BDA /* AppFlowControllerOperators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowControllerOperators.swift; sourceTree = "<group>"; };
 		A4F10CD61D9D5FB700083BDA /* InfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
+		A4F10CD81D9E465000083BDA /* AppFlowControllerExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowControllerExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,10 +80,10 @@
 		A44C3B4A1D93AFE000C6D979 /* AppFlowController */ = {
 			isa = PBXGroup;
 			children = (
+				A44C3B4B1D93AFE000C6D979 /* AppDelegate.swift */,
 				A4927B8E1D956273001115BD /* Classes */,
 				A4927B8B1D95617C001115BD /* Common */,
 				A4927B7B1D93E356001115BD /* View Controllers */,
-				A44C3B4B1D93AFE000C6D979 /* AppDelegate.swift */,
 				A44C3B4F1D93AFE000C6D979 /* Main.storyboard */,
 				A44C3B521D93AFE000C6D979 /* Assets.xcassets */,
 				A44C3B541D93AFE000C6D979 /* LaunchScreen.storyboard */,
@@ -120,6 +122,7 @@
 				A4F10CD01D9D3FC700083BDA /* AppFlowControllerItem.swift */,
 				A4F10CD21D9D3FF700083BDA /* AppFlowControllerTransition.swift */,
 				A4F10CD41D9D40E400083BDA /* AppFlowControllerOperators.swift */,
+				A4F10CD81D9E465000083BDA /* AppFlowControllerExtensions.swift */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -204,6 +207,7 @@
 				A4927B881D955C66001115BD /* ItemsTableViewController.swift in Sources */,
 				A4927B8D1D95618A001115BD /* ColorsDataBase.swift in Sources */,
 				A4927B831D93E39C001115BD /* ForgotPasswordViewController.swift in Sources */,
+				A4F10CD91D9E465000083BDA /* AppFlowControllerExtensions.swift in Sources */,
 				A44C3B4C1D93AFE000C6D979 /* AppDelegate.swift in Sources */,
 				A4927B7D1D93E368001115BD /* HomeViewController.swift in Sources */,
 				A4F10CD51D9D40E400083BDA /* AppFlowControllerOperators.swift in Sources */,

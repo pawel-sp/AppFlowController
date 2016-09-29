@@ -25,6 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         flowController.register(path: AppPage.home => DefaultPushPopAppFlowControllerTransition => AppPage.login => DefaultModalFlowControllerTransition => AppPage.forgotPasswordAlert)
         flowController.register(path: AppPage.home => DefaultPushPopAppFlowControllerTransition => AppPage.items)
         flowController.register(path: AppPage.home => DefaultPushPopAppFlowControllerTransition => AppPage.items => DefaultPushPopAppFlowControllerTransition => AppPage.details)
+        flowController.register(path: AppPage.home => DefaultPushPopAppFlowControllerTransition => AppPage.login => DefaultModalFlowControllerTransition => AppPage.forgotPasswordAlert => DefaultPushPopAppFlowControllerTransition => AppPage.info)
+        
         flowController.show(item:AppPage.home)
         
         return true
@@ -80,7 +82,7 @@ class AppPage:AppFlowControllerPage {
     
     static let info = AppPage(
         name: "info",
-        viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailsViewController") },
+        viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "InfoViewController") },
         viewControllerType: InfoViewController.self
     )
     

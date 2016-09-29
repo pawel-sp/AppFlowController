@@ -8,20 +8,4 @@
 
 import UIKit
 
-class DetailsViewController: UIViewController {
-
-    var colorParameter:String?
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        if let parameter = colorParameter, let color = Color.colorFromString(parameter) {
-            view.backgroundColor = color.uicolor
-        }
-    }
-    
-    override func setParameter(_ parameter: String?) {
-        super.setParameter(parameter)
-        self.colorParameter = parameter
-    }
-
-}
+class DetailsViewController: UIViewController {}
