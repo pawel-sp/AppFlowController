@@ -109,6 +109,8 @@
 		A48809491DA16652003CF8F3 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				A488094D1DA1666E003CF8F3 /* BaseViewController.swift */,
+				A488094C1DA1666E003CF8F3 /* BaseTableViewController.swift */,
 				A48809561DA16683003CF8F3 /* InfoViewController.swift */,
 				A48809571DA16683003CF8F3 /* ItemsTableViewController.swift */,
 				A48809581DA16683003CF8F3 /* LoginViewController.swift */,
@@ -116,8 +118,6 @@
 				A48809501DA16677003CF8F3 /* DetailsViewController.swift */,
 				A48809511DA16677003CF8F3 /* ForgotPasswordViewController.swift */,
 				A48809521DA16677003CF8F3 /* HomeViewController.swift */,
-				A488094C1DA1666E003CF8F3 /* BaseTableViewController.swift */,
-				A488094D1DA1666E003CF8F3 /* BaseViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";

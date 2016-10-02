@@ -20,7 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let flowController  = AppFlowController.sharedController
         let alphaTransition = AlphaTransition()
         
-        // alpha transition need to be in 4 places below to keep it everywhere
         flowController.prepare(forWindow:window!)
         flowController.register(path: AppPage.home)
         flowController.register(path: AppPage.home => alphaTransition => AppPage.login)
@@ -31,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         flowController.register(path: AppPage.home => AppPage.items => AppPage.details)
         flowController.register(path: AppPage.home => alphaTransition => AppPage.login => DefaultModalFlowControllerTransition => AppPage.forgotPasswordAlert => AppPage.info)
         
-        flowController.show(item:AppPage.home)
+        flowController.show(item:AppPage.registration)
         
         return true
     }
