@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AppFlowController
 
 class InfoViewController: BaseViewController {
 

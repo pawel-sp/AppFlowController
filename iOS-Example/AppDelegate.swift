@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AppFlowController
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

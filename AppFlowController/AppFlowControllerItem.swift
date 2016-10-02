@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AppFlowControllerItem {
+public protocol AppFlowControllerItem {
     
     var name:String { get }
     var viewControllerBlock:() -> UIViewController { get }
@@ -22,25 +22,25 @@ protocol AppFlowControllerItem {
 
 extension AppFlowControllerItem {
     
-    func isEqual(item:AppFlowControllerItem) -> Bool {
+    public func isEqual(item:AppFlowControllerItem) -> Bool {
         return self.name == item.name
     }
     
 }
 
-class AppFlowControllerPage:AppFlowControllerItem {
+open class AppFlowControllerPage:AppFlowControllerItem {
     
     // MARK: - Properties
     
-    var name:String
-    var viewControllerBlock: () -> UIViewController
-    var viewControllerType: UIViewController.Type
-    var forwardTransition: AppFlowControllerForwardTransition?
-    var backwardTransition: AppFlowControllerBackwardTransition?
+    public var name:String
+    public var viewControllerBlock: () -> UIViewController
+    public var viewControllerType: UIViewController.Type
+    public var forwardTransition: AppFlowControllerForwardTransition?
+    public var backwardTransition: AppFlowControllerBackwardTransition?
     
     // MARK: - Init
     
-    init(
+    public init(
         name:String,
         viewControllerBlock:@escaping ()->(UIViewController),
         viewControllerType:UIViewController.Type

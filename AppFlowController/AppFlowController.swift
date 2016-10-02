@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AppFlowController {
+public class AppFlowController {
 
     // MARK: - Classes
     
@@ -91,7 +91,7 @@ class AppFlowController {
     
     // MARK: - Properties (public)
     
-    static let sharedController = AppFlowController()
+    public static let sharedController = AppFlowController()
     
     // MARK: - Properties (private)
     
@@ -105,19 +105,20 @@ class AppFlowController {
     
     // MARK: - Setup
 
-    // custom transition
-    // tab menu?
+    // TODO: custom transition
+    // TODO: tab menu?
+    // TODO: parameters
     
-    func prepare(forWindow window:UIWindow, rootNavigationControllerClass:UINavigationController.Type = UINavigationController.self) {
+    public func prepare(forWindow window:UIWindow, rootNavigationControllerClass:UINavigationController.Type = UINavigationController.self) {
         self.rootNavigationController = rootNavigationControllerClass.init()
         window.rootViewController = rootNavigationController
     }
     
-    func register(path:AppFlowControllerItem) {
+    public func register(path:AppFlowControllerItem) {
         register(path:[path])
     }
     
-    func register(path:[AppFlowControllerItem]) {
+    public func register(path:[AppFlowControllerItem]) {
         
         if let lastPath = path.last, rootPathStep?.search(item: lastPath) != nil {
             assertError(error: .pathNameAlreadyRegistered(name: lastPath.name))
@@ -142,7 +143,7 @@ class AppFlowController {
     
     // MARK: - Navigation
     
-    func show(item:AppFlowControllerItem, animated:Bool = true) {
+    public func show(item:AppFlowControllerItem, animated:Bool = true) {
         if let found = rootPathStep?.search(item: item), let rootNavigationController = rootNavigationController {
             
             var items:[AppFlowControllerItem] = rootPathStep?.itemsFrom(step: found) ?? []
@@ -211,7 +212,7 @@ class AppFlowController {
         }
     }
     
-    func goBack(animated:Bool = true) {
+    public func goBack(animated:Bool = true) {
         dismissItem(numberVCToDismiss: 1, animated: animated)
     }
     

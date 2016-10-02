@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>AppFlowController.xcscheme</key>
+		<key>iOS-Example.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -12,7 +12,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>A48809121DA16580003CF8F3</key>
+		<key>A48809301DA165E9003CF8F3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
