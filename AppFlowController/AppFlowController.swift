@@ -105,9 +105,9 @@ public class AppFlowController {
     
     // MARK: - Setup
 
-    // TODO: custom transition
     // TODO: tab menu?
     // TODO: parameters
+    // TODO: skipping view controllers during transition
     
     public func prepare(forWindow window:UIWindow, rootNavigationControllerClass:UINavigationController.Type = UINavigationController.self) {
         self.rootNavigationController = rootNavigationControllerClass.init()
@@ -118,6 +118,7 @@ public class AppFlowController {
         register(path:[path])
     }
     
+    // If you are using custom transition you need to remember to use it in every path where specific path step exists (look at example)
     public func register(path:[AppFlowControllerItem]) {
         
         if let lastPath = path.last, rootPathStep?.search(item: lastPath) != nil {

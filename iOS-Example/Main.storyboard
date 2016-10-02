@@ -9,7 +9,7 @@
         <!--Home-->
         <scene sceneID="5DR-Fe-lKk">
             <objects>
-                <viewController storyboardIdentifier="HomeViewController" id="7Ol-0w-SaP" customClass="HomeViewController" customModule="AppFlowController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomeViewController" id="7Ol-0w-SaP" customClass="HomeViewController" customModule="iOS_Example" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="gLd-zG-e42"/>
                         <viewControllerLayoutGuide type="bottom" id="ng1-BX-Mem"/>
@@ -57,7 +57,7 @@
         <!--Items-->
         <scene sceneID="Mnc-dl-jSn">
             <objects>
-                <tableViewController storyboardIdentifier="ItemsTableViewController" id="Y9Z-Zd-8LN" customClass="ItemsTableViewController" customModule="AppFlowController" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ItemsTableViewController" id="Y9Z-Zd-8LN" customClass="ItemsTableViewController" customModule="iOS_Example" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="tha-TM-CeP">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -67,11 +67,11 @@
                                 <rect key="frame" x="0.0" y="92" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="96E-hO-Abl" id="dsb-cl-KkO">
-                                    <frame key="frameInset" width="375" height="43"/>
+                                    <frame key="frameInset" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="M3y-TV-QXw">
-                                            <frame key="frameInset" minX="15" width="345" height="43"/>
+                                            <frame key="frameInset" minX="15" width="345" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -96,7 +96,7 @@
         <!--Details-->
         <scene sceneID="7cU-DY-gSW">
             <objects>
-                <viewController storyboardIdentifier="DetailsViewController" id="Vmb-ap-ihp" customClass="DetailsViewController" customModule="AppFlowController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DetailsViewController" id="Vmb-ap-ihp" customClass="DetailsViewController" customModule="iOS_Example" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="eot-V7-KnQ"/>
                         <viewControllerLayoutGuide type="bottom" id="Agp-K4-bg2"/>
@@ -116,7 +116,7 @@
         <!--Login-->
         <scene sceneID="a3a-xD-1EZ">
             <objects>
-                <viewController storyboardIdentifier="LoginViewController" id="sdM-VL-i7f" customClass="LoginViewController" customModule="AppFlowController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginViewController" id="sdM-VL-i7f" customClass="LoginViewController" customModule="iOS_Example" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Abt-RU-NPJ"/>
                         <viewControllerLayoutGuide type="bottom" id="W4b-Ef-3sG"/>
@@ -157,7 +157,7 @@
         <!--Registration-->
         <scene sceneID="bda-VW-hM4">
             <objects>
-                <viewController storyboardIdentifier="RegistrationViewController" id="p4C-FL-Rzf" customClass="RegistrationViewController" customModule="AppFlowController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RegistrationViewController" id="p4C-FL-Rzf" customClass="RegistrationViewController" customModule="iOS_Example" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="sSq-da-ZFr"/>
                         <viewControllerLayoutGuide type="bottom" id="xU3-K8-hf6"/>
@@ -165,7 +165,21 @@
                     <view key="view" contentMode="scaleToFill" id="bqk-XI-df5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fbp-wg-XDv">
+                                <state key="normal" title="Back">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="backAction:" destination="p4C-FL-Rzf" eventType="touchUpInside" id="LUG-Rj-xb0"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="0.38431372549999998" blue="0.1450980392" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="fbp-wg-XDv" firstAttribute="centerY" secondItem="bqk-XI-df5" secondAttribute="centerY" id="7nB-qR-7Uf"/>
+                            <constraint firstItem="fbp-wg-XDv" firstAttribute="centerX" secondItem="bqk-XI-df5" secondAttribute="centerX" id="c7y-SI-AT5"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Registration" id="j0D-pv-f7z"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
@@ -177,7 +191,7 @@
         <!--Forgot password-->
         <scene sceneID="mgt-cP-nil">
             <objects>
-                <viewController storyboardIdentifier="ForgotPasswordViewController" id="p0O-7X-BQT" customClass="ForgotPasswordViewController" customModule="AppFlowController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ForgotPasswordViewController" id="p0O-7X-BQT" customClass="ForgotPasswordViewController" customModule="iOS_Example" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="nmc-1c-bmV"/>
                         <viewControllerLayoutGuide type="bottom" id="NyG-nL-t1g"/>
@@ -231,7 +245,7 @@
         <!--Info-->
         <scene sceneID="04v-XY-M7y">
             <objects>
-                <viewController storyboardIdentifier="InfoViewController" id="zud-E5-HLZ" customClass="InfoViewController" customModule="AppFlowController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="InfoViewController" id="zud-E5-HLZ" customClass="InfoViewController" customModule="iOS_Example" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="1cV-x7-PMn"/>
                         <viewControllerLayoutGuide type="bottom" id="YMT-Mk-yJZ"/>

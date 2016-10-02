@@ -7,5 +7,12 @@
 //
 
 import UIKit
+import AppFlowController
 
-class RegistrationViewController: BaseViewController {}
+class RegistrationViewController: BaseViewController {
+
+    @IBAction func backAction(_ sender: AnyObject) {
+        AppFlowController.sharedController.goBack()
+    }
+
+}

@@ -17,16 +17,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         self.window = UIWindow(frame: UIScreen.main.bounds)
         
-        let flowController = AppFlowController.sharedController
+        let flowController  = AppFlowController.sharedController
+        let alphaTransition = AlphaTransition()
+        
+        // alpha transition need to be in 4 places below to keep it everywhere
         flowController.prepare(forWindow:window!)
         flowController.register(path: AppPage.home)
-        flowController.register(path: AppPage.home => AppPage.login)
+        flowController.register(path: AppPage.home => alphaTransition => AppPage.login)
         flowController.register(path: AppPage.home => AppPage.registration)
-        flowController.register(path: AppPage.home => AppPage.login => AppPage.forgotPassword)
-        flowController.register(path: AppPage.home => AppPage.login => DefaultModalFlowControllerTransition => AppPage.forgotPasswordAlert)
+        flowController.register(path: AppPage.home => alphaTransition => AppPage.login => AppPage.forgotPassword)
+        flowController.register(path: AppPage.home => alphaTransition => AppPage.login => DefaultModalFlowControllerTransition => AppPage.forgotPasswordAlert)
         flowController.register(path: AppPage.home => AppPage.items)
         flowController.register(path: AppPage.home => AppPage.items => AppPage.details)
-        flowController.register(path: AppPage.home => AppPage.login => DefaultModalFlowControllerTransition => AppPage.forgotPasswordAlert => AppPage.info)
+        flowController.register(path: AppPage.home => alphaTransition => AppPage.login => DefaultModalFlowControllerTransition => AppPage.forgotPasswordAlert => AppPage.info)
         
         flowController.show(item:AppPage.home)
         
