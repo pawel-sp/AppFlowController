@@ -19,13 +19,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let flowController = AppFlowController.sharedController
         flowController.prepare(forWindow:window!)
         flowController.register(path: AppPage.home)
-        flowController.register(path: AppPage.home => DefaultPushPopAppFlowControllerTransition => AppPage.login)
-        flowController.register(path: AppPage.home => DefaultPushPopAppFlowControllerTransition => AppPage.registration)
-        flowController.register(path: AppPage.home => DefaultPushPopAppFlowControllerTransition => AppPage.login => DefaultPushPopAppFlowControllerTransition => AppPage.forgotPassword)
-        flowController.register(path: AppPage.home => DefaultPushPopAppFlowControllerTransition => AppPage.login => DefaultModalFlowControllerTransition => AppPage.forgotPasswordAlert)
-        flowController.register(path: AppPage.home => DefaultPushPopAppFlowControllerTransition => AppPage.items)
-        flowController.register(path: AppPage.home => DefaultPushPopAppFlowControllerTransition => AppPage.items => DefaultPushPopAppFlowControllerTransition => AppPage.details)
-        flowController.register(path: AppPage.home => DefaultPushPopAppFlowControllerTransition => AppPage.login => DefaultModalFlowControllerTransition => AppPage.forgotPasswordAlert => DefaultPushPopAppFlowControllerTransition => AppPage.info)
+        flowController.register(path: AppPage.home => AppPage.login)
+        flowController.register(path: AppPage.home => AppPage.registration)
+        flowController.register(path: AppPage.home => AppPage.login => AppPage.forgotPassword)
+        flowController.register(path: AppPage.home => AppPage.login => DefaultModalFlowControllerTransition => AppPage.forgotPasswordAlert)
+        flowController.register(path: AppPage.home => AppPage.items)
+        flowController.register(path: AppPage.home => AppPage.items => AppPage.details)
+        flowController.register(path: AppPage.home => AppPage.login => DefaultModalFlowControllerTransition => AppPage.forgotPasswordAlert => AppPage.info)
         
         flowController.show(item:AppPage.home)
         

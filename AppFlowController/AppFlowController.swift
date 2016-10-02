@@ -108,8 +108,8 @@ class AppFlowController {
     // kilka parametrow
     // dodaj info ze nie mozna pokazac details bez parametru!
     // klasa bazowa dla uinavigationcontroller'a dla modali
-    // pomijanie defaultowych transition?
     // side menu?
+    // items sie nie deallocuje
     
     func prepare(forWindow window:UIWindow) {
         self.rootNavigationController = UINavigationController()
