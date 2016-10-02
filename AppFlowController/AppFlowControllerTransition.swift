@@ -49,12 +49,18 @@ class PushPopAppFlowControllerTransition:AppFlowControllerTransition {
 
 class ModalAppFlowControllerTransition:AppFlowControllerTransition {
     
+    // MARK: - Properties
+    
+    var navigationControllerClass:UINavigationController.Type {
+        return UINavigationController.self
+    }
+    
     // MARK: - AppFlowControllerForwardTransition
     
     func forwardTransitionBlock(animated: Bool, completionBlock:@escaping ()->()) -> (UINavigationController, UIViewController) -> Void {
         return { navigationController, viewController in
             if viewController.navigationController == nil {
-                let modalNavigationController = UINavigationController(rootViewController: viewController)
+                let modalNavigationController = self.navigationControllerClass.init(rootViewController: viewController)
                 navigationController.present(modalNavigationController, animated: animated, completion: completionBlock)
             } else {
                 navigationController.present(viewController, animated: animated, completion: completionBlock)

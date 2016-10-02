@@ -72,6 +72,7 @@ class AppFlowController {
         case pathNameAlreadyRegistered(name:String)
         case internalError
         case unregisteredPathName(name:String)
+        case pageNotSavedAfterPresentation(name:String)
         
         var errorInfo:String {
             switch self {
@@ -81,6 +82,8 @@ class AppFlowController {
                     return "Internal error"
                 case .unregisteredPathName(let name):
                     return "Unregistered path for item \(name)"
+                case .pageNotSavedAfterPresentation(let name):
+                    return "\(name) not registered after presentation - internal error"
             }
         }
         
@@ -102,17 +105,11 @@ class AppFlowController {
     
     // MARK: - Setup
 
-    // universal linki do tego
     // custom transition
-    // kolejne ekrany po parametrach
-    // kilka parametrow
-    // dodaj info ze nie mozna pokazac details bez parametru!
-    // klasa bazowa dla uinavigationcontroller'a dla modali
-    // side menu?
-    // items sie nie deallocuje
+    // tab menu?
     
-    func prepare(forWindow window:UIWindow) {
-        self.rootNavigationController = UINavigationController()
+    func prepare(forWindow window:UIWindow, rootNavigationControllerClass:UINavigationController.Type = UINavigationController.self) {
+        self.rootNavigationController = rootNavigationControllerClass.init()
         window.rootViewController = rootNavigationController
     }
     
@@ -193,8 +190,8 @@ class AppFlowController {
                     item.forwardTransition?.forwardTransitionBlock(animated: animated){
                         if index < items.count - 1 {
                             presentItem(fromIndex: index + 1)
-                            self.viewControllerNamesTable.setObject(item.name as AnyObject?, forKey: viewController)
                         }
+                        self.viewControllerNamesTable.setObject(item.name as AnyObject?, forKey: viewController)
                     }(navigationController, viewController)
                 }
                 
@@ -232,7 +229,7 @@ class AppFlowController {
                     }
                 }(navigationController, viewController)
             } else {
-                assert(false, "AppFlowController: \(visibleViewControllerName) not registered after presentation - internal error")
+                assertError(error: .pageNotSavedAfterPresentation(name: visibleViewControllerName ?? ""))
             }
         }
     }

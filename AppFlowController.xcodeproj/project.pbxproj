@@ -12,6 +12,7 @@
 		A44C3B531D93AFE000C6D979 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A44C3B521D93AFE000C6D979 /* Assets.xcassets */; };
 		A44C3B561D93AFE000C6D979 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A44C3B541D93AFE000C6D979 /* LaunchScreen.storyboard */; };
 		A44C3B5E1D93B55900C6D979 /* AppFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44C3B5D1D93B55900C6D979 /* AppFlowController.swift */; };
+		A48809081DA1608B003CF8F3 /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48809071DA1608B003CF8F3 /* BaseTableViewController.swift */; };
 		A4927B7D1D93E368001115BD /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4927B7C1D93E368001115BD /* HomeViewController.swift */; };
 		A4927B7F1D93E37D001115BD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4927B7E1D93E37D001115BD /* LoginViewController.swift */; };
 		A4927B811D93E38E001115BD /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4927B801D93E38E001115BD /* RegistrationViewController.swift */; };
@@ -35,6 +36,7 @@
 		A44C3B551D93AFE000C6D979 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A44C3B571D93AFE000C6D979 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A44C3B5D1D93B55900C6D979 /* AppFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowController.swift; sourceTree = "<group>"; };
+		A48809071DA1608B003CF8F3 /* BaseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTableViewController.swift; sourceTree = "<group>"; };
 		A4927B7C1D93E368001115BD /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		A4927B7E1D93E37D001115BD /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		A4927B801D93E38E001115BD /* RegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				A4927B851D952496001115BD /* BaseViewController.swift */,
+				A48809071DA1608B003CF8F3 /* BaseTableViewController.swift */,
 				A4927B7C1D93E368001115BD /* HomeViewController.swift */,
 				A4927B7E1D93E37D001115BD /* LoginViewController.swift */,
 				A4927B801D93E38E001115BD /* RegistrationViewController.swift */,
@@ -210,6 +213,7 @@
 				A4F10CD91D9E465000083BDA /* AppFlowControllerExtensions.swift in Sources */,
 				A44C3B4C1D93AFE000C6D979 /* AppDelegate.swift in Sources */,
 				A4927B7D1D93E368001115BD /* HomeViewController.swift in Sources */,
+				A48809081DA1608B003CF8F3 /* BaseTableViewController.swift in Sources */,
 				A4F10CD51D9D40E400083BDA /* AppFlowControllerOperators.swift in Sources */,
 				A4F10CD71D9D5FB700083BDA /* InfoViewController.swift in Sources */,
 				A4927B861D952496001115BD /* BaseViewController.swift in Sources */,

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ItemsTableViewController: UITableViewController {
+class ItemsTableViewController: BaseTableViewController {
 
     let data = Color.colors
     
