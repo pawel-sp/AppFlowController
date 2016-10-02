@@ -65,6 +65,27 @@ class AppFlowController {
         }
     }
     
+    // MARK: - Enums
+    
+    enum AppFlowControllerError:Error {
+        
+        case pathNameAlreadyRegistered(name:String)
+        case internalError
+        case unregisteredPathName(name:String)
+        
+        var errorInfo:String {
+            switch self {
+                case .pathNameAlreadyRegistered(let name):
+                    return "\(name) is already registered, if you want to register the same UIViewController for presenting it in a different way you need to create separate AppFlowControllerItem case with the same UIViewController"
+                case .internalError:
+                    return "Internal error"
+                case .unregisteredPathName(let name):
+                    return "Unregistered path for item \(name)"
+            }
+        }
+        
+    }
+    
     // MARK: - Properties (public)
     
     static let sharedController = AppFlowController()
@@ -83,14 +104,12 @@ class AppFlowController {
 
     // universal linki do tego
     // custom transition
-    // push no modalu?
     // kolejne ekrany po parametrach
     // kilka parametrow
     // dodaj info ze nie mozna pokazac details bez parametru!
     // klasa bazowa dla uinavigationcontroller'a dla modali
     // pomijanie defaultowych transition?
     // side menu?
-    // wlasne errory
     
     func prepare(forWindow window:UIWindow) {
         self.rootNavigationController = UINavigationController()
@@ -104,7 +123,7 @@ class AppFlowController {
     func register(path:[AppFlowControllerItem]) {
         
         if let lastPath = path.last, rootPathStep?.search(item: lastPath) != nil {
-            assert(false, "AppFlowController: \(lastPath.name) is already registered, if you want to register the same UIViewController for presenting it in a different way you need to create separate AppFlowControllerItem case with the same UIViewController")
+            assertError(error: .pathNameAlreadyRegistered(name: lastPath.name))
         }
         
         var previousStep:PathStep?
@@ -187,11 +206,11 @@ class AppFlowController {
                 }
                 
             } else {
-                assert(false, "AppFlowController: Internal error")
+                assertError(error: .internalError)
             }
             
         } else {
-            assert(false, "AppFlowController: Unregistered path for item \(item.name)")
+            assertError(error: .unregisteredPathName(name: item.name))
         }
     }
     
@@ -218,4 +237,8 @@ class AppFlowController {
         }
     }
 
+    fileprivate func assertError(error:AppFlowControllerError) {
+        assert(false, "AppFlowController: \(error.errorInfo)")
+    }
+    
 }

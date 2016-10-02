@@ -15,7 +15,7 @@ class InfoViewController: BaseViewController {
     }
     
     @IBAction func backToHomeAction(_ sender: AnyObject) {
-        
+        AppFlowController.sharedController.show(item: AppPage.home)
     }
 
 }
