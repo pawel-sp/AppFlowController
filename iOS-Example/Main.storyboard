@@ -236,11 +236,19 @@
                                     <action selector="forgotPasswordAlertAction:" destination="sdM-VL-i7f" eventType="touchUpInside" id="gTJ-is-XYY"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m5L-AB-Wu4">
+                                <state key="normal" title="Registration"/>
+                                <connections>
+                                    <action selector="registrationAction:" destination="sdM-VL-i7f" eventType="touchUpInside" id="kj4-4f-bcT"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.94117647059999998" green="0.72156862749999995" blue="0.1960784314" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="3w6-Fr-lxu" firstAttribute="centerX" secondItem="as2-lh-tYY" secondAttribute="centerX" id="8Qp-B4-24D"/>
+                            <constraint firstItem="m5L-AB-Wu4" firstAttribute="centerX" secondItem="as2-lh-tYY" secondAttribute="centerX" id="AUk-Mx-and"/>
                             <constraint firstItem="Mem-wU-8uy" firstAttribute="top" secondItem="3w6-Fr-lxu" secondAttribute="bottom" constant="8" id="EjE-dr-262"/>
+                            <constraint firstItem="m5L-AB-Wu4" firstAttribute="top" secondItem="Mem-wU-8uy" secondAttribute="bottom" constant="7.5" id="R4q-FT-8yj"/>
                             <constraint firstItem="Mem-wU-8uy" firstAttribute="centerX" secondItem="as2-lh-tYY" secondAttribute="centerX" id="jDP-XR-hH3"/>
                             <constraint firstItem="3w6-Fr-lxu" firstAttribute="centerY" secondItem="as2-lh-tYY" secondAttribute="centerY" constant="-20" id="uha-d8-DqT"/>
                         </constraints>

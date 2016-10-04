@@ -9,96 +9,6 @@
 import UIKit
 
 public class AppFlowController {
-
-    // MARK: - Classes
-    
-    private class PathStep {
-        
-        let current:AppFlowControllerItem
-        var children:[PathStep] = []
-        weak var parent:PathStep?
-        
-        init(item:AppFlowControllerItem) {
-            self.current = item
-        }
-        
-        func add(item:AppFlowControllerItem) {
-            let step = PathStep(item: item)
-            children.append(step)
-            step.parent = self
-        }
-        
-        func search(item:AppFlowControllerItem) -> PathStep? {
-            if self.current.isEqual(item: item) {
-                return self
-            } else {
-                for child in children {
-                    if let found = child.search(item: item) {
-                        return found
-                    }
-                }
-                return nil
-            }
-        }
-        
-        func search(forName name:String) -> PathStep? {
-            if self.current.name == name {
-                return self
-            } else {
-                for child in children {
-                    if let found = child.search(forName: name) {
-                        return found
-                    }
-                }
-                return nil
-            }
-        }
-        
-        func allParentItems(fromStep step:PathStep) -> [AppFlowControllerItem] {
-            var items:[AppFlowControllerItem] = [step.current]
-            var current = step
-            while let parent = current.parent {
-                current = parent
-                items.insert(parent.current, at: 0)
-            }
-            return items
-        }
-        
-        func distanceToStepWithItem(item:AppFlowControllerItem) -> Int? {
-            var counter = 0
-            var found   = false
-            var current = self
-            while let parent = current.parent {
-                current = parent
-                counter += 1
-                if parent.current.isEqual(item: item) {
-                    found = true
-                    break
-                }
-            }
-            return found ? counter : nil
-        }
-        
-        func distanceBetween(step step1:PathStep, andStep step2:PathStep) -> (up:Int, down:Int) {
-            let step1Parents = step1.allParentItems(fromStep: step1)
-            let step2Parents = step2.allParentItems(fromStep: step2)
-            var commonItems:[AppFlowControllerItem] = []
-            for step1Parent in step1Parents {
-                for step2Parent in step2Parents {
-                    if step1Parent.isEqual(item: step2Parent) {
-                        commonItems.append(step1Parent)
-                    }
-                }
-            }
-            if let firtCommonItem = commonItems.last {
-                let step1Distance = step1.distanceToStepWithItem(item: firtCommonItem)
-                let step2Distance = step2.distanceToStepWithItem(item: firtCommonItem)
-                return (step1Distance ?? 0, step2Distance ?? 0)
-            } else {
-                return (0,0)
-            }
-        }
-    }
     
     // MARK: - Enums
     
@@ -140,7 +50,6 @@ public class AppFlowController {
     
     // MARK: - Setup
 
-    // TODO: tab menu? default tab bar transition
     // TODO: parameters
     // TODO: skipping view controllers during transition
     
@@ -212,7 +121,7 @@ public class AppFlowController {
                 let vc = item.viewControllerBlock()
                 if (vc.isKind(of: UITabBarController.self)) {
                     if let step = rootPathStep?.search(item: item) {
-                        let children            = step.children
+                        let children            = step.getChildren()
                         let tabBarController    = vc as! UITabBarController
                         let tabsViewControllers = children.map({ $0.current.viewControllerBlock() })
                         tabBarController.viewControllers = tabsViewControllers
