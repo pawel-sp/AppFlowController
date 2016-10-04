@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "AppFlowController"
-  s.version      = "0.2"
+  s.version      = "0.3"
   s.summary      = "VIPERMoAppFlowControllerdules"
   s.homepage     = "https://bitbucket.org/pawel-sp/appflowcontroller/"
   s.license      = "MIT"
