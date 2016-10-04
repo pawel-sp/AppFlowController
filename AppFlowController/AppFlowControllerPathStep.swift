@@ -24,10 +24,11 @@ class PathStep {
     
     // MARK: - Utilities
     
-    func add(item:AppFlowControllerItem) {
+    func add(item:AppFlowControllerItem) -> PathStep {
         let step = PathStep(item: item)
         children.append(step)
         step.parent = self
+        return step
     }
     
     func getChildren() -> [PathStep] {

@@ -21,16 +21,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let alphaTransition = AlphaTransition()
         
         flowController.prepare(forWindow:window!)
-        flowController.register(path: AppPage.home)
-        flowController.register(path: AppPage.home => alphaTransition => AppPage.login)
         flowController.register(path: AppPage.home => AppPage.registration)
         flowController.register(path: AppPage.home => alphaTransition => AppPage.login => AppPage.forgotPassword)
-        flowController.register(path: AppPage.home => alphaTransition => AppPage.login => DefaultModalFlowControllerTransition => AppPage.forgotPasswordAlert)
-        flowController.register(path: AppPage.home => AppPage.items)
         flowController.register(path: AppPage.home => AppPage.items => AppPage.details)
         flowController.register(path: AppPage.home => alphaTransition => AppPage.login => DefaultModalFlowControllerTransition => AppPage.forgotPasswordAlert => AppPage.info)
-        
-        flowController.register(path: AppPage.home => AppPage.tabs)
         flowController.register(path: AppPage.home => AppPage.tabs => DefaultTabBarControllerPageTransition => AppPage.tabPage1)
         flowController.register(path: AppPage.home => AppPage.tabs => DefaultTabBarControllerPageTransition => AppPage.tabPage2)
         

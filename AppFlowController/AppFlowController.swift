@@ -10,30 +10,6 @@ import UIKit
 
 public class AppFlowController {
     
-    // MARK: - Enums
-    
-    enum AppFlowControllerError:Error {
-        
-        case pathNameAlreadyRegistered(name:String)
-        case internalError
-        case unregisteredPathName(name:String)
-        case missingConfigurationForAppFlowController
-        
-        var errorInfo:String {
-            switch self {
-                case .pathNameAlreadyRegistered(let name):
-                    return "\(name) is already registered, if you want to register the same UIViewController for presenting it in a different way you need to create separate AppFlowControllerItem case with the same UIViewController"
-                case .internalError:
-                    return "Internal error"
-                case .unregisteredPathName(let name):
-                    return "Unregistered path for item \(name)"
-                case .missingConfigurationForAppFlowController:
-                    return "You need to invoke prepare(forWindow:UIWindow) function first"
-            }
-        }
-        
-    }
-    
     // MARK: - Properties (public)
     
     public static let sharedController = AppFlowController()
@@ -76,14 +52,14 @@ public class AppFlowController {
                 previousStep = found
                 continue
             } else {
-                if let previousStep = previousStep {
-                    previousStep.add(item: element)
+                if let previous = previousStep {
+                    previousStep = previous.add(item: element)
                 } else {
                     rootPathStep = PathStep(item: element)
+                    previousStep = rootPathStep
                 }
             }
         }
-        
     }
     
     // MARK: - Navigation
@@ -199,7 +175,7 @@ public class AppFlowController {
         }
     }
     
-    // MARK: - Private
+    // MARK: - Helpers
  
     fileprivate func visibleStep() -> PathStep? {
         let navigationController  = rootNavigationController?.activeNavigationController

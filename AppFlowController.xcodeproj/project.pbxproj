@@ -14,6 +14,7 @@
 		A48809261DA165B6003CF8F3 /* AppFlowControllerOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48809211DA165B6003CF8F3 /* AppFlowControllerOperators.swift */; };
 		A48809271DA165B6003CF8F3 /* AppFlowControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48809221DA165B6003CF8F3 /* AppFlowControllerExtensions.swift */; };
 		A493C4B41DA44D8100BB4A08 /* AppFlowControllerPathStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = A493C4B31DA44D8100BB4A08 /* AppFlowControllerPathStep.swift */; };
+		A493C4B61DA44F6300BB4A08 /* AppFlowControllerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A493C4B51DA44F6300BB4A08 /* AppFlowControllerError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		A48809211DA165B6003CF8F3 /* AppFlowControllerOperators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowControllerOperators.swift; sourceTree = "<group>"; };
 		A48809221DA165B6003CF8F3 /* AppFlowControllerExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowControllerExtensions.swift; sourceTree = "<group>"; };
 		A493C4B31DA44D8100BB4A08 /* AppFlowControllerPathStep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowControllerPathStep.swift; sourceTree = "<group>"; };
+		A493C4B51DA44F6300BB4A08 /* AppFlowControllerError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowControllerError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 			children = (
 				A488091E1DA165B6003CF8F3 /* AppFlowController.swift */,
 				A493C4B31DA44D8100BB4A08 /* AppFlowControllerPathStep.swift */,
+				A493C4B51DA44F6300BB4A08 /* AppFlowControllerError.swift */,
 				A488091F1DA165B6003CF8F3 /* AppFlowControllerItem.swift */,
 				A48809201DA165B6003CF8F3 /* AppFlowControllerTransition.swift */,
 				A48809211DA165B6003CF8F3 /* AppFlowControllerOperators.swift */,
@@ -153,6 +156,7 @@
 			files = (
 				A48809251DA165B6003CF8F3 /* AppFlowControllerTransition.swift in Sources */,
 				A48809241DA165B6003CF8F3 /* AppFlowControllerItem.swift in Sources */,
+				A493C4B61DA44F6300BB4A08 /* AppFlowControllerError.swift in Sources */,
 				A493C4B41DA44D8100BB4A08 /* AppFlowControllerPathStep.swift in Sources */,
 				A48809271DA165B6003CF8F3 /* AppFlowControllerExtensions.swift in Sources */,
 				A48809261DA165B6003CF8F3 /* AppFlowControllerOperators.swift in Sources */,
