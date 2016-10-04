@@ -18,8 +18,13 @@ public func => (lhs:AppFlowControllerItem, rhs:AppFlowControllerTransition) -> (
 
 public func => (lhs:AppFlowControllerItem, rhs:AppFlowControllerItem) -> [AppFlowControllerItem] {
     var rhs = rhs
-    rhs.forwardTransition  = DefaultPushPopAppFlowControllerTransition
-    rhs.backwardTransition = DefaultPushPopAppFlowControllerTransition
+    if ObjectIdentifier(lhs.viewControllerType) <= ObjectIdentifier(UITabBarController.self) {
+        rhs.forwardTransition  = DefaultTabBarControllerPageTransition
+        rhs.backwardTransition = DefaultTabBarControllerPageTransition
+    } else {
+        rhs.forwardTransition  = DefaultPushPopAppFlowControllerTransition
+        rhs.backwardTransition = DefaultPushPopAppFlowControllerTransition
+    }
     return [lhs, rhs]
 }
 
@@ -36,8 +41,13 @@ public func => (lhs:[AppFlowControllerItem], rhs:AppFlowControllerTransition) ->
 
 public func => (lhs:[AppFlowControllerItem], rhs:AppFlowControllerItem) -> [AppFlowControllerItem] {
     var rhs = rhs
-    rhs.forwardTransition  = DefaultPushPopAppFlowControllerTransition
-    rhs.backwardTransition = DefaultPushPopAppFlowControllerTransition
+    if let last = lhs.last?.viewControllerType, ObjectIdentifier(last) <= ObjectIdentifier(UITabBarController.self) {
+        rhs.forwardTransition  = DefaultTabBarControllerPageTransition
+        rhs.backwardTransition = DefaultTabBarControllerPageTransition
+    } else {
+        rhs.forwardTransition  = DefaultPushPopAppFlowControllerTransition
+        rhs.backwardTransition = DefaultPushPopAppFlowControllerTransition
+    }
     return lhs + [rhs]
 }
 
