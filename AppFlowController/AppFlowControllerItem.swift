@@ -44,10 +44,36 @@ open class AppFlowControllerPage:AppFlowControllerItem {
         name:String,
         viewControllerBlock:@escaping ()->(UIViewController),
         viewControllerType:UIViewController.Type
-        ) {
+    ) {
         self.name                = name
         self.viewControllerBlock = viewControllerBlock
         self.viewControllerType  = viewControllerType
+    }
+    
+    public convenience init(
+        name:String,
+        storyboardName:String,
+        viewControllerIdentifier:String,
+        viewControllerType:UIViewController.Type
+    ) {
+        self.init(
+            name: name,
+            viewControllerBlock:{ UIStoryboard(name: storyboardName, bundle: nil).instantiateViewController(withIdentifier: viewControllerIdentifier) },
+            viewControllerType:viewControllerType
+        )
+    }
+    
+    public convenience init(
+        name:String,
+        storyboardName:String,
+        viewControllerType:UIViewController.Type
+    ) {
+        self.init(
+            name:name,
+            storyboardName:storyboardName,
+            viewControllerIdentifier:String(describing: viewControllerType),
+            viewControllerType:viewControllerType
+        )
     }
     
 }

@@ -41,67 +41,67 @@ class AppPage:AppFlowControllerPage {
 
     static let home = AppPage(
         name: "home",
-        viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "HomeViewController") },
+        storyboardName: "Main",
         viewControllerType: HomeViewController.self
     )
-    
+   
     static let login = AppPage(
         name: "sign_in",
-        viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginViewController") },
+        storyboardName: "Main",
         viewControllerType: LoginViewController.self
     )
     
     static let registration = AppPage(
         name: "sign_up",
-        viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RegistrationViewController") },
+        storyboardName: "Main",
         viewControllerType: RegistrationViewController.self
     )
     
     static let forgotPassword = AppPage(
         name: "forgot_password",
-        viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ForgotPasswordViewController") },
+        storyboardName: "Main",
         viewControllerType: ForgotPasswordViewController.self
     )
     
     static let forgotPasswordAlert = AppPage(
         name: "forgot_password_alert",
-        viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ForgotPasswordViewController") },
+        storyboardName: "Main",
         viewControllerType: ForgotPasswordViewController.self
     )
     
     static let items = AppPage(
         name: "items",
-        viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ItemsTableViewController") },
+        storyboardName: "Main",
         viewControllerType: ItemsTableViewController.self
     )
     
     static let details = AppPage(
         name: "details",
-        viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailsViewController") },
+        storyboardName: "Main",
         viewControllerType: DetailsViewController.self
     )
     
     static let info = AppPage(
         name: "info",
-        viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "InfoViewController") },
+        storyboardName: "Main",
         viewControllerType: InfoViewController.self
     )
     
     static let tabs = AppPage(
         name: "tabs",
-        viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TabBarViewController") },
+        storyboardName: "Main",
         viewControllerType: TabBarViewController.self
     )
     
     static let tabPage1 = AppPage(
         name: "tabPage1",
-        viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TabPage1ViewController") },
+        storyboardName: "Main",
         viewControllerType: TabPage1ViewController.self
     )
     
     static let tabPage2 = AppPage(
         name: "tabPage2",
-        viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TabPage2ViewController") },
+        storyboardName: "Main",
         viewControllerType: TabPage2ViewController.self
     )
     
