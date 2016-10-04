@@ -43,8 +43,8 @@ class PathStep {
         return search(compareBlock: { $0.current.name == name })
     }
     
-    func allParentItems(fromStep step:PathStep) -> [AppFlowControllerItem] {
-        var items:[AppFlowControllerItem] = [step.current]
+    func allParentItems(fromStep step:PathStep, includeSelf:Bool = true) -> [AppFlowControllerItem] {
+        var items:[AppFlowControllerItem] = includeSelf ? [step.current] : []
         var current = step
         while let parent = current.parent {
             current = parent

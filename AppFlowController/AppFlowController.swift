@@ -10,11 +10,9 @@ import UIKit
 
 public class AppFlowController {
     
-    // MARK: - Properties (public)
+    // MARK: - Properties
     
     public static let sharedController = AppFlowController()
-    
-    // MARK: - Properties (private)
     
     private var rootPathStep:PathStep?
     private var rootNavigationController:UINavigationController?
@@ -79,105 +77,36 @@ public class AppFlowController {
         let newItems     = rootPathStep?.allParentItems(fromStep: foundStep) ?? []
         let currentStep  = visibleStep()
         let currentItems = currentStep == nil ? [] : (rootPathStep?.allParentItems(fromStep: currentStep!) ?? [])
-        
-        func displayItems(fromIndex index:Int, fromItems items:[AppFlowControllerItem], animated:Bool, completionBlock:@escaping ()->()) {
-            
-            let item                 = items[index]
-            let navigationController = rootNavigationController.activeNavigationController
-            
-            func displayNextItemIfNeeded(animated:Bool) {
-                if index + 1 < items.count {
-                    displayItems(fromIndex: index + 1, fromItems: items, animated:animated, completionBlock: completionBlock)
-                } else {
-                    completionBlock()
-                }
-            }
-            
-            func itemViewController(item:AppFlowControllerItem) -> UIViewController {
-                let vc = item.viewControllerBlock()
-                if (vc.isKind(of: UITabBarController.self)) {
-                    if let step = rootPathStep?.search(item: item) {
-                        let children            = step.getChildren()
-                        let tabBarController    = vc as! UITabBarController
-                        let tabsViewControllers = children.map({ $0.current.viewControllerBlock() })
-                        tabBarController.viewControllers = tabsViewControllers
-                        return tabBarController
-                    } else {
-                        return vc
-                    }
-                } else {
-                    return vc
-                }
-            }
-            
-            if navigationController.viewControllers.count == 0 {
-                
-                let viewController = itemViewController(item:item)
-                navigationController.viewControllers = [viewController]
-                viewControllerForNamesTable.setObject(viewController, forKey: item.name as AnyObject?)
-                displayNextItemIfNeeded(animated:false)
-                
-            } else if viewControllerForNamesTable.object(forKey: item.name as AnyObject?) == nil {
-            
-                let viewController = itemViewController(item:item)
-                item.forwardTransition?.forwardTransitionBlock(animated: animated){
-                    self.viewControllerForNamesTable.setObject(viewController, forKey: item.name as AnyObject?)
-                    displayNextItemIfNeeded(animated:animated)
-                }(navigationController, viewController)
-                
-            } else {
-                
-                displayNextItemIfNeeded(animated:animated)
-                
-            }
-            
-        }
-        
-        func dismissItems(fromIndex:Int, toIndex:Int, fromItems items:[AppFlowControllerItem], completionBlock:@escaping ()->()) {
-            
-            let item                 = items[fromIndex]
-            let viewController       = viewControllerForNamesTable.object(forKey: item.name as AnyObject?)
-            let navigationController = rootNavigationController.activeNavigationController
-            
-            if fromIndex == toIndex {
-                completionBlock()
-            } else {
-                if viewController != nil {
-                    item.backwardTransition?.backwardTransitionBlock(animated: animated){
-                        if fromIndex - 1 > toIndex {
-                            dismissItems(fromIndex: fromIndex - 1, toIndex: toIndex, fromItems: items, completionBlock: completionBlock)
-                        } else {
-                            completionBlock()
-                        }
-                        }(navigationController, viewController!)
-                } else {
-                    completionBlock()
-                }
-            }
-
-        }
-        
+       
         if let currentStep = currentStep {
-            let test           = rootPathStep?.distanceBetween(step: currentStep, andStep: foundStep)
-            let dismissCounter = test?.up ?? 0
-            dismissItems(fromIndex: currentItems.count - 1, toIndex: currentItems.count - 1 - dismissCounter, fromItems: currentItems){
-                displayItems(fromIndex: 0, fromItems: newItems, animated:animated){}
+            let distance                = rootPathStep?.distanceBetween(step: currentStep, andStep: foundStep)
+            let dismissCounter          = distance?.up   ?? 0
+            let _                       = distance?.down ?? 0
+            let dismissRange:Range<Int> = dismissCounter == 0 ? 0..<0 : (currentItems.count - dismissCounter) ..< currentItems.count
+            let displayRange:Range<Int> = 0 ..< newItems.count
+            dismiss(items: currentItems, fromIndexRange: dismissRange, animated: animated) {
+                self.display(items: newItems, fromIndexRange: displayRange, animated: animated, completionBlock: nil)
             }
         } else {
-            displayItems(fromIndex: 0, fromItems: newItems, animated:animated){}
+            rootNavigationController.viewControllers.removeAll()
+            display(items: newItems, fromIndexRange: 0..<newItems.count, animated: animated, completionBlock: nil)
         }
-
     }
     
     public func goBack(animated:Bool = true) {
-        if let visible = visibleStep(), let parent = visible.parent, let viewController = viewControllerForNamesTable.object(forKey: parent.current.name as AnyObject?), let navigationController = rootNavigationController?.activeNavigationController {
+        if
+            let visible = visibleStep(),
+            let parent = visible.parent,
+            let viewController = viewControllerForNamesTable.object(forKey: parent.current.name as AnyObject?),
+            let navigationController = rootNavigationController?.activeNavigationController {
+            
             visible.current.backwardTransition?.backwardTransitionBlock(animated: animated){}(navigationController, viewController)
         }
     }
     
     // MARK: - Helpers
  
-    fileprivate func visibleStep() -> PathStep? {
+    private func visibleStep() -> PathStep? {
         let navigationController  = rootNavigationController?.activeNavigationController
         let visibleViewController = navigationController?.visibleViewController
         let keysEnumerator        = viewControllerForNamesTable.keyEnumerator()
@@ -188,8 +117,98 @@ public class AppFlowController {
         }
         return nil
     }
+    
+    private func viewController(fromItem item:AppFlowControllerItem) -> UIViewController {
+        let viewController = item.viewControllerBlock()
+        if (viewController.isKind(of: UITabBarController.self)) {
+            if let step = rootPathStep?.search(item: item) {
+                let children            = step.getChildren()
+                let tabBarController    = viewController as! UITabBarController
+                let tabsViewControllers = children.map({ $0.current.viewControllerBlock() })
+                tabBarController.viewControllers = tabsViewControllers
+                return tabBarController
+            } else {
+                return viewController
+            }
+        } else {
+            return viewController
+        }
+    }
+    
+    private func display(items:[AppFlowControllerItem], fromIndexRange indexRange:Range<Int>, animated:Bool, completionBlock:(() -> ())?) {
+        
+        let item = items[indexRange.lowerBound]
+        guard let navigationController = rootNavigationController?.activeNavigationController else {
+            completionBlock?()
+            return
+        }
+        
+        func displayNextItem(range:Range<Int>, animated:Bool) {
+            let newRange:Range<Int> = (range.lowerBound + 1) ..< range.upperBound
+            if newRange.count == 0 {
+                completionBlock?()
+            } else {
+                self.display(
+                    items: items,
+                    fromIndexRange: newRange,
+                    animated: animated,
+                    completionBlock: completionBlock
+                )
+            }
+        }
+        
+        if navigationController.viewControllers.count == 0 {
+            
+            let viewController = self.viewController(fromItem:item)
+            navigationController.viewControllers = [viewController]
+            viewControllerForNamesTable.setObject(viewController, forKey: item.name as AnyObject?)
+            displayNextItem(range: indexRange, animated: false)
+            
+        } else if viewControllerForNamesTable.object(forKey: item.name as AnyObject?) == nil {
+            
+            let viewController = self.viewController(fromItem:item)
+            item.forwardTransition?.forwardTransitionBlock(animated: animated){
+                self.viewControllerForNamesTable.setObject(viewController, forKey: item.name as AnyObject?)
+                displayNextItem(range: indexRange, animated: animated)
+            }(navigationController, viewController)
+            
+        } else {
+            
+            displayNextItem(range: indexRange, animated: animated)
+            
+        }
+    }
+    
+    private func dismiss(items:[AppFlowControllerItem], fromIndexRange indexRange:Range<Int>, animated:Bool, completionBlock:(() -> ())?) {
+        if indexRange.count == 0 {
+            
+            completionBlock?()
+            
+        } else {
+            
+            let item = items[indexRange.upperBound - 1]
+            guard let viewController = viewControllerForNamesTable.object(forKey: item.name as AnyObject?) else {
+                completionBlock?()
+                return
+            }
+            guard let navigationController = rootNavigationController?.activeNavigationController else {
+                completionBlock?()
+                return
+            }
+            
+            item.backwardTransition?.backwardTransitionBlock(animated: animated){
+                self.dismiss(
+                    items: items,
+                    fromIndexRange: indexRange.lowerBound..<indexRange.upperBound - 1,
+                    animated: animated,
+                    completionBlock: completionBlock
+                )
+            }(navigationController, viewController)
+            
+        }
+    }
 
-    fileprivate func assertError(error:AppFlowControllerError) {
+    private func assertError(error:AppFlowControllerError) {
         assert(false, "AppFlowController: \(error.errorInfo)")
     }
     
