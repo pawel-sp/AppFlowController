@@ -22,4 +22,9 @@ class HomeViewController: BaseViewController {
     @IBAction func itemsAction(_ sender: AnyObject) {
         AppFlowController.sharedController.show(item: AppPage.items)
     }
+    
+    @IBAction func tabsAction(_ sender: AnyObject) {
+        AppFlowController.sharedController.show(item: AppPage.tabPage2)
+    }
+    
 }

@@ -26,6 +26,7 @@ public protocol AppFlowControllerTransition:AppFlowControllerForwardTransition, 
 
 public let DefaultPushPopAppFlowControllerTransition = PushPopAppFlowControllerTransition()
 public let DefaultModalFlowControllerTransition      = ModalAppFlowControllerTransition()
+public let DefaultTabBarControllerPageTransition     = TabBarControllerPageTransition()
 
 public class PushPopAppFlowControllerTransition:AppFlowControllerTransition {
     
@@ -73,6 +74,33 @@ public class ModalAppFlowControllerTransition:AppFlowControllerTransition {
     public func backwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> (UINavigationController, UIViewController) -> Void {
         return { navigationController, viewController in
             viewController.dismiss(animated: animated, completion: completionBlock)
+        }
+    }
+    
+}
+
+public class TabBarControllerPageTransition:AppFlowControllerTransition {
+    
+    // MARK: - AppFlowControllerForwardTransition
+    
+    public func forwardTransitionBlock(animated: Bool, completionBlock:@escaping ()->()) -> (UINavigationController, UIViewController) -> Void {
+        return { navigationController, viewController in
+            if let tabBarController = navigationController.topViewController as? UITabBarController {
+                if let found = tabBarController.viewControllers?.filter({ $0.isKind(of: type(of: viewController)) }).first {
+                    let index = tabBarController.viewControllers?.index(of: found) ?? 0
+                    tabBarController.selectedIndex = index
+                }
+            } else {
+                DefaultPushPopAppFlowControllerTransition.forwardTransitionBlock(animated: animated, completionBlock: completionBlock)(navigationController, viewController)
+            }
+        }
+    }
+    
+    // MARK: - AppFlowControllerBackwardTransition
+    
+    public func backwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> (UINavigationController, UIViewController) -> Void {
+        return { navigationController, viewController in
+            
         }
     }
     

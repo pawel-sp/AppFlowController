@@ -30,7 +30,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         flowController.register(path: AppPage.home => AppPage.items => AppPage.details)
         flowController.register(path: AppPage.home => alphaTransition => AppPage.login => DefaultModalFlowControllerTransition => AppPage.forgotPasswordAlert => AppPage.info)
         
-        flowController.show(item:AppPage.registration)
+        flowController.register(path: AppPage.home => AppPage.tabs)
+        flowController.register(path: AppPage.home => AppPage.tabs => DefaultTabBarControllerPageTransition => AppPage.tabPage1)
+        flowController.register(path: AppPage.home => AppPage.tabs => DefaultTabBarControllerPageTransition => AppPage.tabPage2)
+        
+        flowController.show(item:AppPage.home)
         
         return true
     }
@@ -87,6 +91,24 @@ class AppPage:AppFlowControllerPage {
         name: "info",
         viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "InfoViewController") },
         viewControllerType: InfoViewController.self
+    )
+    
+    static let tabs = AppPage(
+        name: "tabs",
+        viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TabBarViewController") },
+        viewControllerType: TabBarViewController.self
+    )
+    
+    static let tabPage1 = AppPage(
+        name: "tabPage1",
+        viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TabPage1ViewController") },
+        viewControllerType: TabPage1ViewController.self
+    )
+    
+    static let tabPage2 = AppPage(
+        name: "tabPage2",
+        viewControllerBlock: { UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TabPage2ViewController") },
+        viewControllerType: TabPage2ViewController.self
     )
     
 }

@@ -15,7 +15,7 @@ public class AppFlowController {
     private class PathStep {
         
         let current:AppFlowControllerItem
-        private var children:[PathStep] = []
+        var children:[PathStep] = []
         weak var parent:PathStep?
         
         init(item:AppFlowControllerItem) {
@@ -140,7 +140,7 @@ public class AppFlowController {
     
     // MARK: - Setup
 
-    // TODO: tab menu?
+    // TODO: tab menu? default tab bar transition
     // TODO: parameters
     // TODO: skipping view controllers during transition
     
@@ -208,16 +208,33 @@ public class AppFlowController {
                 }
             }
             
+            func itemViewController(item:AppFlowControllerItem) -> UIViewController {
+                let vc = item.viewControllerBlock()
+                if (vc.isKind(of: UITabBarController.self)) {
+                    if let step = rootPathStep?.search(item: item) {
+                        let children            = step.children
+                        let tabBarController    = vc as! UITabBarController
+                        let tabsViewControllers = children.map({ $0.current.viewControllerBlock() })
+                        tabBarController.viewControllers = tabsViewControllers
+                        return tabBarController
+                    } else {
+                        return vc
+                    }
+                } else {
+                    return vc
+                }
+            }
+            
             if navigationController.viewControllers.count == 0 {
                 
-                let viewController = item.viewControllerBlock()
+                let viewController = itemViewController(item:item)
                 navigationController.viewControllers = [viewController]
                 viewControllerForNamesTable.setObject(viewController, forKey: item.name as AnyObject?)
                 displayNextItemIfNeeded(animated:false)
                 
             } else if viewControllerForNamesTable.object(forKey: item.name as AnyObject?) == nil {
             
-                let viewController = item.viewControllerBlock()
+                let viewController = itemViewController(item:item)
                 item.forwardTransition?.forwardTransitionBlock(animated: animated){
                     self.viewControllerForNamesTable.setObject(viewController, forKey: item.name as AnyObject?)
                     displayNextItemIfNeeded(animated:animated)

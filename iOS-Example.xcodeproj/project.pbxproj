@@ -21,6 +21,10 @@
 		A488095C1DA16683003CF8F3 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48809581DA16683003CF8F3 /* LoginViewController.swift */; };
 		A488095D1DA16683003CF8F3 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48809591DA16683003CF8F3 /* RegistrationViewController.swift */; };
 		A488096A1DA16993003CF8F3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A48809691DA16993003CF8F3 /* Main.storyboard */; };
+		A493C47C1DA3FE6800BB4A08 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A493C47B1DA3FE6800BB4A08 /* TabBarViewController.swift */; };
+		A493C47F1DA3FFC300BB4A08 /* TabPage1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A493C47E1DA3FFC300BB4A08 /* TabPage1ViewController.swift */; };
+		A493C4811DA3FFD500BB4A08 /* TabPage2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A493C4801DA3FFD500BB4A08 /* TabPage2ViewController.swift */; };
+		A493C4831DA4425A00BB4A08 /* BaseTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A493C4821DA4425A00BB4A08 /* BaseTabBarController.swift */; };
 		A4ACF4C51DA16C99009FFEA8 /* AlphaTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4ACF4C41DA16C99009FFEA8 /* AlphaTransition.swift */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +56,10 @@
 		A48809591DA16683003CF8F3 /* RegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		A488095E1DA16696003CF8F3 /* AppFlowController.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = AppFlowController.xcodeproj; sourceTree = SOURCE_ROOT; };
 		A48809691DA16993003CF8F3 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		A493C47B1DA3FE6800BB4A08 /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		A493C47E1DA3FFC300BB4A08 /* TabPage1ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabPage1ViewController.swift; sourceTree = "<group>"; };
+		A493C4801DA3FFD500BB4A08 /* TabPage2ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabPage2ViewController.swift; sourceTree = "<group>"; };
+		A493C4821DA4425A00BB4A08 /* BaseTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTabBarController.swift; sourceTree = "<group>"; };
 		A4ACF4C41DA16C99009FFEA8 /* AlphaTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlphaTransition.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -111,6 +119,7 @@
 			children = (
 				A488094D1DA1666E003CF8F3 /* BaseViewController.swift */,
 				A488094C1DA1666E003CF8F3 /* BaseTableViewController.swift */,
+				A493C4821DA4425A00BB4A08 /* BaseTabBarController.swift */,
 				A48809561DA16683003CF8F3 /* InfoViewController.swift */,
 				A48809571DA16683003CF8F3 /* ItemsTableViewController.swift */,
 				A48809581DA16683003CF8F3 /* LoginViewController.swift */,
@@ -118,6 +127,9 @@
 				A48809501DA16677003CF8F3 /* DetailsViewController.swift */,
 				A48809511DA16677003CF8F3 /* ForgotPasswordViewController.swift */,
 				A48809521DA16677003CF8F3 /* HomeViewController.swift */,
+				A493C47B1DA3FE6800BB4A08 /* TabBarViewController.swift */,
+				A493C47E1DA3FFC300BB4A08 /* TabPage1ViewController.swift */,
+				A493C4801DA3FFD500BB4A08 /* TabPage2ViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -236,16 +248,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A493C4831DA4425A00BB4A08 /* BaseTabBarController.swift in Sources */,
 				A488094E1DA1666E003CF8F3 /* BaseTableViewController.swift in Sources */,
 				A488094F1DA1666E003CF8F3 /* BaseViewController.swift in Sources */,
 				A48809541DA16677003CF8F3 /* ForgotPasswordViewController.swift in Sources */,
 				A488095D1DA16683003CF8F3 /* RegistrationViewController.swift in Sources */,
 				A488094B1DA16662003CF8F3 /* ColorsDataBase.swift in Sources */,
+				A493C47F1DA3FFC300BB4A08 /* TabPage1ViewController.swift in Sources */,
 				A4ACF4C51DA16C99009FFEA8 /* AlphaTransition.swift in Sources */,
+				A493C4811DA3FFD500BB4A08 /* TabPage2ViewController.swift in Sources */,
 				A48809471DA16644003CF8F3 /* AppDelegate.swift in Sources */,
 				A488095B1DA16683003CF8F3 /* ItemsTableViewController.swift in Sources */,
 				A48809551DA16677003CF8F3 /* HomeViewController.swift in Sources */,
 				A488095A1DA16683003CF8F3 /* InfoViewController.swift in Sources */,
+				A493C47C1DA3FE6800BB4A08 /* TabBarViewController.swift in Sources */,
 				A488095C1DA16683003CF8F3 /* LoginViewController.swift in Sources */,
 				A48809531DA16677003CF8F3 /* DetailsViewController.swift in Sources */,
 			);
