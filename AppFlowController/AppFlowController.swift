@@ -143,8 +143,8 @@ public class AppFlowController {
             return
         }
         
-        func displayNextItem(range:Range<Int>, animated:Bool) {
-            let newRange:Range<Int> = (range.lowerBound + 1) ..< range.upperBound
+        func displayNextItem(range:Range<Int>, animated:Bool, offset:Int = 0) {
+            let newRange:Range<Int> = (range.lowerBound + 1 + offset) ..< range.upperBound
             if newRange.count == 0 {
                 completionBlock?()
             } else {
@@ -158,12 +158,15 @@ public class AppFlowController {
         }
         
         if navigationController.viewControllers.count == 0 {
-            
-            let viewController = self.viewController(fromItem:item)
-            navigationController.viewControllers = [viewController]
-            viewControllerForNamesTable.setObject(viewController, forKey: item.name as AnyObject?)
-            displayNextItem(range: indexRange, animated: false)
-            
+            let viewControllersToPush = [item] + items.filter({ $0.forwardTransition?.isKind(of: PushPopAppFlowControllerTransition.self) == true })
+            let viewControllers       = viewControllersToPush.map({ self.viewController(fromItem: $0) })
+            navigationController.setViewControllers(viewControllers, animated: false) {
+                for (index, viewController) in viewControllers.enumerated() {
+                    let name = viewControllersToPush[index].name
+                    self.viewControllerForNamesTable.setObject(viewController, forKey: name as AnyObject?)
+                }
+                displayNextItem(range: indexRange, animated: false, offset:max(0, viewControllersToPush.count - 1))
+            }
         } else if viewControllerForNamesTable.object(forKey: item.name as AnyObject?) == nil {
             
             let viewController = self.viewController(fromItem:item)

@@ -43,4 +43,11 @@ extension UINavigationController {
         return visibleViewController?.navigationController ?? self
     }
     
+    func setViewControllers(_ viewControllers: [UIViewController], animated: Bool, completion: @escaping (() -> ())) {
+        CATransaction.begin()
+        CATransaction.setCompletionBlock(completion)
+        setViewControllers(viewControllers, animated: animated)
+        CATransaction.commit()
+    }
+    
 }

@@ -26,6 +26,7 @@
 		A493C4811DA3FFD500BB4A08 /* TabPage2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A493C4801DA3FFD500BB4A08 /* TabPage2ViewController.swift */; };
 		A493C4831DA4425A00BB4A08 /* BaseTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A493C4821DA4425A00BB4A08 /* BaseTabBarController.swift */; };
 		A4ACF4C51DA16C99009FFEA8 /* AlphaTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4ACF4C41DA16C99009FFEA8 /* AlphaTransition.swift */; };
+		A4D91B871DA7A25900B10901 /* AppFlowController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A48809631DA16696003CF8F3 /* AppFlowController.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4D91B871DA7A25900B10901 /* AppFlowController.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

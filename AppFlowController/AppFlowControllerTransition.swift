@@ -8,13 +8,13 @@
 
 import UIKit
 
-public protocol AppFlowControllerForwardTransition {
+public protocol AppFlowControllerForwardTransition:NSObjectProtocol {
     
     func forwardTransitionBlock(animated:Bool, completionBlock:@escaping ()->()) -> (UINavigationController, UIViewController) -> Void
     
 }
 
-public protocol AppFlowControllerBackwardTransition {
+public protocol AppFlowControllerBackwardTransition:NSObjectProtocol {
     
     func backwardTransitionBlock(animated:Bool, completionBlock:@escaping()->()) -> (UINavigationController, UIViewController) -> Void
     
@@ -28,7 +28,7 @@ public let DefaultPushPopAppFlowControllerTransition = PushPopAppFlowControllerT
 public let DefaultModalFlowControllerTransition      = ModalAppFlowControllerTransition()
 public let DefaultTabBarControllerPageTransition     = TabBarControllerPageTransition()
 
-public class PushPopAppFlowControllerTransition:AppFlowControllerTransition {
+public class PushPopAppFlowControllerTransition:NSObject, AppFlowControllerTransition {
     
     // MARK: - AppFlowControllerForwardTransition
     
@@ -48,7 +48,7 @@ public class PushPopAppFlowControllerTransition:AppFlowControllerTransition {
     
 }
 
-public class ModalAppFlowControllerTransition:AppFlowControllerTransition {
+public class ModalAppFlowControllerTransition:NSObject, AppFlowControllerTransition {
     
     // MARK: - Properties
     
@@ -79,7 +79,7 @@ public class ModalAppFlowControllerTransition:AppFlowControllerTransition {
     
 }
 
-public class TabBarControllerPageTransition:AppFlowControllerTransition {
+public class TabBarControllerPageTransition:NSObject, AppFlowControllerTransition {
     
     // MARK: - AppFlowControllerForwardTransition
     
