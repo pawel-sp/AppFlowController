@@ -16,7 +16,7 @@ open class AppFlowController {
     
     private var rootPathStep:PathStep?
     private var rootNavigationController:UINavigationController?
-    private var viewControllerForNamesTable = NSMapTable<AnyObject,UIViewController>(keyOptions: NSPointerFunctions.Options.strongMemory, valueOptions: NSPointerFunctions.Options.weakMemory)
+    private var tracker = AppFlowControllerTracker()
     
     // MARK: - Init
     
@@ -62,7 +62,7 @@ open class AppFlowController {
     
     // MARK: - Navigation
     
-    open func show(item:AppFlowControllerItem, animated:Bool = true) {
+    open func show(item:AppFlowControllerItem, parameters:[AppFlowControllerItemName:String]? = nil, animated:Bool = true) {
         
         guard let foundStep = rootPathStep?.search(item: item) else {
             assertError(error: .unregisteredPathName(name: item.name))
@@ -85,11 +85,11 @@ open class AppFlowController {
             let dismissRange:Range<Int> = dismissCounter == 0 ? 0..<0 : (currentItems.count - dismissCounter) ..< currentItems.count
             let displayRange:Range<Int> = 0 ..< newItems.count
             dismiss(items: currentItems, fromIndexRange: dismissRange, animated: animated) {
-                self.display(items: newItems, fromIndexRange: displayRange, animated: animated, completionBlock: nil)
+                self.display(items: newItems, fromIndexRange: displayRange, animated: animated, parameters: parameters, completionBlock: nil)
             }
         } else {
             rootNavigationController.viewControllers.removeAll()
-            display(items: newItems, fromIndexRange: 0..<newItems.count, animated: animated, completionBlock: nil)
+            display(items: newItems, fromIndexRange: 0..<newItems.count, animated: animated, parameters: parameters, completionBlock: nil)
         }
     }
     
@@ -97,7 +97,7 @@ open class AppFlowController {
         if
             let visible = visibleStep(),
             let parent = visible.parent,
-            let viewController = viewControllerForNamesTable.object(forKey: parent.current.name as AnyObject?),
+            let viewController = tracker.viewController(forKey: parent.current.name),
             let navigationController = rootNavigationController?.activeNavigationController {
             
             visible.current.backwardTransition?.backwardTransitionBlock(animated: animated){}(navigationController, viewController)
@@ -108,14 +108,11 @@ open class AppFlowController {
  
     private func visibleStep() -> PathStep? {
         let navigationController  = rootNavigationController?.activeNavigationController
-        let visibleViewController = navigationController?.visibleViewController
-        let keysEnumerator        = viewControllerForNamesTable.keyEnumerator()
-        for key in keysEnumerator {
-            if let keyString = key as? String, viewControllerForNamesTable.object(forKey: key as AnyObject?) == visibleViewController {
-                return rootPathStep?.search(forName: keyString)
-            }
+        if let visibleViewController = navigationController?.visibleViewController, let key = tracker.key(forViewController: visibleViewController) {
+            return rootPathStep?.search(forName: key)
+        } else {
+            return nil
         }
-        return nil
     }
     
     private func viewController(fromItem item:AppFlowControllerItem) -> UIViewController {
@@ -135,7 +132,7 @@ open class AppFlowController {
         }
     }
     
-    private func display(items:[AppFlowControllerItem], fromIndexRange indexRange:Range<Int>, animated:Bool, completionBlock:(() -> ())?) {
+    private func display(items:[AppFlowControllerItem], fromIndexRange indexRange:Range<Int>, animated:Bool, parameters:[AppFlowControllerItemName:String]?, completionBlock:(() -> ())?) {
         
         let item = items[indexRange.lowerBound]
         guard let navigationController = rootNavigationController?.activeNavigationController else {
@@ -152,6 +149,7 @@ open class AppFlowController {
                     items: items,
                     fromIndexRange: newRange,
                     animated: animated,
+                    parameters: parameters,
                     completionBlock: completionBlock
                 )
             }
@@ -163,15 +161,15 @@ open class AppFlowController {
             navigationController.setViewControllers(viewControllers, animated: false) {
                 for (index, viewController) in viewControllers.enumerated() {
                     let name = viewControllersToPush[index].name
-                    self.viewControllerForNamesTable.setObject(viewController, forKey: name as AnyObject?)
+                    self.tracker.register(viewController: viewController, parameters: nil, forKey: name)
                 }
                 displayNextItem(range: indexRange, animated: false, offset:max(0, viewControllersToPush.count - 1))
             }
-        } else if viewControllerForNamesTable.object(forKey: item.name as AnyObject?) == nil {
+        } else if tracker.viewController(forKey: item.name) == nil {
             
             let viewController = self.viewController(fromItem:item)
             item.forwardTransition?.forwardTransitionBlock(animated: animated){
-                self.viewControllerForNamesTable.setObject(viewController, forKey: item.name as AnyObject?)
+                self.tracker.register(viewController: viewController, parameters: nil, forKey: item.name)
                 displayNextItem(range: indexRange, animated: animated)
             }(navigationController, viewController)
             
@@ -190,7 +188,7 @@ open class AppFlowController {
         } else {
             
             let item = items[indexRange.upperBound - 1]
-            guard let viewController = viewControllerForNamesTable.object(forKey: item.name as AnyObject?) else {
+            guard let viewController = tracker.viewController(forKey: item.name) else {
                 completionBlock?()
                 return
             }

@@ -8,9 +8,11 @@
 
 import UIKit
 
+public typealias AppFlowControllerItemName = String
+
 public protocol AppFlowControllerItem {
     
-    var name:String { get }
+    var name:AppFlowControllerItemName { get }
     var viewControllerBlock:() -> UIViewController { get }
     var viewControllerType: UIViewController.Type { get }
     var forwardTransition:AppFlowControllerForwardTransition? { get set }

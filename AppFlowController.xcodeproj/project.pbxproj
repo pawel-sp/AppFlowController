@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A447D3CE1DAD3F6E000BE4B9 /* AppFlowControllerTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A447D3CD1DAD3F6E000BE4B9 /* AppFlowControllerTracker.swift */; };
 		A48809181DA16580003CF8F3 /* AppFlowController.h in Headers */ = {isa = PBXBuildFile; fileRef = A48809161DA16580003CF8F3 /* AppFlowController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A48809231DA165B6003CF8F3 /* AppFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A488091E1DA165B6003CF8F3 /* AppFlowController.swift */; };
 		A48809241DA165B6003CF8F3 /* AppFlowControllerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A488091F1DA165B6003CF8F3 /* AppFlowControllerItem.swift */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A447D3CD1DAD3F6E000BE4B9 /* AppFlowControllerTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowControllerTracker.swift; sourceTree = "<group>"; };
 		A48809131DA16580003CF8F3 /* AppFlowController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppFlowController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A48809161DA16580003CF8F3 /* AppFlowController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppFlowController.h; sourceTree = "<group>"; };
 		A48809171DA16580003CF8F3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -61,6 +63,7 @@
 			isa = PBXGroup;
 			children = (
 				A488091E1DA165B6003CF8F3 /* AppFlowController.swift */,
+				A447D3CD1DAD3F6E000BE4B9 /* AppFlowControllerTracker.swift */,
 				A493C4B31DA44D8100BB4A08 /* AppFlowControllerPathStep.swift */,
 				A493C4B51DA44F6300BB4A08 /* AppFlowControllerError.swift */,
 				A488091F1DA165B6003CF8F3 /* AppFlowControllerItem.swift */,
@@ -156,6 +159,7 @@
 			files = (
 				A48809251DA165B6003CF8F3 /* AppFlowControllerTransition.swift in Sources */,
 				A48809241DA165B6003CF8F3 /* AppFlowControllerItem.swift in Sources */,
+				A447D3CE1DAD3F6E000BE4B9 /* AppFlowControllerTracker.swift in Sources */,
 				A493C4B61DA44F6300BB4A08 /* AppFlowControllerError.swift in Sources */,
 				A493C4B41DA44D8100BB4A08 /* AppFlowControllerPathStep.swift in Sources */,
 				A48809271DA165B6003CF8F3 /* AppFlowControllerExtensions.swift in Sources */,
