@@ -20,7 +20,7 @@ open class AppFlowController {
     
     // MARK: - Init
     
-    private init() {}
+    init() {}
     
     // MARK: - Setup
 
