@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class AppFlowController {
+open class AppFlowController {
     
     // MARK: - Properties
     
@@ -62,7 +62,7 @@ public class AppFlowController {
     
     // MARK: - Navigation
     
-    public func show(item:AppFlowControllerItem, animated:Bool = true) {
+    open func show(item:AppFlowControllerItem, animated:Bool = true) {
         
         guard let foundStep = rootPathStep?.search(item: item) else {
             assertError(error: .unregisteredPathName(name: item.name))
