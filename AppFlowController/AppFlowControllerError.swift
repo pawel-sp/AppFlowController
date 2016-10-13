@@ -14,6 +14,7 @@ enum AppFlowControllerError:Error {
     case internalError
     case unregisteredPathName(name:String)
     case missingConfigurationForAppFlowController
+    case unregisteredViewControllerType(viewControllerType:UIViewController.Type)
     
     var errorInfo:String {
         switch self {
@@ -25,6 +26,8 @@ enum AppFlowControllerError:Error {
                 return "Unregistered path for item \(name)"
             case .missingConfigurationForAppFlowController:
                 return "You need to invoke prepare(forWindow:UIWindow) function first"
+            case .unregisteredViewControllerType(let viewControllerType):
+                return "Unregistered view controller type \(viewControllerType)"
         }
     }
     
