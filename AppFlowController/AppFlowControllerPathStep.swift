@@ -43,10 +43,6 @@ class PathStep {
         return search(compareBlock: { $0.current.name == name })
     }
     
-    func search(forViewControllerType viewControllerType: UIViewController.Type) -> PathStep? {
-        return search(compareBlock: { $0.current.viewControllerType == viewControllerType })
-    }
-    
     func allParentItems(fromStep step:PathStep, includeSelf:Bool = true) -> [AppFlowControllerItem] {
         var items:[AppFlowControllerItem] = includeSelf ? [step.current] : []
         var current = step

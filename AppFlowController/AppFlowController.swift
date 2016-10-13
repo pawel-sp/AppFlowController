@@ -105,11 +105,11 @@ open class AppFlowController {
     }
     
     // When you need present view controller in different way then using AppFlowController you need to register that view controller right after presenting that to keep structure of AppFlowController.
-    public func registerViewController(viewController:UIViewController) {
-        if let name = rootPathStep?.search(forViewControllerType: type(of: viewController))?.current.name {
-            self.tracker.register(viewController: viewController, parameters: nil, forKey: name)
+    public func registerViewController(viewController:UIViewController, forPathName pathName:String) {
+        if let _ = rootPathStep?.search(forName: pathName) {
+            self.tracker.register(viewController: viewController, parameters: nil, forKey: pathName)
         } else {
-            assertError(error: AppFlowControllerError.unregisteredViewControllerType(viewControllerType: type(of: viewController)))
+            assertError(error: AppFlowControllerError.unregisteredPathName(name: pathName))
         }
     }
     
