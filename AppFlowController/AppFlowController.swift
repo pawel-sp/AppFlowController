@@ -113,6 +113,29 @@ open class AppFlowController {
         }
     }
     
+    public func pathComponents(forItem item:AppFlowControllerItem) -> String? {
+        
+        guard let foundStep = rootPathStep?.search(item: item) else {
+            assertError(error: .unregisteredPathName(name: item.name))
+            return nil
+        }
+        
+        let items       = rootPathStep?.allParentItems(fromStep: foundStep) ?? []
+        let itemStrings = items.map({ $0.name })
+        
+        return itemStrings.joined(separator: "/")
+    }
+    
+    public func currentPathComponents() -> String? {
+        if let visibleStep = visibleStep() {
+            let items       = rootPathStep?.allParentItems(fromStep: visibleStep) ?? []
+            let itemStrings = items.map({ $0.name })
+            return itemStrings.joined(separator: "/")
+        } else {
+            return nil
+        }
+    }
+    
     // MARK: - Helpers
  
     private func visibleStep() -> PathStep? {
