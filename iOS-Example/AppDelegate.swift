@@ -24,9 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         flowController.register(path: AppPage.home => alphaTransition => AppPage.registration)
         flowController.register(path: AppPage.home => AppPage.login => AppPage.forgotPassword)
         flowController.register(path: AppPage.home => AppPage.items => AppPage.details)
-        flowController.register(path: AppPage.home => AppPage.login => DefaultModalFlowControllerTransition => AppPage.forgotPasswordAlert => AppPage.info)
-        flowController.register(path: AppPage.home => AppPage.tabs => DefaultTabBarControllerPageTransition => AppPage.tabPage1)
-        flowController.register(path: AppPage.home => AppPage.tabs => DefaultTabBarControllerPageTransition => AppPage.tabPage2)
+        flowController.register(path: AppPage.home => AppPage.login => DefaultModalAppFlowControllerTransition => AppPage.forgotPasswordAlert => AppPage.info)
+        flowController.register(path: AppPage.home => AppPage.tabs => DefaultTabBarControllerPageAppFlowControllerTransition => AppPage.tabPage1)
+        flowController.register(path: AppPage.home => AppPage.tabs => DefaultTabBarControllerPageAppFlowControllerTransition => AppPage.tabPage2)
         
         flowController.show(item:AppPage.forgotPasswordAlert)
         return true

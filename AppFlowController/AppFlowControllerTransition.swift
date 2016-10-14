@@ -24,9 +24,9 @@ public protocol AppFlowControllerTransition:AppFlowControllerForwardTransition, 
     
 }
 
-public let DefaultPushPopAppFlowControllerTransition = PushPopAppFlowControllerTransition()
-public let DefaultModalFlowControllerTransition      = ModalAppFlowControllerTransition()
-public let DefaultTabBarControllerPageTransition     = TabBarControllerPageTransition()
+public let DefaultPushPopAppFlowControllerTransition              = PushPopAppFlowControllerTransition()
+public let DefaultModalAppFlowControllerTransition                = ModalAppFlowControllerTransition()
+public let DefaultTabBarControllerPageAppFlowControllerTransition = TabBarControllerPageTransition()
 
 public class PushPopAppFlowControllerTransition:NSObject, AppFlowControllerTransition {
     
@@ -48,20 +48,14 @@ public class PushPopAppFlowControllerTransition:NSObject, AppFlowControllerTrans
     
 }
 
-public class ModalAppFlowControllerTransition:NSObject, AppFlowControllerTransition {
-    
-    // MARK: - Properties
-    
-    public var navigationControllerClass:UINavigationController.Type {
-        return UINavigationController.self
-    }
+public class ModalAppFlowControllerTransition<T:UINavigationController>:NSObject, AppFlowControllerTransition {
     
     // MARK: - AppFlowControllerForwardTransition
     
     public func forwardTransitionBlock(animated: Bool, completionBlock:@escaping ()->()) -> (UINavigationController, UIViewController) -> Void {
         return { navigationController, viewController in
             if viewController.navigationController == nil {
-                let modalNavigationController = self.navigationControllerClass.init(rootViewController: viewController)
+                let modalNavigationController = T.init(rootViewController: viewController)
                 navigationController.present(modalNavigationController, animated: animated, completion: completionBlock)
             } else {
                 navigationController.present(viewController, animated: animated, completion: completionBlock)
