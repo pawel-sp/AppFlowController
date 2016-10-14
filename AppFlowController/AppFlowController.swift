@@ -136,6 +136,10 @@ open class AppFlowController {
         }
     }
     
+    public func currentItem() -> AppFlowControllerItem? {
+        return visibleStep()?.current
+    }
+    
     // MARK: - Helpers
  
     private func visibleStep() -> PathStep? {
