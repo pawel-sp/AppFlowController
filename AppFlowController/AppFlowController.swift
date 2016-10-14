@@ -188,8 +188,15 @@ open class AppFlowController {
         }
         
         if navigationController.viewControllers.count == 0 {
-            let viewControllersToPush = [item] + items.filter({ $0.forwardTransition?.isKind(of: PushPopAppFlowControllerTransition.self) == true })
-            let viewControllers       = viewControllersToPush.map({ self.viewController(fromItem: $0) })
+            var viewControllersToPush = [item]
+            for item in items {
+                if item.forwardTransition?.isKind(of: PushPopAppFlowControllerTransition.self) == true {
+                    viewControllersToPush += [item]
+                } else {
+                    break
+                }
+            }
+            let viewControllers = viewControllersToPush.map({ self.viewController(fromItem: $0) })
             navigationController.setViewControllers(viewControllers, animated: false) {
                 for (index, viewController) in viewControllers.enumerated() {
                     let name = viewControllersToPush[index].name
