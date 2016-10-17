@@ -23,13 +23,10 @@ open class AppFlowControllerTransferPage: AppFlowControllerPage, AppFlowControll
     // MARK: - Init
     
     public init(
-        name:String,
-        viewControllerBlock:@escaping ()->(UIViewController),
-        viewControllerType:UIViewController.Type,
         transferBlock:@escaping (AppFlowControllerItem)->(AppFlowControllerItem)
     ) {
         self.transferBlock = transferBlock
-        super.init(name: name, viewControllerBlock: viewControllerBlock, viewControllerType: viewControllerType)
+        super.init(name: "transfer_page", viewControllerBlock: { UIViewController() }, viewControllerType: UIViewController.self)
     }
     
 }
