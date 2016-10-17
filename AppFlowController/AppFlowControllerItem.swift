@@ -30,7 +30,7 @@ extension AppFlowControllerItem {
     
 }
 
-open class AppFlowControllerPage:AppFlowControllerItem {
+open class AppFlowControllerPage: NSObject, AppFlowControllerItem {
     
     // MARK: - Properties
     
