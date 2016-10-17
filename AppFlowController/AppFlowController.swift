@@ -64,8 +64,18 @@ open class AppFlowController {
     
     open func show(item:AppFlowControllerItem, parameters:[AppFlowControllerItemName:String]? = nil, animated:Bool = true) {
         
-        guard let foundStep = rootPathStep?.search(item: item) else {
-            assertError(error: .unregisteredPathName(name: item.name))
+        var itemToPresent = item
+        
+        if let transferItem = item as? AppFlowControllerTransferItem {
+            if let currentItem = currentItem() {
+                itemToPresent = transferItem.transferBlock(currentItem)
+            } else {
+                assertError(error: .cannotUseTransferItemWithoutVisiblePage)
+            }
+        }
+        
+        guard let foundStep = rootPathStep?.search(item: itemToPresent) else {
+            assertError(error: .unregisteredPathName(name: itemToPresent.name))
             return
         }
         

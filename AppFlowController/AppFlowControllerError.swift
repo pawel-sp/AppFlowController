@@ -15,6 +15,7 @@ enum AppFlowControllerError:Error {
     case unregisteredPathName(name:String)
     case missingConfigurationForAppFlowController
     case unregisteredViewControllerType(viewControllerType:UIViewController.Type)
+    case cannotUseTransferItemWithoutVisiblePage
     
     var errorInfo:String {
         switch self {
@@ -28,6 +29,8 @@ enum AppFlowControllerError:Error {
                 return "You need to invoke prepare(forWindow:UIWindow) function first"
             case .unregisteredViewControllerType(let viewControllerType):
                 return "Unregistered view controller type \(viewControllerType)"
+            case .cannotUseTransferItemWithoutVisiblePage:
+                return "Using transfer item is possibly only when there is a visible page"
         }
     }
     
