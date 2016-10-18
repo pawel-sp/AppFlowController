@@ -152,8 +152,8 @@ open class AppFlowController {
     }
     
     public func parameterForCurrentItem() -> String? {
-        if let currentItemName = currentItem()?.name, let viewController = tracker.viewController(forKey: currentItemName) {
-            return tracker.parameter(forViewController: viewController)
+        if let currentItemName = currentItem()?.name {
+            return tracker.parameter(forKey: currentItemName)
         } else {
             return nil
         }

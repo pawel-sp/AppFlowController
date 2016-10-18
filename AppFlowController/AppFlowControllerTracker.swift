@@ -67,9 +67,8 @@ class AppFlowControllerTracker {
         return filtered.first?.key
     }
     
-    func parameter(forViewController viewController:UIViewController) -> String? {
-        let filtered = items.filter({ $0.value.viewController === viewController })
-        return filtered.first?.value.parameter
+    func parameter(forKey key:String) -> String? {
+        return items[key]?.parameter
     }
     
 }
