@@ -151,12 +151,17 @@ open class AppFlowController {
         return visibleStep()?.current
     }
     
-    public func parameterForCurrentItem() -> String? {
+    public func parameterForVisibleCurrentItem() -> String? {
         if let currentItemName = currentItem()?.name {
             return tracker.parameter(forKey: currentItemName)
         } else {
             return nil
         }
+    }
+    
+    // Use it when there is no visible item yet
+    public func parameterForItem(item:AppFlowControllerItem) -> String? {
+        return tracker.parameter(forKey: item.name)
     }
     
     public func reset() {
