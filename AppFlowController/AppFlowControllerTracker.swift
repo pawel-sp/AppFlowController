@@ -17,13 +17,13 @@ class AppFlowControllerTracker {
         // MARK: - Properties
         
         weak var viewController:UIViewController?
-        var parameters:[AppFlowControllerItemName:String]?
+        var parameter:String?
         
         // MARK: - Init
         
-        init(viewController:UIViewController, parameters:[AppFlowControllerItemName:String]?) {
+        init(viewController:UIViewController, parameter:String?) {
             self.viewController = viewController
-            self.parameters     = parameters
+            self.parameter      = parameter
         }
         
     }
@@ -42,8 +42,8 @@ class AppFlowControllerTracker {
         items.removeAll()
     }
     
-    func register(viewController:UIViewController, parameters: [AppFlowControllerItemName:String]?, forKey key:String) {
-        items[key] = Item(viewController: viewController, parameters: parameters)
+    func register(viewController:UIViewController, parameter: String?, forKey key:String) {
+        items[key] = Item(viewController: viewController, parameter: parameter)
     }
     
     func viewController(forKey key:String) -> UIViewController? {
@@ -55,9 +55,9 @@ class AppFlowControllerTracker {
         return filtered.first?.key
     }
     
-    func parameters(forViewController viewController:UIViewController) -> [AppFlowControllerItemName:String]? {
+    func parameter(forViewController viewController:UIViewController) -> String? {
         let filtered = items.filter({ $0.value.viewController === viewController })
-        return filtered.first?.value.parameters
+        return filtered.first?.value.parameter
     }
     
 }

@@ -28,7 +28,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         flowController.register(path: AppPage.home => AppPage.tabs => DefaultTabBarControllerPageAppFlowControllerTransition => AppPage.tabPage1)
         flowController.register(path: AppPage.home => AppPage.tabs => DefaultTabBarControllerPageAppFlowControllerTransition => AppPage.tabPage2)
         
-        flowController.show(item:AppPage.forgotPasswordAlert)
+        flowController.show(item:AppPage.details, parameters: [
+            AppPage.details.name : "info"
+        ])
         return true
     }
 

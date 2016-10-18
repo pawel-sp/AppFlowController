@@ -117,7 +117,7 @@ open class AppFlowController {
     // When you need present view controller in different way then using AppFlowController you need to register that view controller right after presenting that to keep structure of AppFlowController.
     public func register(viewController:UIViewController, forPathName pathName:String) {
         if let _ = rootPathStep?.search(forName: pathName) {
-            self.tracker.register(viewController: viewController, parameters: nil, forKey: pathName)
+            self.tracker.register(viewController: viewController, parameter: nil, forKey: pathName)
         } else {
             assertError(error: AppFlowControllerError.unregisteredPathName(name: pathName))
         }
@@ -148,6 +148,14 @@ open class AppFlowController {
     
     open func currentItem() -> AppFlowControllerItem? {
         return visibleStep()?.current
+    }
+    
+    public func parameterForCurrentItem() -> String? {
+        if let currentItemName = currentItem()?.name, let viewController = tracker.viewController(forKey: currentItemName) {
+            return tracker.parameter(forViewController: viewController)
+        } else {
+            return nil
+        }
     }
     
     public func reset() {
@@ -186,6 +194,8 @@ open class AppFlowController {
     private func display(items:[AppFlowControllerItem], fromIndexRange indexRange:Range<Int>, animated:Bool, parameters:[AppFlowControllerItemName:String]?, completionBlock:(() -> ())?) {
         
         let item = items[indexRange.lowerBound]
+        let name = item.name
+        
         guard let navigationController = rootNavigationController?.activeNavigationController else {
             completionBlock?()
             return
@@ -219,7 +229,7 @@ open class AppFlowController {
             navigationController.setViewControllers(viewControllers, animated: false) {
                 for (index, viewController) in viewControllers.enumerated() {
                     let name = viewControllersToPush[index].name
-                    self.tracker.register(viewController: viewController, parameters: nil, forKey: name)
+                    self.tracker.register(viewController: viewController, parameter: parameters?[name], forKey: name)
                 }
                 displayNextItem(range: indexRange, animated: false, offset:max(0, viewControllersToPush.count - 1))
             }
@@ -227,7 +237,7 @@ open class AppFlowController {
             
             let viewController = self.viewController(fromItem:item)
             item.forwardTransition?.forwardTransitionBlock(animated: animated){
-                self.tracker.register(viewController: viewController, parameters: nil, forKey: item.name)
+                self.tracker.register(viewController: viewController, parameter: parameters?[name], forKey: item.name)
                 displayNextItem(range: indexRange, animated: animated)
             }(navigationController, viewController)
             
