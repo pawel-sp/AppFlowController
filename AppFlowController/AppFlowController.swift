@@ -62,6 +62,7 @@ open class AppFlowController {
     
     // MARK: - Navigation
     
+    // parameters need to keys equals item names to have correct behaviour.
     open func show(item:AppFlowControllerItem, parameters:[AppFlowControllerItemName:String]? = nil, animated:Bool = true) {
         
         var itemToPresent = item
@@ -226,18 +227,18 @@ open class AppFlowController {
                 }
             }
             let viewControllers = viewControllersToPush.map({ self.viewController(fromItem: $0) })
+            for (index, viewController) in viewControllers.enumerated() {
+                let name = viewControllersToPush[index].name
+                self.tracker.register(viewController: viewController, parameter: parameters?[name], forKey: name)
+            }
             navigationController.setViewControllers(viewControllers, animated: false) {
-                for (index, viewController) in viewControllers.enumerated() {
-                    let name = viewControllersToPush[index].name
-                    self.tracker.register(viewController: viewController, parameter: parameters?[name], forKey: name)
-                }
                 displayNextItem(range: indexRange, animated: false, offset:max(0, viewControllersToPush.count - 1))
             }
         } else if tracker.viewController(forKey: item.name) == nil {
             
             let viewController = self.viewController(fromItem:item)
+            tracker.register(viewController: viewController, parameter: parameters?[name], forKey: item.name)
             item.forwardTransition?.forwardTransitionBlock(animated: animated){
-                self.tracker.register(viewController: viewController, parameter: parameters?[name], forKey: item.name)
                 displayNextItem(range: indexRange, animated: animated)
             }(navigationController, viewController)
             
