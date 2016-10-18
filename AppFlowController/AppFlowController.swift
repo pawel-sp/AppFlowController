@@ -150,6 +150,11 @@ open class AppFlowController {
         return visibleStep()?.current
     }
     
+    public func reset() {
+        rootNavigationController?.viewControllers.removeAll()
+        tracker.reset()
+    }
+    
     // MARK: - Helpers
  
     private func visibleStep() -> PathStep? {

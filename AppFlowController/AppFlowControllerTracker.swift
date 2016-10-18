@@ -38,6 +38,10 @@ class AppFlowControllerTracker {
     
     // MARK: - Utilities
     
+    func reset() {
+        items.removeAll()
+    }
+    
     func register(viewController:UIViewController, parameters: [AppFlowControllerItemName:String]?, forKey key:String) {
         items[key] = Item(viewController: viewController, parameters: parameters)
     }
