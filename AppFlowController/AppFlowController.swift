@@ -118,7 +118,7 @@ open class AppFlowController {
     // When you need present view controller in different way then using AppFlowController you need to register that view controller right after presenting that to keep structure of AppFlowController.
     public func register(viewController:UIViewController, forPathName pathName:String) {
         if let _ = rootPathStep?.search(forName: pathName) {
-            self.tracker.register(viewController: viewController, parameter: nil, forKey: pathName)
+            self.tracker.register(viewController: viewController, forKey: pathName)
         } else {
             assertError(error: AppFlowControllerError.unregisteredPathName(name: pathName))
         }
@@ -226,18 +226,23 @@ open class AppFlowController {
                     break
                 }
             }
+            let names = viewControllersToPush.map({ $0.name })
+            for name in names {
+                tracker.register(parameter: parameters?[name], forKey: name)
+            }
             let viewControllers = viewControllersToPush.map({ self.viewController(fromItem: $0) })
             for (index, viewController) in viewControllers.enumerated() {
                 let name = viewControllersToPush[index].name
-                self.tracker.register(viewController: viewController, parameter: parameters?[name], forKey: name)
+                tracker.register(viewController: viewController, forKey: name)
             }
             navigationController.setViewControllers(viewControllers, animated: false) {
                 displayNextItem(range: indexRange, animated: false, offset:max(0, viewControllersToPush.count - 1))
             }
         } else if tracker.viewController(forKey: item.name) == nil {
             
+            tracker.register(parameter: parameters?[name], forKey: name)
             let viewController = self.viewController(fromItem:item)
-            tracker.register(viewController: viewController, parameter: parameters?[name], forKey: item.name)
+            tracker.register(viewController: viewController, forKey: item.name)
             item.forwardTransition?.forwardTransitionBlock(animated: animated){
                 displayNextItem(range: indexRange, animated: animated)
             }(navigationController, viewController)

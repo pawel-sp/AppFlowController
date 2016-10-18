@@ -21,7 +21,7 @@ class AppFlowControllerTracker {
         
         // MARK: - Init
         
-        init(viewController:UIViewController, parameter:String?) {
+        init(viewController:UIViewController?, parameter:String?) {
             self.viewController = viewController
             self.parameter      = parameter
         }
@@ -42,8 +42,20 @@ class AppFlowControllerTracker {
         items.removeAll()
     }
     
-    func register(viewController:UIViewController, parameter: String?, forKey key:String) {
-        items[key] = Item(viewController: viewController, parameter: parameter)
+    func register(viewController:UIViewController, forKey key:String) {
+        if let found = items[key] {
+            found.viewController = viewController
+        } else {
+            items[key] = Item(viewController: viewController, parameter: nil)
+        }
+    }
+    
+    func register(parameter:String?, forKey key:String) {
+        if let found = items[key] {
+            found.parameter = parameter
+        } else {
+            items[key] = Item(viewController: nil, parameter: parameter)
+        }
     }
     
     func viewController(forKey key:String) -> UIViewController? {
