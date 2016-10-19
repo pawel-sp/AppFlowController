@@ -151,7 +151,7 @@ open class AppFlowController {
         return visibleStep()?.current
     }
     
-    public func parameterForVisibleCurrentItem() -> String? {
+    open func parameterForVisibleCurrentItem() -> String? {
         if let currentItemName = currentItem()?.name {
             return tracker.parameter(forKey: currentItemName)
         } else {
@@ -160,11 +160,11 @@ open class AppFlowController {
     }
     
     // Use it when there is no visible item yet
-    public func parameterForItem(item:AppFlowControllerItem) -> String? {
+    open func parameterForItem(item:AppFlowControllerItem) -> String? {
         return tracker.parameter(forKey: item.name)
     }
     
-    public func reset() {
+    open func reset() {
         rootNavigationController?.viewControllers.removeAll()
         tracker.reset()
     }
