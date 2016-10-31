@@ -12,11 +12,11 @@ import AppFlowController
 class InfoViewController: BaseViewController {
 
     @IBAction func backAction(_ sender: AnyObject) {
-        AppFlowController.sharedController.show(item: AppPage.forgotPasswordAlert)
+        AppFlowController.shared.show(item: AppPage.forgotPasswordAlert)
     }
     
     @IBAction func backToHomeAction(_ sender: AnyObject) {
-        AppFlowController.sharedController.show(item: AppPage.home)
+        AppFlowController.shared.show(item: AppPage.home)
     }
 
 }

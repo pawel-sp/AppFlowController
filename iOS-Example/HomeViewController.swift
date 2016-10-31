@@ -12,19 +12,19 @@ import AppFlowController
 class HomeViewController: BaseViewController {
 
     @IBAction func loginAction(_ sender: AnyObject) {
-        AppFlowController.sharedController.show(item: AppPage.login)
+        AppFlowController.shared.show(item: AppPage.login)
     }
 
     @IBAction func registrationAction(_ sender: AnyObject) {
-        AppFlowController.sharedController.show(item: AppPage.registration)
+        AppFlowController.shared.show(item: AppPage.registration)
     }
 
     @IBAction func itemsAction(_ sender: AnyObject) {
-        AppFlowController.sharedController.show(item: AppPage.items)
+        AppFlowController.shared.show(item: AppPage.items)
     }
     
     @IBAction func tabsAction(_ sender: AnyObject) {
-        AppFlowController.sharedController.show(item: AppPage.tabPage2)
+        AppFlowController.shared.show(item: AppPage.tabPage2)
     }
     
 }

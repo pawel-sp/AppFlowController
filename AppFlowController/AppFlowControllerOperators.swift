@@ -18,8 +18,8 @@ public func => (lhs:AppFlowControllerItem, rhs:AppFlowControllerTransition) -> (
 
 public func => (lhs:AppFlowControllerItem, rhs:AppFlowControllerItem) -> [AppFlowControllerItem] {
     var rhs = rhs
-    rhs.forwardTransition  = DefaultPushPopAppFlowControllerTransition
-    rhs.backwardTransition = DefaultPushPopAppFlowControllerTransition
+    rhs.forwardTransition  = PushPopAppFlowControllerTransition.default
+    rhs.backwardTransition = PushPopAppFlowControllerTransition.default
     return [lhs, rhs]
 }
 
@@ -36,8 +36,8 @@ public func => (lhs:[AppFlowControllerItem], rhs:AppFlowControllerTransition) ->
 
 public func => (lhs:[AppFlowControllerItem], rhs:AppFlowControllerItem) -> [AppFlowControllerItem] {
     var rhs = rhs
-    rhs.forwardTransition  = DefaultPushPopAppFlowControllerTransition
-    rhs.backwardTransition = DefaultPushPopAppFlowControllerTransition
+    rhs.forwardTransition  = PushPopAppFlowControllerTransition.default
+    rhs.backwardTransition = PushPopAppFlowControllerTransition.default
     return lhs + [rhs]
 }
 

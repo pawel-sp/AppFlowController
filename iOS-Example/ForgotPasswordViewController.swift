@@ -12,14 +12,14 @@ import AppFlowController
 class ForgotPasswordViewController: BaseViewController {
     
     @IBAction func backAction(_ sender: AnyObject) {
-        AppFlowController.sharedController.goBack()
+        AppFlowController.shared.goBack()
     }
 
     @IBAction func backToHomeAction(_ sender: AnyObject) {
-        AppFlowController.sharedController.show(item: AppPage.home)
+        AppFlowController.shared.show(item: AppPage.home)
     }
 
     @IBAction func forgotPasswordAction(_ sender: AnyObject) {
-        AppFlowController.sharedController.show(item: AppPage.info)
+        AppFlowController.shared.show(item: AppPage.info)
     }
 }

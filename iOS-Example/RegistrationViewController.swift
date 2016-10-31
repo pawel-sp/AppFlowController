@@ -12,7 +12,7 @@ import AppFlowController
 class RegistrationViewController: BaseViewController {
 
     @IBAction func backAction(_ sender: AnyObject) {
-        AppFlowController.sharedController.goBack()
+        AppFlowController.shared.goBack()
     }
 
 }

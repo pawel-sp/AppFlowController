@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 
 public protocol AppFlowControllerForwardTransition:NSObjectProtocol {
     
@@ -24,11 +25,11 @@ public protocol AppFlowControllerTransition:AppFlowControllerForwardTransition, 
     
 }
 
-public let DefaultPushPopAppFlowControllerTransition              = PushPopAppFlowControllerTransition()
-public let DefaultModalAppFlowControllerTransition                = ModalAppFlowControllerTransition()
-public let DefaultTabBarControllerPageAppFlowControllerTransition = TabBarControllerPageTransition()
-
 public class PushPopAppFlowControllerTransition:NSObject, AppFlowControllerTransition {
+    
+    // MARK: - Properties
+    
+    public static let `default` = PushPopAppFlowControllerTransition()
     
     // MARK: - AppFlowControllerForwardTransition
     
@@ -49,7 +50,7 @@ public class PushPopAppFlowControllerTransition:NSObject, AppFlowControllerTrans
 }
 
 public class ModalAppFlowControllerTransition<T:UINavigationController>:NSObject, AppFlowControllerTransition {
-    
+ 
     // MARK: - AppFlowControllerForwardTransition
     
     public func forwardTransitionBlock(animated: Bool, completionBlock:@escaping ()->()) -> (UINavigationController, UIViewController) -> Void {
@@ -73,7 +74,11 @@ public class ModalAppFlowControllerTransition<T:UINavigationController>:NSObject
     
 }
 
-public class TabBarControllerPageTransition:NSObject, AppFlowControllerTransition {
+public class TabBarAppFlowControllerTransition:NSObject, AppFlowControllerTransition {
+    
+    // MARK: - Properties
+    
+    public static let `default` = PushPopAppFlowControllerTransition()
     
     // MARK: - AppFlowControllerForwardTransition
     
@@ -85,7 +90,7 @@ public class TabBarControllerPageTransition:NSObject, AppFlowControllerTransitio
                     tabBarController.selectedIndex = index
                 }
             } else {
-                DefaultPushPopAppFlowControllerTransition.forwardTransitionBlock(animated: animated, completionBlock: completionBlock)(navigationController, viewController)
+                PushPopAppFlowControllerTransition.default.forwardTransitionBlock(animated: animated, completionBlock: completionBlock)(navigationController, viewController)
             }
         }
     }

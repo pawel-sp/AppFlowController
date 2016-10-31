@@ -17,20 +17,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         self.window = UIWindow(frame: UIScreen.main.bounds)
         
-        let flowController  = AppFlowController.sharedController
-        let alphaTransition = AlphaTransition()
+        let flowController = AppFlowController.shared
+        let alpha          = AlphaTransition()
+        let modal          = ModalAppFlowControllerTransition()
         
         flowController.prepare(forWindow:window!)
-        flowController.register(path: AppPage.home => alphaTransition => AppPage.registration)
+        flowController.register(path: AppPage.home => alpha => AppPage.registration)
         flowController.register(path: AppPage.home => AppPage.login => AppPage.forgotPassword)
         flowController.register(path: AppPage.home => AppPage.items => AppPage.details)
-        flowController.register(path: AppPage.home => AppPage.login => DefaultModalAppFlowControllerTransition => AppPage.forgotPasswordAlert => AppPage.info)
-        flowController.register(path: AppPage.home => AppPage.tabs => DefaultTabBarControllerPageAppFlowControllerTransition => AppPage.tabPage1)
-        flowController.register(path: AppPage.home => AppPage.tabs => DefaultTabBarControllerPageAppFlowControllerTransition => AppPage.tabPage2)
+        flowController.register(path: AppPage.home => AppPage.login => modal => AppPage.forgotPasswordAlert => AppPage.info)
+        flowController.register(path: AppPage.home => AppPage.tabs => TabBarAppFlowControllerTransition.default => AppPage.tabPage1)
+        flowController.register(path: AppPage.home => AppPage.tabs => TabBarAppFlowControllerTransition.default => AppPage.tabPage2)
         
-        flowController.show(item:AppPage.details, parameters: [
-            AppPage.details.name : "info"
-        ])
+        flowController.show(item:AppPage.home)
         return true
     }
 

@@ -12,10 +12,10 @@ import AppFlowController
 class TabPage2ViewController: BaseViewController {
 
     @IBAction func backToHomeAction(_ sender: AnyObject) {
-        AppFlowController.sharedController.show(item: AppPage.home)
+        AppFlowController.shared.show(item: AppPage.home)
     }
 
     @IBAction func goToPage1Action(_ sender: AnyObject) {
-        AppFlowController.sharedController.show(item: AppPage.tabPage1)
+        AppFlowController.shared.show(item: AppPage.tabPage1)
     }
 }

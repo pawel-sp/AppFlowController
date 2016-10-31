@@ -12,7 +12,7 @@ open class AppFlowController {
     
     // MARK: - Properties
     
-    public static let sharedController = AppFlowController()
+    public static let shared = AppFlowController()
     
     private var rootPathStep:PathStep?
     private var rootNavigationController:UINavigationController?
