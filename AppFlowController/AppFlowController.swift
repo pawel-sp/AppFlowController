@@ -224,7 +224,7 @@ open class AppFlowController {
         
         if navigationController.viewControllers.count == 0 {
             var viewControllersToPush = [item]
-            for item in items {
+            for item in items[1..<items.count] {
                 if item.forwardTransition?.isKind(of: PushPopAppFlowControllerTransition.self) == true {
                     viewControllersToPush += [item]
                 } else {

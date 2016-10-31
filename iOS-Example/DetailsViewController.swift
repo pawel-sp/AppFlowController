@@ -10,10 +10,5 @@ import UIKit
 import AppFlowController
 
 class DetailsViewController: BaseViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        print(AppFlowController.sharedController.parameterForCurrentItem())
-    }
     
 }
