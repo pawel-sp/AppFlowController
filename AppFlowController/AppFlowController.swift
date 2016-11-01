@@ -151,7 +151,7 @@ open class AppFlowController {
         return visibleStep()?.current
     }
     
-    open func parameterForVisibleCurrentItem() -> String? {
+    open func parameterForCurrentItem() -> String? {
         if let currentItemName = currentItem()?.name {
             return tracker.parameter(forKey: currentItemName)
         } else {
