@@ -95,7 +95,7 @@ open class AppFlowController {
             let _                       = distance?.down ?? 0
             let dismissRange:Range<Int> = dismissCounter == 0 ? 0..<0 : (currentItems.count - dismissCounter) ..< currentItems.count
             let displayRange:Range<Int> = 0 ..< newItems.count
-            dismiss(items: currentItems, fromIndexRange: dismissRange, animated: animated, useOnlyLastTransition: useOnlyLastTransition && displayRange.count == 0) {
+            dismiss(items: currentItems, fromIndexRange: dismissRange, animated: animated, skipTransition: useOnlyLastTransition) {
                 self.display(items: newItems, fromIndexRange: displayRange, animated: animated, parameters: parameters, useOnlyLastTransition: useOnlyLastTransition, completionBlock: nil)
             }
         } else {
@@ -266,16 +266,15 @@ open class AppFlowController {
         }
     }
     
-    private func dismiss(items:[AppFlowControllerItem], fromIndexRange indexRange:Range<Int>, animated:Bool, useOnlyLastTransition:Bool = false, completionBlock:(() -> ())?) {
+    private func dismiss(items:[AppFlowControllerItem], fromIndexRange indexRange:Range<Int>, animated:Bool, skipTransition:Bool = false, completionBlock:(() -> ())?) {
         if indexRange.count == 0 {
             
             completionBlock?()
             
         } else {
             
-            let index       = indexRange.upperBound - 1
-            let item        = items[index]
-            let isFirstItem = index == 0
+            let index = indexRange.upperBound - 1
+            let item  = items[index]
             
             guard let viewController = tracker.viewController(forKey: item.name) else {
                 completionBlock?()
@@ -286,7 +285,7 @@ open class AppFlowController {
                 return
             }
             
-            if (useOnlyLastTransition && isFirstItem) || !useOnlyLastTransition {
+            if !skipTransition {
                 item.backwardTransition?.backwardTransitionBlock(animated: animated){
                     self.dismiss(
                         items: items,
