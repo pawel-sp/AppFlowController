@@ -63,7 +63,7 @@ open class AppFlowController {
     // MARK: - Navigation
     
     // parameters need to keys equals item names to have correct behaviour.
-    open func show(item:AppFlowControllerItem, parameters:[AppFlowControllerItemName:String]? = nil, animated:Bool = true, useOnlyLastTransition:Bool = false) {
+    open func show(item:AppFlowControllerItem, parameters:[AppFlowControllerItemName:String]? = nil, animated:Bool = true, skipDismissTransitions:Bool = false) {
         
         var itemToPresent = item
         
@@ -95,12 +95,12 @@ open class AppFlowController {
             let _                       = distance?.down ?? 0
             let dismissRange:Range<Int> = dismissCounter == 0 ? 0..<0 : (currentItems.count - dismissCounter) ..< currentItems.count
             let displayRange:Range<Int> = 0 ..< newItems.count
-            dismiss(items: currentItems, fromIndexRange: dismissRange, animated: animated, skipTransition: useOnlyLastTransition) {
-                self.display(items: newItems, fromIndexRange: displayRange, animated: animated, parameters: parameters, useOnlyLastTransition: useOnlyLastTransition, completionBlock: nil)
+            dismiss(items: currentItems, fromIndexRange: dismissRange, animated: animated, skipTransition: skipDismissTransitions) {
+                self.display(items: newItems, fromIndexRange: displayRange, animated: animated, parameters: parameters, completionBlock: nil)
             }
         } else {
             rootNavigationController.viewControllers.removeAll()
-            display(items: newItems, fromIndexRange: 0..<newItems.count, animated: animated, parameters: parameters, useOnlyLastTransition: useOnlyLastTransition, completionBlock: nil)
+            display(items: newItems, fromIndexRange: 0..<newItems.count, animated: animated, parameters: parameters, completionBlock: nil)
         }
     }
     
@@ -197,12 +197,11 @@ open class AppFlowController {
         }
     }
     
-    private func display(items:[AppFlowControllerItem], fromIndexRange indexRange:Range<Int>, animated:Bool, parameters:[AppFlowControllerItemName:String]?, useOnlyLastTransition:Bool = false, completionBlock:(() -> ())?) {
+    private func display(items:[AppFlowControllerItem], fromIndexRange indexRange:Range<Int>, animated:Bool, parameters:[AppFlowControllerItemName:String]?, completionBlock:(() -> ())?) {
         
-        let index      = indexRange.lowerBound
-        let item       = items[index]
-        let name       = item.name
-        let isLastItem = index == items.count - 1
+        let index = indexRange.lowerBound
+        let item  = items[index]
+        let name  = item.name
         
         guard let navigationController = rootNavigationController?.activeNavigationController else {
             completionBlock?()
@@ -251,13 +250,9 @@ open class AppFlowController {
             let viewController = self.viewController(fromItem:item)
             tracker.register(viewController: viewController, forKey: item.name)
             
-            if (useOnlyLastTransition && isLastItem) || !useOnlyLastTransition {
-                item.forwardTransition?.forwardTransitionBlock(animated: animated){
-                    displayNextItem(range: indexRange, animated: animated)
-                }(navigationController, viewController)
-            } else {
+            item.forwardTransition?.forwardTransitionBlock(animated: animated){
                 displayNextItem(range: indexRange, animated: animated)
-            }
+            }(navigationController, viewController)
         
         } else {
             
