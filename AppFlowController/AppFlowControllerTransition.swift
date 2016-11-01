@@ -78,7 +78,7 @@ public class TabBarAppFlowControllerTransition:NSObject, AppFlowControllerTransi
     
     // MARK: - Properties
     
-    public static let `default` = PushPopAppFlowControllerTransition()
+    public static let `default` = TabBarAppFlowControllerTransition()
     
     // MARK: - AppFlowControllerForwardTransition
     
