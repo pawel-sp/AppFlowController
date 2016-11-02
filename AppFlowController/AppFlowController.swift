@@ -286,6 +286,7 @@ open class AppFlowController {
                         items: items,
                         fromIndexRange: indexRange.lowerBound..<indexRange.upperBound - 1,
                         animated: animated,
+                        skipTransition: skipTransition,
                         completionBlock: completionBlock
                     )
                 }(navigationController, viewController)
@@ -294,6 +295,7 @@ open class AppFlowController {
                     items: items,
                     fromIndexRange: indexRange.lowerBound..<indexRange.upperBound - 1,
                     animated: animated,
+                    skipTransition: skipTransition,
                     completionBlock: completionBlock
                 )
             }
