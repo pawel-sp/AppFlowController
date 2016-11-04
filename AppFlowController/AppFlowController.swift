@@ -23,9 +23,6 @@ open class AppFlowController {
     public init() {}
     
     // MARK: - Setup
-
-    // TODO: parameters
-    // TODO: skipping view controllers during transition
     
     public func prepare(forWindow window:UIWindow, rootNavigationControllerClass:UINavigationController.Type = UINavigationController.self) {
         self.rootNavigationController = rootNavigationControllerClass.init()
@@ -88,7 +85,7 @@ open class AppFlowController {
         let newItems     = rootPathStep?.allParentItems(fromStep: foundStep) ?? []
         let currentStep  = visibleStep()
         let currentItems = currentStep == nil ? [] : (rootPathStep?.allParentItems(fromStep: currentStep!) ?? [])
-       
+        
         if let currentStep = currentStep {
             let distance                = rootPathStep?.distanceBetween(step: currentStep, andStep: foundStep)
             let dismissCounter          = distance?.up   ?? 0
@@ -96,11 +93,13 @@ open class AppFlowController {
             let dismissRange:Range<Int> = dismissCounter == 0 ? 0..<0 : (currentItems.count - dismissCounter) ..< currentItems.count
             let displayRange:Range<Int> = 0 ..< newItems.count
             dismiss(items: currentItems, fromIndexRange: dismissRange, animated: animated, skipTransition: skipDismissTransitions) {
-                self.display(items: newItems, fromIndexRange: displayRange, animated: animated, parameters: parameters, completionBlock: nil)
+                self.register(parameters:parameters)
+                self.display(items: newItems, fromIndexRange: displayRange, animated: animated, completionBlock: nil)
             }
         } else {
             rootNavigationController.viewControllers.removeAll()
-            display(items: newItems, fromIndexRange: 0..<newItems.count, animated: animated, parameters: parameters, completionBlock: nil)
+            register(parameters:parameters)
+            display(items: newItems, fromIndexRange: 0..<newItems.count, animated: animated, completionBlock: nil)
         }
     }
     
@@ -170,7 +169,7 @@ open class AppFlowController {
     }
     
     // MARK: - Helpers
- 
+    
     private func visibleStep() -> PathStep? {
         let navigationController  = rootNavigationController?.activeNavigationController
         if let visibleViewController = navigationController?.visibleViewController, let key = tracker.key(forViewController: visibleViewController) {
@@ -197,7 +196,15 @@ open class AppFlowController {
         }
     }
     
-    private func display(items:[AppFlowControllerItem], fromIndexRange indexRange:Range<Int>, animated:Bool, parameters:[AppFlowControllerItemName:String]?, completionBlock:(() -> ())?) {
+    private func register(parameters:[AppFlowControllerItemName : String]?) {
+        if let parameters = parameters {
+            for (key, value) in parameters {
+                self.tracker.register(parameter: value, forKey: key)
+            }
+        }
+    }
+    
+    private func display(items:[AppFlowControllerItem], fromIndexRange indexRange:Range<Int>, animated:Bool, completionBlock:(() -> ())?) {
         
         let index = indexRange.lowerBound
         let item  = items[index]
@@ -217,7 +224,6 @@ open class AppFlowController {
                     items: items,
                     fromIndexRange: newRange,
                     animated: animated,
-                    parameters: parameters,
                     completionBlock: completionBlock
                 )
             }
@@ -232,10 +238,6 @@ open class AppFlowController {
                     break
                 }
             }
-            let names = viewControllersToPush.map({ $0.name })
-            for name in names {
-                tracker.register(parameter: parameters?[name], forKey: name)
-            }
             let viewControllers = viewControllersToPush.map({ self.viewController(fromItem: $0) })
             for (index, viewController) in viewControllers.enumerated() {
                 let name = viewControllersToPush[index].name
@@ -246,14 +248,13 @@ open class AppFlowController {
             }
         } else if tracker.viewController(forKey: item.name) == nil {
             
-            tracker.register(parameter: parameters?[name], forKey: name)
             let viewController = self.viewController(fromItem:item)
             tracker.register(viewController: viewController, forKey: item.name)
             
             item.forwardTransition?.forwardTransitionBlock(animated: animated){
                 displayNextItem(range: indexRange, animated: animated)
-            }(navigationController, viewController)
-        
+                }(navigationController, viewController)
+            
         } else {
             
             displayNextItem(range: indexRange, animated: animated)
@@ -289,7 +290,7 @@ open class AppFlowController {
                         skipTransition: skipTransition,
                         completionBlock: completionBlock
                     )
-                }(navigationController, viewController)
+                    }(navigationController, viewController)
             } else {
                 self.dismiss(
                     items: items,
@@ -302,7 +303,7 @@ open class AppFlowController {
             
         }
     }
-
+    
     private func assertError(error:AppFlowControllerError) {
         assert(false, "AppFlowController: \(error.errorInfo)")
     }
