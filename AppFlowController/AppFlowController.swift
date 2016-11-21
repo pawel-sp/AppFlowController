@@ -114,7 +114,7 @@ open class AppFlowController {
         }
     }
     
-    public func popToItem(_ itemitem:AppFlowControllerItem) {
+    public func popToItem(_ item:AppFlowControllerItem) {
         guard let navigationController = rootNavigationController?.activeNavigationController else {
             return
         }
