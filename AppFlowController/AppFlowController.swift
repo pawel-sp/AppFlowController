@@ -114,6 +114,16 @@ open class AppFlowController {
         }
     }
     
+    public func popToItem(_ itemitem:AppFlowControllerItem) {
+        guard let navigationController = rootNavigationController?.activeNavigationController else {
+            return
+        }
+        guard let targetViewController = tracker.viewController(forKey: item.name) else {
+            return
+        }
+        navigationController.popToViewController(targetViewController, animated: true)
+    }
+    
     // When you need present view controller in different way then using AppFlowController you need to register that view controller right after presenting that to keep structure of AppFlowController.
     public func register(viewController:UIViewController, forPathName pathName:String) {
         if let _ = rootPathStep?.search(forName: pathName) {
