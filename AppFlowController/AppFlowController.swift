@@ -60,7 +60,8 @@ open class AppFlowController {
     // MARK: - Navigation
     
     // parameters need to keys equals item names to have correct behaviour.
-    open func show(item:AppFlowControllerItem, parameters:[AppFlowControllerItemName:String]? = nil, animated:Bool = true, skipDismissTransitions:Bool = false) {
+    // skipItems - those items won't be within view controllers stack! It's only for items to show, not to dismiss!
+    open func show(item:AppFlowControllerItem, parameters:[AppFlowControllerItemName:String]? = nil, animated:Bool = true, skipDismissTransitions:Bool = false, skipItems:[AppFlowControllerItem]? = nil) {
         
         var itemToPresent = item
         
@@ -82,24 +83,25 @@ open class AppFlowController {
             return
         }
         
-        let newItems     = rootPathStep?.allParentItems(fromStep: foundStep) ?? []
-        let currentStep  = visibleStep()
-        let currentItems = currentStep == nil ? [] : (rootPathStep?.allParentItems(fromStep: currentStep!) ?? [])
+        let newItems         = rootPathStep?.allParentItems(fromStep: foundStep) ?? []
+        let filteredNewItems = newItems.filter({ item in !(skipItems?.contains(where: { $0.isEqual(item: item) }) ?? false) })
+        let currentStep      = visibleStep()
+        let currentItems     = currentStep == nil ? [] : (rootPathStep?.allParentItems(fromStep: currentStep!) ?? [])
         
         if let currentStep = currentStep {
             let distance                = rootPathStep?.distanceBetween(step: currentStep, andStep: foundStep)
             let dismissCounter          = distance?.up   ?? 0
             let _                       = distance?.down ?? 0
             let dismissRange:Range<Int> = dismissCounter == 0 ? 0..<0 : (currentItems.count - dismissCounter) ..< currentItems.count
-            let displayRange:Range<Int> = 0 ..< newItems.count
+            let displayRange:Range<Int> = 0 ..< filteredNewItems.count
             dismiss(items: currentItems, fromIndexRange: dismissRange, animated: animated, skipTransition: skipDismissTransitions) {
                 self.register(parameters:parameters)
-                self.display(items: newItems, fromIndexRange: displayRange, animated: animated, completionBlock: nil)
+                self.display(items: filteredNewItems, fromIndexRange: displayRange, animated: animated, completionBlock: nil)
             }
         } else {
             rootNavigationController.viewControllers.removeAll()
             register(parameters:parameters)
-            display(items: newItems, fromIndexRange: 0..<newItems.count, animated: animated, completionBlock: nil)
+            display(items: filteredNewItems, fromIndexRange: 0..<filteredNewItems.count, animated: animated, completionBlock: nil)
         }
     }
     
