@@ -84,7 +84,6 @@ open class AppFlowController {
         }
         
         let newItems         = rootPathStep?.allParentItems(fromStep: foundStep) ?? []
-        let filteredNewItems = newItems.filter({ item in !(skipItems?.contains(where: { $0.isEqual(item: item) }) ?? false) })
         let currentStep      = visibleStep()
         let currentItems     = currentStep == nil ? [] : (rootPathStep?.allParentItems(fromStep: currentStep!) ?? [])
         
@@ -93,26 +92,38 @@ open class AppFlowController {
             let dismissCounter          = distance?.up   ?? 0
             let _                       = distance?.down ?? 0
             let dismissRange:Range<Int> = dismissCounter == 0 ? 0..<0 : (currentItems.count - dismissCounter) ..< currentItems.count
-            let displayRange:Range<Int> = 0 ..< filteredNewItems.count
+            let displayRange:Range<Int> = 0 ..< newItems.count
             dismiss(items: currentItems, fromIndexRange: dismissRange, animated: animated, skipTransition: skipDismissTransitions) {
                 self.register(parameters:parameters)
-                self.display(items: filteredNewItems, fromIndexRange: displayRange, animated: animated, completionBlock: nil)
+                self.display(items: newItems, fromIndexRange: displayRange, animated: animated, skipItems: skipItems, completionBlock: nil)
             }
         } else {
             rootNavigationController.viewControllers.removeAll()
+            tracker.reset()
             register(parameters:parameters)
-            display(items: filteredNewItems, fromIndexRange: 0..<filteredNewItems.count, animated: animated, completionBlock: nil)
+            display(items: newItems, fromIndexRange: 0..<newItems.count, animated: animated, skipItems: skipItems, completionBlock: nil)
         }
     }
     
     public func goBack(animated:Bool = true) {
-        if
-            let visible = visibleStep(),
-            let parent = visible.parent,
-            let viewController = tracker.viewController(forKey: parent.current.name),
-            let navigationController = rootNavigationController?.activeNavigationController {
+        if let visible = visibleStep() {
             
-            visible.current.backwardTransition?.backwardTransitionBlock(animated: animated){}(navigationController, viewController)
+            var parent = visible.parent
+            var viewController:UIViewController?
+            let navigationController = rootNavigationController?.activeNavigationController
+            
+            while viewController == nil {
+                if let name = parent?.current.name {
+                    viewController = tracker.viewController(forKey: name)
+                } else {
+                    break
+                }
+                parent = parent?.parent
+            }
+            
+            if let viewController = viewController, let navigationController = navigationController {
+                visible.current.backwardTransition?.backwardTransitionBlock(animated: animated){}(navigationController, viewController)
+            }
         }
     }
     
@@ -216,7 +227,7 @@ open class AppFlowController {
         }
     }
     
-    private func display(items:[AppFlowControllerItem], fromIndexRange indexRange:Range<Int>, animated:Bool, completionBlock:(() -> ())?) {
+    private func display(items:[AppFlowControllerItem], fromIndexRange indexRange:Range<Int>, animated:Bool, skipItems:[AppFlowControllerItem]? = nil, completionBlock:(() -> ())?) {
         
         let index = indexRange.lowerBound
         let item  = items[index]
@@ -236,6 +247,7 @@ open class AppFlowController {
                     items: items,
                     fromIndexRange: newRange,
                     animated: animated,
+                    skipItems: skipItems,
                     completionBlock: completionBlock
                 )
             }
@@ -258,15 +270,21 @@ open class AppFlowController {
             navigationController.setViewControllers(viewControllers, animated: false) {
                 displayNextItem(range: indexRange, animated: false, offset:max(0, viewControllersToPush.count - 1))
             }
-        } else if tracker.viewController(forKey: item.name) == nil {
+        } else if tracker.viewController(forKey: item.name) == nil && !tracker.isItemAtKeySkipped(key: item.name) {
             
-            let viewController = self.viewController(fromItem:item)
-            tracker.register(viewController: viewController, forKey: item.name)
+            let viewController           = self.viewController(fromItem:item)
+            let shouldSkipViewController = skipItems?.contains(where: { $0.isEqual(item: item) }) == true
             
-            item.forwardTransition?.forwardTransitionBlock(animated: animated){
+            tracker.register(viewController: viewController, forKey: item.name, skipped:shouldSkipViewController)
+            
+            if shouldSkipViewController {
                 displayNextItem(range: indexRange, animated: animated)
+            } else {
+                item.forwardTransition?.forwardTransitionBlock(animated: animated){
+                    displayNextItem(range: indexRange, animated: animated)
                 }(navigationController, viewController)
-            
+            }
+    
         } else {
             
             displayNextItem(range: indexRange, animated: animated)

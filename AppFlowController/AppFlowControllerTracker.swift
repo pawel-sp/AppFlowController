@@ -18,12 +18,14 @@ class AppFlowControllerTracker {
         
         weak var viewController:UIViewController?
         var parameter:String?
+        var skipped:Bool
         
         // MARK: - Init
         
-        init(viewController:UIViewController?, parameter:String?) {
+        init(viewController:UIViewController?, parameter:String?, skipped:Bool = false) {
             self.viewController = viewController
             self.parameter      = parameter
+            self.skipped        = skipped
         }
         
     }
@@ -42,11 +44,12 @@ class AppFlowControllerTracker {
         items.removeAll()
     }
     
-    func register(viewController:UIViewController, forKey key:String) {
+    func register(viewController:UIViewController, forKey key:String, skipped:Bool = false) {
         if let found = items[key] {
             found.viewController = viewController
+            found.skipped        = skipped
         } else {
-            items[key] = Item(viewController: viewController, parameter: nil)
+            items[key] = Item(viewController: viewController, parameter: nil, skipped: skipped)
         }
     }
     
@@ -69,6 +72,14 @@ class AppFlowControllerTracker {
     
     func parameter(forKey key:String) -> String? {
         return items[key]?.parameter
+    }
+    
+    func isKeyRegistered(key:String) -> Bool {
+        return items.contains(where: { $0.key == key })
+    }
+    
+    func isItemAtKeySkipped(key:String) -> Bool {
+        return items.filter({ $0.key == key }).first?.value.skipped == true
     }
     
 }
