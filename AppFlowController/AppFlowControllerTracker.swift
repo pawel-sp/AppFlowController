@@ -61,6 +61,10 @@ class AppFlowControllerTracker {
         }
     }
     
+    func disableSkipped(forKey key:String) {
+        items[key]?.skipped = false
+    }
+    
     func viewController(forKey key:String) -> UIViewController? {
         return items[key]?.viewController
     }

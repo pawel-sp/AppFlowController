@@ -191,6 +191,12 @@ open class AppFlowController {
         tracker.reset()
     }
     
+    open func removeFromSkipped(items:[AppFlowControllerItem]) {
+        for item in items {
+            tracker.disableSkipped(forKey: item.name)
+        }
+    }
+    
     // MARK: - Helpers
     
     private func visibleStep() -> PathStep? {
