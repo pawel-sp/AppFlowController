@@ -24,8 +24,8 @@ open class AppFlowController {
     
     // MARK: - Setup
     
-    public func prepare(forWindow window:UIWindow, rootNavigationControllerClass:UINavigationController.Type = UINavigationController.self) {
-        self.rootNavigationController = rootNavigationControllerClass.init()
+    public func prepare(forWindow window:UIWindow, rootNavigationController:UINavigationController = UINavigationController()) {
+        self.rootNavigationController = rootNavigationController
         window.rootViewController = rootNavigationController
     }
     
