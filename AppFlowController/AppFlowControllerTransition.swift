@@ -51,10 +51,27 @@ public class PushPopAppFlowControllerTransition:NSObject, AppFlowControllerTrans
 
 public class ModalAppFlowControllerTransition<T:UINavigationController>:NSObject, AppFlowControllerTransition {
  
+    // MARK: - Properties
+    
+    public let navigationBarClass:UINavigationBar.Type?
+    
+    // MARK: - Init
+    
+    public init(navigationBarClass:UINavigationBar.Type? = nil) {
+        self.navigationBarClass = navigationBarClass
+        super.init()
+    }
+    
     // MARK: - Utilities
     
-    func modalNavigationController<T:UINavigationController>(rootViewController: UIViewController) -> T {
-        return T.init(rootViewController: rootViewController)
+    private func modalNavigationController<T:UINavigationController>(rootViewController: UIViewController) -> T {
+        if let navigationBarClass = navigationBarClass {
+            let navigationController = T.init(navigationBarClass: navigationBarClass, toolbarClass: nil)
+            navigationController.viewControllers = [rootViewController]
+            return navigationController
+        } else {
+            return T.init(rootViewController: rootViewController)
+        }
     }
     
     // MARK: - AppFlowControllerForwardTransition
