@@ -13,9 +13,9 @@ open class AppFlowController {
     // MARK: - Properties
     
     public static let shared = AppFlowController()
+    public var rootNavigationController:UINavigationController?
     
     private var rootPathStep:PathStep?
-    private var rootNavigationController:UINavigationController?
     private var tracker = AppFlowControllerTracker()
     
     // MARK: - Init
