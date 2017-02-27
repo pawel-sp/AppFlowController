@@ -186,9 +186,12 @@ open class AppFlowController {
         return tracker.parameter(forKey: item.name)
     }
     
-    open func reset() {
-        rootNavigationController?.viewControllers.removeAll()
-        tracker.reset()
+    open func reset(completionBlock:(()->())?) {
+        rootNavigationController?.dismissAllPresentedViewControllers() {
+            self.rootNavigationController?.viewControllers.removeAll()
+            self.tracker.reset()
+            completionBlock?()
+        }
     }
     
     open func removeFromSkipped(items:[AppFlowControllerItem]) {

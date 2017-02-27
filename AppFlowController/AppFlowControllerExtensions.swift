@@ -50,4 +50,24 @@ extension UINavigationController {
         CATransaction.commit()
     }
     
+    var topPresentedViewController: UIViewController? {
+        var presentedVC:UIViewController? = presentedViewController
+        
+        while presentedVC?.presentedViewController != nil {
+            presentedVC = presentedVC?.presentedViewController
+        }
+        
+        return presentedVC
+    }
+    
+    func dismissAllPresentedViewControllers(completionBlock:(()->())?) {
+        if let vc = topPresentedViewController {
+            vc.dismiss(animated: false) { [weak self] in
+                self?.dismissAllPresentedViewControllers(completionBlock: completionBlock)
+            }
+        } else {
+            completionBlock?()
+        }
+    }
+    
 }
