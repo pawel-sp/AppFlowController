@@ -33,28 +33,35 @@ open class AppFlowController {
         register(path:[path])
     }
     
-    // If you are using custom transition you need to remember to use it in every path where specific path step exists (look at example)
     public func register(path:[AppFlowControllerItem]) {
+        register(path:[path])
+    }
+    
+    // If you are using custom transition you need to remember to use it in every path where specific path step exists (look at example)
+    public func register(path:[[AppFlowControllerItem]]) {
         
-        if let lastPath = path.last, rootPathStep?.search(item: lastPath) != nil {
-            assertError(error: .pathNameAlreadyRegistered(name: lastPath.name))
-        }
-        
-        var previousStep:PathStep?
-        
-        for element in path {
-            if let found = rootPathStep?.search(item: element) {
-                previousStep = found
-                continue
-            } else {
-                if let previous = previousStep {
-                    previousStep = previous.add(item: element)
+        for subpath in path {
+            if let lastPath = subpath.last, rootPathStep?.search(item: lastPath) != nil {
+                assertError(error: .pathNameAlreadyRegistered(name: lastPath.name))
+            }
+            
+            var previousStep:PathStep?
+            
+            for element in subpath {
+                if let found = rootPathStep?.search(item: element) {
+                    previousStep = found
+                    continue
                 } else {
-                    rootPathStep = PathStep(item: element)
-                    previousStep = rootPathStep
+                    if let previous = previousStep {
+                        previousStep = previous.add(item: element)
+                    } else {
+                        rootPathStep = PathStep(item: element)
+                        previousStep = rootPathStep
+                    }
                 }
             }
         }
+        
     }
     
     // MARK: - Navigation
