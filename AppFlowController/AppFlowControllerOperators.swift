@@ -46,6 +46,19 @@ public func => (lhs:[AppFlowControllerItem], rhs:AppFlowControllerTransition) ->
     return (lhs, rhs)
 }
 
+func => (lhs:AppFlowControllerTransition, rhs:[AppFlowControllerItem]) -> [AppFlowControllerItem] {
+    var rhs = rhs
+    if rhs.first != nil {
+        var first = rhs.remove(at: 0)
+        first.forwardTransition = lhs
+        first.forwardTransition = lhs
+        rhs.insert(first, at: 0)
+        return rhs
+    } else {
+        return rhs
+    }
+}
+
 public func => (lhs:[AppFlowControllerItem], rhs:AppFlowControllerItem) -> [AppFlowControllerItem] {
     var rhs = rhs
     if rhs.forwardTransition == nil {
