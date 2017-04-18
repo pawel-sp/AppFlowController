@@ -25,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         flowController.prepare(forWindow:window!)
         
         flowController.register(path:
+            AppPage.start =>
             AppPage.home =>> [
                 alpha => AppPage.registration,
                 AppPage.login =>> [
@@ -47,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        flowController.register(path: AppPage.home => AppPage.tabs => tab => AppPage.tabPage1)
 //        flowController.register(path: AppPage.home => AppPage.tabs => tab => AppPage.tabPage2)
         
-        flowController.show(item:AppPage.home)
+        flowController.show(item:AppPage.start)
         return true
     }
 
@@ -57,6 +58,12 @@ class AppPage:AppFlowControllerPage {
     
     // MARK: - Pages
 
+    static let start = AppPage(
+        name: "start",
+        storyboardName: "Main",
+        viewControllerType: StartViewController.self
+    )
+    
     static let home = AppPage(
         name: "home",
         storyboardName: "Main",

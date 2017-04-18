@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A41D64851EA5F80B0046F53D /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A41D64841EA5F80B0046F53D /* StartViewController.swift */; };
 		A488093C1DA165E9003CF8F3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A488093B1DA165E9003CF8F3 /* Assets.xcassets */; };
 		A488093F1DA165E9003CF8F3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A488093D1DA165E9003CF8F3 /* LaunchScreen.storyboard */; };
 		A48809471DA16644003CF8F3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48809461DA16644003CF8F3 /* AppDelegate.swift */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A41D64841EA5F80B0046F53D /* StartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		A48809311DA165E9003CF8F3 /* iOS-Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS-Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A488093B1DA165E9003CF8F3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A488093E1DA165E9003CF8F3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 				A493C47B1DA3FE6800BB4A08 /* TabBarViewController.swift */,
 				A493C47E1DA3FFC300BB4A08 /* TabPage1ViewController.swift */,
 				A493C4801DA3FFD500BB4A08 /* TabPage2ViewController.swift */,
+				A41D64841EA5F80B0046F53D /* StartViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -187,7 +190,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0800;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Paweł Sporysz";
 				TargetAttributes = {
 					A48809301DA165E9003CF8F3 = {
@@ -260,6 +263,7 @@
 				A4ACF4C51DA16C99009FFEA8 /* AlphaTransition.swift in Sources */,
 				A493C4811DA3FFD500BB4A08 /* TabPage2ViewController.swift in Sources */,
 				A48809471DA16644003CF8F3 /* AppDelegate.swift in Sources */,
+				A41D64851EA5F80B0046F53D /* StartViewController.swift in Sources */,
 				A488095B1DA16683003CF8F3 /* ItemsTableViewController.swift in Sources */,
 				A48809551DA16677003CF8F3 /* HomeViewController.swift in Sources */,
 				A488095A1DA16683003CF8F3 /* InfoViewController.swift in Sources */,
@@ -301,6 +305,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -350,6 +355,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

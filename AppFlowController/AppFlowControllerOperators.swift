@@ -57,6 +57,23 @@ public func => (lhs:[AppFlowControllerItem], rhs:AppFlowControllerItem) -> [AppF
     return lhs + [rhs]
 }
 
+public func => (lhs:[AppFlowControllerItem], rhs:[AppFlowControllerItem]) -> [AppFlowControllerItem] {
+    var rhs = rhs
+    if rhs.first != nil {
+        var first = rhs.remove(at: 0)
+        if first.forwardTransition == nil {
+            first.forwardTransition = PushPopAppFlowControllerTransition.default
+        }
+        if first.backwardTransition == nil {
+            first.forwardTransition = PushPopAppFlowControllerTransition.default
+        }
+        rhs.insert(first, at: 0)
+        return lhs + rhs
+    } else {
+        return lhs + rhs
+    }
+}
+
 public func => (lhs:AppFlowControllerItem, rhs:[AppFlowControllerItem]) -> [AppFlowControllerItem] {
     if var first = rhs.first {
         if first.forwardTransition == nil {
@@ -77,6 +94,22 @@ public func => (lhs:(items:[AppFlowControllerItem], transition:AppFlowController
 }
 
 public func =>> (lhs:AppFlowControllerItem, rhs:[Any]) -> [[AppFlowControllerItem]] {
+    var result:[[AppFlowControllerItem]] = []
+    for element in rhs {
+        if let item = element as? AppFlowControllerItem {
+            result.append(lhs => item)
+        } else if let items = element as? [AppFlowControllerItem] {
+            result.append(lhs => items)
+        } else if let anyItems = element as? [Any] {
+            for every in lhs =>> anyItems {
+                result.append(every)
+            }
+        }
+    }
+    return result
+}
+
+public func =>> (lhs:[AppFlowControllerItem], rhs:[Any]) -> [[AppFlowControllerItem]] {
     var result:[[AppFlowControllerItem]] = []
     for element in rhs {
         if let item = element as? AppFlowControllerItem {
