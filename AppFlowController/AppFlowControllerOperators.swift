@@ -47,16 +47,11 @@ public func => (lhs:[AppFlowControllerItem], rhs:AppFlowControllerTransition) ->
 }
 
 func => (lhs:AppFlowControllerTransition, rhs:[AppFlowControllerItem]) -> [AppFlowControllerItem] {
-    var rhs = rhs
-    if rhs.first != nil {
-        var first = rhs.remove(at: 0)
+    if var first = rhs.first {
         first.forwardTransition = lhs
-        first.forwardTransition = lhs
-        rhs.insert(first, at: 0)
-        return rhs
-    } else {
-        return rhs
+        first.backwardTransition = lhs
     }
+    return rhs
 }
 
 public func => (lhs:[AppFlowControllerItem], rhs:AppFlowControllerItem) -> [AppFlowControllerItem] {
@@ -71,20 +66,15 @@ public func => (lhs:[AppFlowControllerItem], rhs:AppFlowControllerItem) -> [AppF
 }
 
 public func => (lhs:[AppFlowControllerItem], rhs:[AppFlowControllerItem]) -> [AppFlowControllerItem] {
-    var rhs = rhs
-    if rhs.first != nil {
-        var first = rhs.remove(at: 0)
+    if var first = rhs.first {
         if first.forwardTransition == nil {
-            first.forwardTransition = PushPopAppFlowControllerTransition.default
+            first.forwardTransition  = PushPopAppFlowControllerTransition.default
         }
         if first.backwardTransition == nil {
-            first.forwardTransition = PushPopAppFlowControllerTransition.default
+            first.backwardTransition = PushPopAppFlowControllerTransition.default
         }
-        rhs.insert(first, at: 0)
-        return lhs + rhs
-    } else {
-        return lhs + rhs
     }
+    return lhs + rhs
 }
 
 public func => (lhs:AppFlowControllerItem, rhs:[AppFlowControllerItem]) -> [AppFlowControllerItem] {
