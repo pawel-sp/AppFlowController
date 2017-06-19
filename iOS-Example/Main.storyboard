@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -52,49 +52,65 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zvm-8x-U79">
-                                <rect key="frame" x="168.5" y="298.5" width="38" height="30"/>
-                                <state key="normal" title="Login"/>
-                                <connections>
-                                    <action selector="loginAction:" destination="7Ol-0w-SaP" eventType="touchUpInside" id="ZBW-Fu-9kG"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dhe-bz-8HH">
-                                <rect key="frame" x="146" y="336.5" width="83" height="30"/>
+                                <rect key="frame" x="146" y="402.5" width="83" height="30"/>
                                 <state key="normal" title="Registration"/>
                                 <connections>
                                     <action selector="registrationAction:" destination="7Ol-0w-SaP" eventType="touchUpInside" id="J9f-fi-Xai"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hSn-mf-dCg">
-                                <rect key="frame" x="168.5" y="374.5" width="38" height="30"/>
+                                <rect key="frame" x="168.5" y="440.5" width="38" height="30"/>
                                 <state key="normal" title="Items"/>
                                 <connections>
                                     <action selector="itemsAction:" destination="7Ol-0w-SaP" eventType="touchUpInside" id="6CU-82-F1i"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2GF-aw-4pA">
-                                <rect key="frame" x="171" y="412" width="33" height="30"/>
+                                <rect key="frame" x="171" y="478" width="33" height="30"/>
                                 <state key="normal" title="Tabs"/>
                                 <connections>
                                     <action selector="tabsAction:" destination="7Ol-0w-SaP" eventType="touchUpInside" id="mBR-CL-Efp"/>
+                                </connections>
+                            </button>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ILh-DW-H7l">
+                                <rect key="frame" x="163" y="336.5" width="51" height="31"/>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="skip page" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GTI-Ce-YHV">
+                                <rect key="frame" x="220" y="344" width="58.5" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zvm-8x-U79">
+                                <rect key="frame" x="168" y="298.5" width="38" height="30"/>
+                                <state key="normal" title="Login"/>
+                                <connections>
+                                    <action selector="loginAction:" destination="7Ol-0w-SaP" eventType="touchUpInside" id="ZBW-Fu-9kG"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.37647058820000001" green="0.77647058820000003" blue="0.70980392160000005" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="dhe-bz-8HH" firstAttribute="centerX" secondItem="8TW-sH-HX3" secondAttribute="centerX" id="83P-PI-yXw"/>
-                            <constraint firstItem="dhe-bz-8HH" firstAttribute="top" secondItem="zvm-8x-U79" secondAttribute="bottom" constant="8" id="LuS-V1-aiU"/>
                             <constraint firstItem="zvm-8x-U79" firstAttribute="centerY" secondItem="8TW-sH-HX3" secondAttribute="centerY" constant="-20" id="NHx-Ne-Oj1"/>
+                            <constraint firstItem="GTI-Ce-YHV" firstAttribute="leading" secondItem="ILh-DW-H7l" secondAttribute="trailing" constant="8" id="Pof-XJ-Kn8"/>
                             <constraint firstItem="hSn-mf-dCg" firstAttribute="centerX" secondItem="8TW-sH-HX3" secondAttribute="centerX" id="SbF-pu-OTS"/>
+                            <constraint firstItem="ILh-DW-H7l" firstAttribute="top" secondItem="zvm-8x-U79" secondAttribute="bottom" constant="8" id="W5d-Kr-Zup"/>
                             <constraint firstItem="zvm-8x-U79" firstAttribute="centerX" secondItem="8TW-sH-HX3" secondAttribute="centerX" id="dFD-F7-w9J"/>
                             <constraint firstItem="2GF-aw-4pA" firstAttribute="top" secondItem="hSn-mf-dCg" secondAttribute="bottom" constant="7.5" id="dnq-dp-8uS"/>
                             <constraint firstItem="2GF-aw-4pA" firstAttribute="centerX" secondItem="8TW-sH-HX3" secondAttribute="centerX" id="eSU-Uq-wsV"/>
+                            <constraint firstItem="GTI-Ce-YHV" firstAttribute="centerY" secondItem="ILh-DW-H7l" secondAttribute="centerY" id="f9a-dC-eii"/>
+                            <constraint firstItem="ILh-DW-H7l" firstAttribute="centerX" secondItem="8TW-sH-HX3" secondAttribute="centerX" id="meG-Rk-OW5"/>
+                            <constraint firstItem="dhe-bz-8HH" firstAttribute="top" secondItem="ILh-DW-H7l" secondAttribute="bottom" constant="35" id="nbC-Yf-80g"/>
                             <constraint firstItem="hSn-mf-dCg" firstAttribute="top" secondItem="dhe-bz-8HH" secondAttribute="bottom" constant="8" id="tPj-fu-OHO"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Home" id="XKq-LA-KjK"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="skipSwitch" destination="ILh-DW-H7l" id="iXR-td-PPV"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eGY-Ra-Bpd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

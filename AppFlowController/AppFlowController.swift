@@ -219,12 +219,6 @@ open class AppFlowController {
         }
     }
     
-    open func removeFromSkipped(items:[AppFlowControllerItem]) {
-        for item in items {
-            tracker.disableSkipped(forKey: item.name)
-        }
-    }
-    
     // MARK: - Helpers
     
     private func visibleStep() -> PathStep? {
@@ -306,14 +300,17 @@ open class AppFlowController {
             }
         } else if tracker.viewController(forKey: item.name) == nil && !tracker.isItemAtKeySkipped(key: item.name) {
             
-            let viewController           = self.viewController(fromItem:item)
             let shouldSkipViewController = skipItems?.contains(where: { $0.isEqual(item: item) }) == true
             
-            tracker.register(viewController: viewController, forKey: item.name, skipped:shouldSkipViewController)
-            
             if shouldSkipViewController {
+                
+                tracker.register(viewController: nil, forKey: item.name, skipped:shouldSkipViewController)
                 displayNextItem(range: indexRange, animated: animated)
+                
             } else {
+                
+                let viewController = self.viewController(fromItem:item)
+                tracker.register(viewController: viewController, forKey: item.name, skipped:shouldSkipViewController)
                 item.forwardTransition?.forwardTransitionBlock(animated: animated){
                     displayNextItem(range: indexRange, animated: animated)
                 }(navigationController, viewController)

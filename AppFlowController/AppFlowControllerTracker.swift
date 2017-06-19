@@ -62,7 +62,7 @@ class AppFlowControllerTracker {
         items.removeAll()
     }
     
-    func register(viewController:UIViewController, forKey key:String, skipped:Bool = false) {
+    func register(viewController:UIViewController?, forKey key:String, skipped:Bool = false) {
         if let found = items[key] {
             found.viewController = viewController
             found.skipped        = skipped
@@ -77,10 +77,6 @@ class AppFlowControllerTracker {
         } else {
             items[key] = Item(viewController: nil, parameter: parameter)
         }
-    }
-    
-    func disableSkipped(forKey key:String) {
-        items[key]?.skipped = false
     }
     
     func viewController(forKey key:String) -> UIViewController? {
@@ -101,7 +97,11 @@ class AppFlowControllerTracker {
     }
     
     func isItemAtKeySkipped(key:String) -> Bool {
-        return items.filter({ $0.key == key }).first?.value.skipped == true
+        if let item = items.filter({ $0.key == key }).first, item.value.viewController != nil {
+            return item.value.skipped
+        } else {
+            return false // if view is deallocated cannot be skipped
+        }
     }
     
 }

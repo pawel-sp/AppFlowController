@@ -11,8 +11,17 @@ import AppFlowController
 
 class HomeViewController: BaseViewController {
 
+    @IBOutlet weak var skipSwitch: UISwitch!
+    
     @IBAction func loginAction(_ sender: AnyObject) {
-        AppFlowController.shared.show(item: AppPage.login)
+        if skipSwitch.isOn {
+            AppFlowController.shared.show(
+                item: AppPage.forgotPassword,
+                skipItems: [AppPage.login]
+            )
+        } else {
+            AppFlowController.shared.show(item: AppPage.login)
+        }
     }
 
     @IBAction func registrationAction(_ sender: AnyObject) {
