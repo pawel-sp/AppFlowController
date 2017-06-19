@@ -88,18 +88,8 @@ open class AppFlowController {
     // skipItems - those items won't be within view controllers stack! It's only for items to show, not to dismiss!
     open func show(item:AppFlowControllerItem, parameters:[AppFlowControllerItemName:String]? = nil, animated:Bool = true, skipDismissTransitions:Bool = false, skipItems:[AppFlowControllerItem]? = nil) {
         
-        var itemToPresent = item
-        
-        if let transferItem = item as? AppFlowControllerTransferItem {
-            if let currentItem = currentItem() {
-                itemToPresent = transferItem.transferBlock(currentItem)
-            } else {
-                assertError(error: .cannotUseTransferItemWithoutVisiblePage)
-            }
-        }
-        
-        guard let foundStep = rootPathStep?.search(item: itemToPresent) else {
-            assertError(error: .unregisteredPathName(name: itemToPresent.name))
+        guard let foundStep = rootPathStep?.search(item: item) else {
+            assertError(error: .unregisteredPathName(name: item.name))
             return
         }
         

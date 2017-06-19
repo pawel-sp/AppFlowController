@@ -68,8 +68,10 @@ func => (lhs:AppFlowControllerTransition, rhs:[AppFlowControllerItem]) -> [AppFl
     if var first = rhs.first {
         first.forwardTransition = lhs
         first.backwardTransition = lhs
+        return [first] + rhs.dropFirst()
+    } else {
+        return rhs
     }
-    return rhs
 }
 
 public func => (lhs:[AppFlowControllerItem], rhs:AppFlowControllerItem) -> [AppFlowControllerItem] {
@@ -91,8 +93,10 @@ public func => (lhs:[AppFlowControllerItem], rhs:[AppFlowControllerItem]) -> [Ap
         if first.backwardTransition == nil {
             first.backwardTransition = PushPopAppFlowControllerTransition.default
         }
+        return lhs + ([first] + rhs.dropFirst())
+    } else {
+        return lhs + rhs
     }
-    return lhs + rhs
 }
 
 public func => (lhs:AppFlowControllerItem, rhs:[AppFlowControllerItem]) -> [AppFlowControllerItem] {
@@ -103,8 +107,10 @@ public func => (lhs:AppFlowControllerItem, rhs:[AppFlowControllerItem]) -> [AppF
         if first.backwardTransition == nil {
             first.backwardTransition = PushPopAppFlowControllerTransition.default
         }
+        return [lhs] + ([first] + rhs.dropFirst())
+    } else {
+        return [lhs] + rhs
     }
-    return [lhs] + rhs
 }
 
 public func => (lhs:(items:[AppFlowControllerItem], transition:AppFlowControllerTransition), rhs:AppFlowControllerItem) -> [AppFlowControllerItem] {

@@ -54,77 +54,77 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
-class AppPage:AppFlowControllerPage {
+class AppPage {
     
     // MARK: - Pages
 
-    static let start = AppPage(
+    static let start = AppFlowControllerPage(
         name: "start",
         storyboardName: "Main",
         viewControllerType: StartViewController.self
     )
     
-    static let home = AppPage(
+    static let home = AppFlowControllerPage(
         name: "home",
         storyboardName: "Main",
         viewControllerType: HomeViewController.self
     )
    
-    static let login = AppPage(
+    static let login = AppFlowControllerPage(
         name: "sign_in",
         storyboardName: "Main",
         viewControllerType: LoginViewController.self
     )
     
-    static let registration = AppPage(
+    static let registration = AppFlowControllerPage(
         name: "sign_up",
         storyboardName: "Main",
         viewControllerType: RegistrationViewController.self
     )
     
-    static let forgotPassword = AppPage(
+    static let forgotPassword = AppFlowControllerPage(
         name: "forgot_password",
         storyboardName: "Main",
         viewControllerType: ForgotPasswordViewController.self
     )
     
-    static let forgotPasswordAlert = AppPage(
+    static let forgotPasswordAlert = AppFlowControllerPage(
         name: "forgot_password_alert",
         storyboardName: "Main",
         viewControllerType: ForgotPasswordViewController.self
     )
     
-    static let items = AppPage(
+    static let items = AppFlowControllerPage(
         name: "items",
         storyboardName: "Main",
         viewControllerType: ItemsTableViewController.self
     )
     
-    static let details = AppPage(
+    static let details = AppFlowControllerPage(
         name: "details",
         storyboardName: "Main",
         viewControllerType: DetailsViewController.self
     )
     
-    static let info = AppPage(
+    static let info = AppFlowControllerPage(
         name: "info",
         storyboardName: "Main",
         viewControllerType: InfoViewController.self
     )
     
-    static let tabs = AppPage(
+    static let tabs = AppFlowControllerPage(
         name: "tabs",
         storyboardName: "Main",
         viewControllerType: TabBarViewController.self
     )
     
-    static let tabPage1 = AppPage(
+    static let tabPage1 = AppFlowControllerPage(
         name: "tabPage1",
         storyboardName: "Main",
         viewControllerType: TabPage1ViewController.self
     )
     
-    static let tabPage2 = AppPage(
+    static let tabPage2 = AppFlowControllerPage(
         name: "tabPage2",
         storyboardName: "Main",
         viewControllerType: TabPage2ViewController.self

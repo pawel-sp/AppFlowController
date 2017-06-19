@@ -48,13 +48,13 @@ extension AppFlowControllerItem {
     
 }
 
-open class AppFlowControllerPage: NSObject, AppFlowControllerItem {
+public struct AppFlowControllerPage: AppFlowControllerItem {
     
     // MARK: - Properties
     
-    public var name:String
-    public var viewControllerBlock: () -> UIViewController
-    public var viewControllerType: UIViewController.Type
+    public let name:String
+    public let viewControllerBlock: () -> UIViewController
+    public let viewControllerType: UIViewController.Type
     public var forwardTransition: AppFlowControllerForwardTransition?
     public var backwardTransition: AppFlowControllerBackwardTransition?
     
@@ -70,7 +70,7 @@ open class AppFlowControllerPage: NSObject, AppFlowControllerItem {
         self.viewControllerType  = viewControllerType
     }
     
-    public convenience init(
+    public init(
         name:String,
         storyboardName:String,
         viewControllerIdentifier:String,
@@ -83,7 +83,7 @@ open class AppFlowControllerPage: NSObject, AppFlowControllerItem {
         )
     }
     
-    public convenience init(
+    public init(
         name:String,
         storyboardName:String,
         viewControllerType:UIViewController.Type
