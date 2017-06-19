@@ -30,20 +30,25 @@ public typealias AppFlowControllerItemName = String
 
 public protocol AppFlowControllerItem {
     
-    var name:AppFlowControllerItemName { get }
+    var name:AppFlowControllerItemName { get set }
+    var supportVariants:Bool { get }
     var viewControllerBlock:() -> UIViewController { get }
     var viewControllerType: UIViewController.Type { get }
     var forwardTransition:AppFlowControllerForwardTransition? { get set }
     var backwardTransition:AppFlowControllerBackwardTransition? { get set }
     
-    func isEqual(item:AppFlowControllerItem) -> Bool
+    func isEqual(item:AppFlowControllerItem, parentItem:AppFlowControllerItem?) -> Bool
     
 }
 
 extension AppFlowControllerItem {
     
-    public func isEqual(item:AppFlowControllerItem) -> Bool {
-        return self.name == item.name
+    public func isEqual(item:AppFlowControllerItem, parentItem:AppFlowControllerItem? = nil) -> Bool {
+        if let parentItem = parentItem {
+            return "\(parentItem.name)_\(item.name)" == self.name
+        } else {
+            return self.name == item.name
+        }
     }
     
 }
@@ -52,7 +57,8 @@ public struct AppFlowControllerPage: AppFlowControllerItem {
     
     // MARK: - Properties
     
-    public let name:String
+    public var name:String
+    public let supportVariants: Bool
     public let viewControllerBlock: () -> UIViewController
     public let viewControllerType: UIViewController.Type
     public var forwardTransition: AppFlowControllerForwardTransition?
@@ -62,22 +68,26 @@ public struct AppFlowControllerPage: AppFlowControllerItem {
     
     public init(
         name:String,
+        supportVariants:Bool = false,
         viewControllerBlock:@escaping ()->(UIViewController),
         viewControllerType:UIViewController.Type
     ) {
         self.name                = name
+        self.supportVariants     = supportVariants
         self.viewControllerBlock = viewControllerBlock
         self.viewControllerType  = viewControllerType
     }
     
     public init(
         name:String,
+        supportVariants:Bool = false,
         storyboardName:String,
         viewControllerIdentifier:String,
         viewControllerType:UIViewController.Type
     ) {
         self.init(
             name: name,
+            supportVariants: supportVariants,
             viewControllerBlock:{ UIStoryboard(name: storyboardName, bundle: nil).instantiateViewController(withIdentifier: viewControllerIdentifier) },
             viewControllerType:viewControllerType
         )
@@ -85,11 +95,13 @@ public struct AppFlowControllerPage: AppFlowControllerItem {
     
     public init(
         name:String,
+        supportVariants:Bool = false,
         storyboardName:String,
         viewControllerType:UIViewController.Type
     ) {
         self.init(
             name:name,
+            supportVariants:supportVariants,
             storyboardName:storyboardName,
             viewControllerIdentifier:String(describing: viewControllerType),
             viewControllerType:viewControllerType

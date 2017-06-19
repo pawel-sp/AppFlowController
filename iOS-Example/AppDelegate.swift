@@ -27,12 +27,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         flowController.register(path:
             AppPage.start =>
             AppPage.home =>> [
+                AppPage.play,
                 alpha => AppPage.registration,
                 AppPage.login =>> [
-                    AppPage.forgotPassword,
-                    modal => AppPage.forgotPasswordAlert => AppPage.info
+                    modal => AppPage.play,
+                    AppPage.forgotPassword => AppPage.play,
+                    modal => AppPage.forgotPasswordAlert =>> [
+                        AppPage.play,
+                        AppPage.info => AppPage.play
+                    ]
                 ],
-                AppPage.items => AppPage.details,
+                AppPage.items => AppPage.details => AppPage.play,
                 AppPage.tabs =>> [
                     tab => AppPage.tabPage1,
                     tab => AppPage.tabPage2
@@ -130,5 +135,13 @@ class AppPage {
         viewControllerType: TabPage2ViewController.self
     )
     
+    static let play = AppFlowControllerPage(
+        name: "play",
+        supportVariants: true,
+        storyboardName: "Main",
+        viewControllerType: PlayViewController.self
+    )
+    
+    // TODO: - refactor name in register for variants
 }
 

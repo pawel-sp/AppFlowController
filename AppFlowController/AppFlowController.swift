@@ -59,18 +59,22 @@ open class AppFlowController {
     public func register(path:[[AppFlowControllerItem]]) {
         
         for subpath in path {
-            if let lastPath = subpath.last, rootPathStep?.search(item: lastPath) != nil {
+            
+            if let lastPath = subpath.last, !lastPath.supportVariants, rootPathStep?.search(item: lastPath) != nil {
                 assertError(error: .pathNameAlreadyRegistered(name: lastPath.name))
             }
             
             var previousStep:PathStep?
             
-            for element in subpath {
+            for var element in subpath {
                 if let found = rootPathStep?.search(item: element) {
                     previousStep = found
                     continue
                 } else {
                     if let previous = previousStep {
+                        if element.supportVariants {
+                            element.name = "\(previous.current.name)_\(element.name)"
+                        }
                         previousStep = previous.add(item: element)
                     } else {
                         rootPathStep = PathStep(item: element)
@@ -86,10 +90,18 @@ open class AppFlowController {
     
     // parameters need to keys equals item names to have correct behaviour.
     // skipItems - those items won't be within view controllers stack! It's only for items to show, not to dismiss!
-    open func show(item:AppFlowControllerItem, parameters:[AppFlowControllerItemName:String]? = nil, animated:Bool = true, skipDismissTransitions:Bool = false, skipItems:[AppFlowControllerItem]? = nil) {
+    open func show(item:AppFlowControllerItem, variant:AppFlowControllerItem? = nil, parameters:[AppFlowControllerItemName:String]? = nil, animated:Bool = true, skipDismissTransitions:Bool = false, skipItems:[AppFlowControllerItem]? = nil) {
         
-        guard let foundStep = rootPathStep?.search(item: item) else {
-            assertError(error: .unregisteredPathName(name: item.name))
+        if item.supportVariants && variant == nil {
+            assertError(error: .missingVariant(name: item.name))
+        }
+        
+        if !item.supportVariants && variant != nil {
+            assertError(error: .variantNotSupported(name: item.name))
+        }
+        
+        guard let foundStep = rootPathStep?.search(item: item, parent:variant) else {
+            assertError(error: .unregisteredPathName(name: item.name, variant: variant?.name))
             return
         }
         
@@ -157,14 +169,14 @@ open class AppFlowController {
         if let _ = rootPathStep?.search(forName: pathName) {
             self.tracker.register(viewController: viewController, forKey: pathName)
         } else {
-            assertError(error: AppFlowControllerError.unregisteredPathName(name: pathName))
+            assertError(error: AppFlowControllerError.unregisteredPathName(name: pathName, variant: nil))
         }
     }
     
     open func pathComponents(forItem item:AppFlowControllerItem) -> String? {
         
         guard let foundStep = rootPathStep?.search(item: item) else {
-            assertError(error: .unregisteredPathName(name: item.name))
+            assertError(error: .unregisteredPathName(name: item.name, variant: nil))
             return nil
         }
         

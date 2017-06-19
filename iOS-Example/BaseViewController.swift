@@ -7,9 +7,24 @@
 //
 
 import UIKit
+import AppFlowController
 
 class BaseViewController: UIViewController {
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        if !isKind(of: PlayViewController.self) {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(BaseViewController.showPlayPage))
+        }
+    }
+    
+    func showPlayPage() {
+        if let current = AppFlowController.shared.currentItem() {
+            AppFlowController.shared.show(item: AppPage.play, variant: current)
+        }
+        
+    }
+    
     deinit {
         print("\(type(of:self)) deallocated")
     }

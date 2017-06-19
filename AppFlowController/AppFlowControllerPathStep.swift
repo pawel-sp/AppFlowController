@@ -53,8 +53,8 @@ class PathStep {
         return children
     }
     
-    func search(item:AppFlowControllerItem) -> PathStep? {
-        return search(compareBlock: { $0.current.isEqual(item: item) })
+    func search(item:AppFlowControllerItem, parent:AppFlowControllerItem? = nil) -> PathStep? {
+        return search(compareBlock: { $0.current.isEqual(item: item, parentItem: parent) })
     }
     
     func search(forName name:String) -> PathStep? {

@@ -30,22 +30,28 @@ enum AppFlowControllerError:Error {
     
     case pathNameAlreadyRegistered(name:String)
     case internalError
-    case unregisteredPathName(name:String)
+    case unregisteredPathName(name:String, variant:String?)
     case missingConfigurationForAppFlowController
     case unregisteredViewControllerType(viewControllerType:UIViewController.Type)
+    case missingVariant(name:String)
+    case variantNotSupported(name:String)
     
     var errorInfo:String {
         switch self {
             case .pathNameAlreadyRegistered(let name):
-                return "\(name) is already registered, if you want to register the same UIViewController for presenting it in a different way you need to create separate AppFlowControllerItem case with the same UIViewController"
+                return "\(name) is already registered, if you want to register the same UIViewController for presenting it in a different way you need to create separate AppFlowControllerItem case with the same UIViewController or use supportVariants property in AppFlowControllerItem"
             case .internalError:
                 return "Internal error"
-            case .unregisteredPathName(let name):
-                return "Unregistered path for item \(name)"
+            case .unregisteredPathName(let name, let variant):
+                return "Unregistered path for item \(name)" + (variant == nil ? "" : " for variant \(variant!)")
             case .missingConfigurationForAppFlowController:
                 return "You need to invoke prepare(forWindow:UIWindow) function first"
             case .unregisteredViewControllerType(let viewControllerType):
                 return "Unregistered view controller type \(viewControllerType)"
+            case .missingVariant(let name):
+                return "\(name) supports variants and cannot be shown without it. Use variant parameter in show method"
+            case .variantNotSupported(let name):
+                return "\(name) doesn't support variants"
         }
     }
     

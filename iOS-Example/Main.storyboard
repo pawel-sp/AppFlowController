@@ -116,6 +116,32 @@
             </objects>
             <point key="canvasLocation" x="-1079" y="101"/>
         </scene>
+        <!--Play-->
+        <scene sceneID="Qok-lv-WNt">
+            <objects>
+                <viewController storyboardIdentifier="PlayViewController" id="X7E-rr-Mpo" customClass="PlayViewController" customModule="iOS_Example" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="qbI-fe-ZtV"/>
+                        <viewControllerLayoutGuide type="bottom" id="2e4-TC-80q"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="cHb-gb-Eed">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.77790178570000001" green="0.46666666670000001" blue="0.70980392160000005" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Play" id="msR-Js-dap">
+                        <barButtonItem key="rightBarButtonItem" title="Dismiss modal" id="sq7-6p-ttY">
+                            <connections>
+                                <action selector="dismiss:" destination="X7E-rr-Mpo" id="yHy-U7-Y88"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="G8i-lu-6b1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1796" y="797"/>
+        </scene>
         <!--Items-->
         <scene sceneID="Mnc-dl-jSn">
             <objects>
