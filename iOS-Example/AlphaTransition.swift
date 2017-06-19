@@ -14,7 +14,7 @@ class AlphaTransition: NSObject, UIViewControllerAnimatedTransitioning, AppFlowC
     // MARK: - UIViewControllerAnimatedTransitioning
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 2
+        return 0.5
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -23,10 +23,11 @@ class AlphaTransition: NSObject, UIViewControllerAnimatedTransitioning, AppFlowC
         let containerView  = transitionContext.containerView
         guard let toView   = toVC.view else { return }
         guard let fromView = fromVC.view else { return }
+        let animationDuration = transitionDuration(using: transitionContext)
         
         toView.alpha = 0
         containerView.addSubview(toView)
-        UIView.animate(withDuration: 0.5, animations: {
+        UIView.animate(withDuration: animationDuration, animations: {
             toView.alpha = 1
         }) { finished in
             if (transitionContext.transitionWasCancelled) {
