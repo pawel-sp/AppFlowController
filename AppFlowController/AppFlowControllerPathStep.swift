@@ -30,19 +30,19 @@ class PathStep {
     
     // MARK: - Properties
     
-    let current:AppFlowControllerItem
+    let current:AppFlowControllerPage
     private var children:[PathStep] = []
     weak var parent:PathStep?
     
     // MARK: - Init
     
-    init(item:AppFlowControllerItem) {
+    init(item:AppFlowControllerPage) {
         self.current = item
     }
     
     // MARK: - Utilities
     
-    func add(item:AppFlowControllerItem) -> PathStep {
+    func add(item:AppFlowControllerPage) -> PathStep {
         let step = PathStep(item: item)
         children.append(step)
         step.parent = self
@@ -53,16 +53,16 @@ class PathStep {
         return children
     }
     
-    func search(item:AppFlowControllerItem, parent:AppFlowControllerItem? = nil) -> PathStep? {
-        return search(compareBlock: { $0.current.isEqual(item: item, parentItem: parent) })
+    func search(item:AppFlowControllerPage) -> PathStep? {
+        return search(compareBlock: { $0.current.identifier == item.identifier })
     }
     
     func search(forName name:String) -> PathStep? {
         return search(compareBlock: { $0.current.name == name })
     }
     
-    func allParentItems(fromStep step:PathStep, includeSelf:Bool = true) -> [AppFlowControllerItem] {
-        var items:[AppFlowControllerItem] = includeSelf ? [step.current] : []
+    func allParentItems(fromStep step:PathStep, includeSelf:Bool = true) -> [AppFlowControllerPage] {
+        var items:[AppFlowControllerPage] = includeSelf ? [step.current] : []
         var current = step
         while let parent = current.parent {
             current = parent
@@ -71,14 +71,14 @@ class PathStep {
         return items
     }
     
-    func distanceToStepWithItem(item:AppFlowControllerItem) -> Int? {
+    func distanceToStepWithItem(item:AppFlowControllerPage) -> Int? {
         var counter = 0
         var found   = false
         var current = self
         while let parent = current.parent {
             current = parent
             counter += 1
-            if parent.current.isEqual(item: item) {
+            if parent.current.identifier == item.identifier {
                 found = true
                 break
             }
@@ -89,10 +89,10 @@ class PathStep {
     func distanceBetween(step step1:PathStep, andStep step2:PathStep) -> (up:Int, down:Int) {
         let step1Parents = step1.allParentItems(fromStep: step1)
         let step2Parents = step2.allParentItems(fromStep: step2)
-        var commonItems:[AppFlowControllerItem] = []
+        var commonItems:[AppFlowControllerPage] = []
         for step1Parent in step1Parents {
             for step2Parent in step2Parents {
-                if step1Parent.isEqual(item: step2Parent) {
+                if step1Parent.identifier == step2Parent.identifier {
                     commonItems.append(step1Parent)
                 }
             }

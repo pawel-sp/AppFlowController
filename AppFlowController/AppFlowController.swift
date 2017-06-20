@@ -47,16 +47,16 @@ open class AppFlowController {
         window.rootViewController = rootNavigationController
     }
     
-    public func register(path:AppFlowControllerItem) {
+    public func register(path:AppFlowControllerPage) {
         register(path:[path])
     }
     
-    public func register(path:[AppFlowControllerItem]) {
+    public func register(path:[AppFlowControllerPage]) {
         register(path:[path])
     }
     
     // If you are using custom transition you need to remember to use it in every path where specific path step exists (look at example)
-    public func register(path:[[AppFlowControllerItem]]) {
+    public func register(path:[[AppFlowControllerPage]]) {
         
         for subpath in path {
             
@@ -73,7 +73,7 @@ open class AppFlowController {
                 } else {
                     if let previous = previousStep {
                         if element.supportVariants {
-                            element.name = "\(previous.current.name)_\(element.name)"
+                            element.variantName = previous.current.name
                         }
                         previousStep = previous.add(item: element)
                     } else {
@@ -90,7 +90,9 @@ open class AppFlowController {
     
     // parameters need to keys equals item names to have correct behaviour.
     // skipItems - those items won't be within view controllers stack! It's only for items to show, not to dismiss!
-    open func show(item:AppFlowControllerItem, variant:AppFlowControllerItem? = nil, parameters:[AppFlowControllerItemName:String]? = nil, animated:Bool = true, skipDismissTransitions:Bool = false, skipItems:[AppFlowControllerItem]? = nil) {
+    open func show(item:AppFlowControllerPage, variant:AppFlowControllerPage? = nil, parameters:[String:String]? = nil, animated:Bool = true, skipDismissTransitions:Bool = false, skipItems:[AppFlowControllerPage]? = nil) {
+        
+        var item = item
         
         if item.supportVariants && variant == nil {
             assertError(error: .missingVariant(name: item.name))
@@ -100,7 +102,11 @@ open class AppFlowController {
             assertError(error: .variantNotSupported(name: item.name))
         }
         
-        guard let foundStep = rootPathStep?.search(item: item, parent:variant) else {
+        if item.supportVariants && variant != nil {
+            item.variantName = variant?.name
+        }
+        
+        guard let foundStep = rootPathStep?.search(item: item) else {
             assertError(error: .unregisteredPathName(name: item.name, variant: variant?.name))
             return
         }
@@ -154,7 +160,7 @@ open class AppFlowController {
         }
     }
     
-    public func popToItem(_ item:AppFlowControllerItem) {
+    public func popToItem(_ item:AppFlowControllerPage) {
         guard let navigationController = rootNavigationController?.visibleNavigationController else {
             return
         }
@@ -173,7 +179,7 @@ open class AppFlowController {
         }
     }
     
-    open func pathComponents(forItem item:AppFlowControllerItem) -> String? {
+    open func pathComponents(forItem item:AppFlowControllerPage) -> String? {
         
         guard let foundStep = rootPathStep?.search(item: item) else {
             assertError(error: .unregisteredPathName(name: item.name, variant: nil))
@@ -196,7 +202,7 @@ open class AppFlowController {
         }
     }
     
-    open func currentItem() -> AppFlowControllerItem? {
+    open func currentItem() -> AppFlowControllerPage? {
         return visibleStep()?.current
     }
     
@@ -209,7 +215,7 @@ open class AppFlowController {
     }
     
     // Use it when there is no visible item yet
-    open func parameterForItem(item:AppFlowControllerItem) -> String? {
+    open func parameterForItem(item:AppFlowControllerPage) -> String? {
         return tracker.parameter(forKey: item.name)
     }
     
@@ -232,7 +238,7 @@ open class AppFlowController {
         }
     }
     
-    private func viewController(fromItem item:AppFlowControllerItem) -> UIViewController {
+    private func viewController(fromItem item:AppFlowControllerPage) -> UIViewController {
         let viewController = item.viewControllerBlock()
         if (viewController.isKind(of: UITabBarController.self)) {
             if let step = rootPathStep?.search(item: item) {
@@ -249,7 +255,7 @@ open class AppFlowController {
         }
     }
     
-    private func register(parameters:[AppFlowControllerItemName : String]?) {
+    private func register(parameters:[String : String]?) {
         if let parameters = parameters {
             for (key, value) in parameters {
                 self.tracker.register(parameter: value, forKey: key)
@@ -257,7 +263,7 @@ open class AppFlowController {
         }
     }
     
-    private func display(items:[AppFlowControllerItem], fromIndexRange indexRange:Range<Int>, animated:Bool, skipItems:[AppFlowControllerItem]? = nil, completionBlock:(() -> ())?) {
+    private func display(items:[AppFlowControllerPage], fromIndexRange indexRange:Range<Int>, animated:Bool, skipItems:[AppFlowControllerPage]? = nil, completionBlock:(() -> ())?) {
         
         let index = indexRange.lowerBound
         let item  = items[index]
@@ -286,7 +292,7 @@ open class AppFlowController {
         if navigationController.viewControllers.count == 0 {
             var viewControllersToPush = [item]
             for item in items[1..<items.count] {
-                if item.forwardTransition?.isKind(of: PushPopAppFlowControllerTransition.self) == true {
+                if item.forwardTransition is PushPopAppFlowControllerTransition {
                     viewControllersToPush += [item]
                 } else {
                     break
@@ -302,7 +308,7 @@ open class AppFlowController {
             }
         } else if tracker.viewController(forKey: item.name) == nil && !tracker.isItemAtKeySkipped(key: item.name) {
             
-            let shouldSkipViewController = skipItems?.contains(where: { $0.isEqual(item: item) }) == true
+            let shouldSkipViewController = skipItems?.contains(where: { $0.identifier == item.identifier }) == true
             
             if shouldSkipViewController {
                 
@@ -325,7 +331,7 @@ open class AppFlowController {
         }
     }
     
-    private func dismiss(items:[AppFlowControllerItem], fromIndexRange indexRange:Range<Int>, animated:Bool, skipTransition:Bool = false, completionBlock:(() -> ())?) {
+    private func dismiss(items:[AppFlowControllerPage], fromIndexRange indexRange:Range<Int>, animated:Bool, skipTransition:Bool = false, completionBlock:(() -> ())?) {
         if indexRange.count == 0 {
             
             completionBlock?()

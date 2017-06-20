@@ -1,5 +1,5 @@
 //
-//  AppFlowControllerItem.swift
+//  AppFlowControllerPage.swift
 //  AppFlowController
 //
 //  Created by Paweł Sporysz on 29.09.2016.
@@ -26,43 +26,27 @@
 
 import UIKit
 
-public typealias AppFlowControllerItemName = String
-
-public protocol AppFlowControllerItem {
-    
-    var name:AppFlowControllerItemName { get set }
-    var supportVariants:Bool { get }
-    var viewControllerBlock:() -> UIViewController { get }
-    var viewControllerType: UIViewController.Type { get }
-    var forwardTransition:AppFlowControllerForwardTransition? { get set }
-    var backwardTransition:AppFlowControllerBackwardTransition? { get set }
-    
-    func isEqual(item:AppFlowControllerItem, parentItem:AppFlowControllerItem?) -> Bool
-    
-}
-
-extension AppFlowControllerItem {
-    
-    public func isEqual(item:AppFlowControllerItem, parentItem:AppFlowControllerItem? = nil) -> Bool {
-        if let parentItem = parentItem {
-            return "\(parentItem.name)_\(item.name)" == self.name
-        } else {
-            return self.name == item.name
-        }
-    }
-    
-}
-
-public struct AppFlowControllerPage: AppFlowControllerItem {
+public struct AppFlowControllerPage {
     
     // MARK: - Properties
     
-    public var name:String
+    public let name:String
     public let supportVariants: Bool
     public let viewControllerBlock: () -> UIViewController
     public let viewControllerType: UIViewController.Type
-    public var forwardTransition: AppFlowControllerForwardTransition?
-    public var backwardTransition: AppFlowControllerBackwardTransition?
+    
+    public internal(set) var forwardTransition: AppFlowControllerForwardTransition?
+    public internal(set) var backwardTransition: AppFlowControllerBackwardTransition?
+    
+    public internal(set) var variantName:String?
+    
+    public var identifier:String {
+        if let variant = variantName {
+            return "\(variant)_\(name)"
+        } else {
+            return name
+        }
+    }
     
     // MARK: - Init
     
@@ -82,13 +66,14 @@ public struct AppFlowControllerPage: AppFlowControllerItem {
         name:String,
         supportVariants:Bool = false,
         storyboardName:String,
+        storyboardInitBlock:@escaping ((String)->UIStoryboard) = { UIStoryboard(name: $0, bundle: nil) },
         viewControllerIdentifier:String,
         viewControllerType:UIViewController.Type
     ) {
         self.init(
             name: name,
             supportVariants: supportVariants,
-            viewControllerBlock:{ UIStoryboard(name: storyboardName, bundle: nil).instantiateViewController(withIdentifier: viewControllerIdentifier) },
+            viewControllerBlock:{ storyboardInitBlock(storyboardName).instantiateViewController(withIdentifier: viewControllerIdentifier) },
             viewControllerType:viewControllerType
         )
     }
@@ -97,15 +82,31 @@ public struct AppFlowControllerPage: AppFlowControllerItem {
         name:String,
         supportVariants:Bool = false,
         storyboardName:String,
+        storyboardInitBlock:@escaping ((String)->UIStoryboard) = { UIStoryboard(name: $0, bundle: nil) },
         viewControllerType:UIViewController.Type
     ) {
         self.init(
             name:name,
             supportVariants:supportVariants,
             storyboardName:storyboardName,
+            storyboardInitBlock:storyboardInitBlock,
             viewControllerIdentifier:String(describing: viewControllerType),
             viewControllerType:viewControllerType
         )
+    }
+
+}
+
+extension AppFlowControllerPage: Equatable {
+    
+    public static func ==(lhs:AppFlowControllerPage, rhs:AppFlowControllerPage) -> Bool {
+        return
+            lhs.name == rhs.name &&
+            lhs.supportVariants == rhs.supportVariants &&
+            lhs.viewControllerType == rhs.viewControllerType &&
+            lhs.forwardTransition?.isEqual(rhs.forwardTransition) == true &&
+            lhs.backwardTransition?.isEqual(rhs.backwardTransition) == true &&
+            lhs.variantName == rhs.variantName
     }
     
 }

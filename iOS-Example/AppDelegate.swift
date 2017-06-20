@@ -53,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        flowController.register(path: AppPage.home => AppPage.tabs => tab => AppPage.tabPage1)
 //        flowController.register(path: AppPage.home => AppPage.tabs => tab => AppPage.tabPage2)
         
-        flowController.show(item:AppPage.start)
+        flowController.show(item:AppPage.login)
         return true
     }
 

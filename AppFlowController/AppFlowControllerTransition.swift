@@ -27,13 +27,13 @@
 import UIKit
 import Foundation
 
-public protocol AppFlowControllerForwardTransition:NSObjectProtocol {
+public protocol AppFlowControllerForwardTransition: NSObjectProtocol {
     
     func forwardTransitionBlock(animated:Bool, completionBlock:@escaping ()->()) -> (UINavigationController, UIViewController) -> Void
     
 }
 
-public protocol AppFlowControllerBackwardTransition:NSObjectProtocol {
+public protocol AppFlowControllerBackwardTransition: NSObjectProtocol {
     
     func backwardTransitionBlock(animated:Bool, completionBlock:@escaping()->()) -> (UINavigationController, UIViewController) -> Void
     
@@ -43,7 +43,7 @@ public protocol AppFlowControllerTransition:AppFlowControllerForwardTransition, 
     
 }
 
-public class PushPopAppFlowControllerTransition:NSObject, AppFlowControllerTransition {
+public class PushPopAppFlowControllerTransition: NSObject, AppFlowControllerTransition {
     
     // MARK: - Properties
     
@@ -67,7 +67,7 @@ public class PushPopAppFlowControllerTransition:NSObject, AppFlowControllerTrans
     
 }
 
-public class ModalAppFlowControllerTransition<T:UINavigationController>:NSObject, AppFlowControllerTransition {
+public class ModalAppFlowControllerTransition<T:UINavigationController>: NSObject, AppFlowControllerTransition {
  
     // MARK: - Properties
     
@@ -77,7 +77,6 @@ public class ModalAppFlowControllerTransition<T:UINavigationController>:NSObject
     
     public init(navigationBarClass:UINavigationBar.Type? = nil) {
         self.navigationBarClass = navigationBarClass
-        super.init()
     }
     
     // MARK: - Utilities
@@ -115,7 +114,7 @@ public class ModalAppFlowControllerTransition<T:UINavigationController>:NSObject
     
 }
 
-public class TabBarAppFlowControllerTransition:NSObject, AppFlowControllerTransition {
+public class TabBarAppFlowControllerTransition: NSObject, AppFlowControllerTransition {
     
     // MARK: - Properties
     
