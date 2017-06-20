@@ -9,9 +9,19 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>AppFlowControllerTests.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>A400EB261EF8FEE20024D9A2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>A48809121DA16580003CF8F3</key>
 		<dict>
 			<key>primary</key>

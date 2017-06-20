@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A400EB2A1EF8FEE20024D9A2 /* AppFlowController+UINavigationControllerExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A400EB291EF8FEE20024D9A2 /* AppFlowController+UINavigationControllerExtensionTests.swift */; };
+		A400EB2C1EF8FEE20024D9A2 /* AppFlowController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A48809131DA16580003CF8F3 /* AppFlowController.framework */; };
+		A400EB3A1EF9164D0024D9A2 /* AppFlowController+UIViewControllerExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A400EB391EF9164D0024D9A2 /* AppFlowController+UIViewControllerExtensionTests.swift */; };
+		A400EB3E1EF9212A0024D9A2 /* StubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A400EB3D1EF9212A0024D9A2 /* StubViewController.swift */; };
+		A400EB401EF921480024D9A2 /* MockNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A400EB3F1EF921480024D9A2 /* MockNavigationController.swift */; };
 		A447D3CE1DAD3F6E000BE4B9 /* AppFlowControllerTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A447D3CD1DAD3F6E000BE4B9 /* AppFlowControllerTracker.swift */; };
 		A48809181DA16580003CF8F3 /* AppFlowController.h in Headers */ = {isa = PBXBuildFile; fileRef = A48809161DA16580003CF8F3 /* AppFlowController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A48809231DA165B6003CF8F3 /* AppFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A488091E1DA165B6003CF8F3 /* AppFlowController.swift */; };
@@ -18,7 +23,23 @@
 		A493C4B61DA44F6300BB4A08 /* AppFlowControllerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A493C4B51DA44F6300BB4A08 /* AppFlowControllerError.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		A400EB2D1EF8FEE20024D9A2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A488090A1DA16580003CF8F3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A48809121DA16580003CF8F3;
+			remoteInfo = AppFlowController;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		A400EB271EF8FEE20024D9A2 /* AppFlowControllerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppFlowControllerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A400EB291EF8FEE20024D9A2 /* AppFlowController+UINavigationControllerExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppFlowController+UINavigationControllerExtensionTests.swift"; sourceTree = "<group>"; };
+		A400EB2B1EF8FEE20024D9A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A400EB391EF9164D0024D9A2 /* AppFlowController+UIViewControllerExtensionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+UIViewControllerExtensionTests.swift"; sourceTree = "<group>"; };
+		A400EB3D1EF9212A0024D9A2 /* StubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StubViewController.swift; sourceTree = "<group>"; };
+		A400EB3F1EF921480024D9A2 /* MockNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockNavigationController.swift; sourceTree = "<group>"; };
 		A447D3CD1DAD3F6E000BE4B9 /* AppFlowControllerTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowControllerTracker.swift; sourceTree = "<group>"; };
 		A48809131DA16580003CF8F3 /* AppFlowController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppFlowController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A48809161DA16580003CF8F3 /* AppFlowController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppFlowController.h; sourceTree = "<group>"; };
@@ -33,6 +54,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		A400EB241EF8FEE20024D9A2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A400EB2C1EF8FEE20024D9A2 /* AppFlowController.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A488090F1DA16580003CF8F3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -43,10 +72,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A400EB281EF8FEE20024D9A2 /* AppFlowControllerTests */ = {
+			isa = PBXGroup;
+			children = (
+				A400EB3C1EF9211E0024D9A2 /* Helpers */,
+				A400EB3B1EF921140024D9A2 /* Tests */,
+				A400EB2B1EF8FEE20024D9A2 /* Info.plist */,
+			);
+			path = AppFlowControllerTests;
+			sourceTree = "<group>";
+		};
+		A400EB3B1EF921140024D9A2 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				A400EB391EF9164D0024D9A2 /* AppFlowController+UIViewControllerExtensionTests.swift */,
+				A400EB291EF8FEE20024D9A2 /* AppFlowController+UINavigationControllerExtensionTests.swift */,
+			);
+			name = Tests;
+			sourceTree = "<group>";
+		};
+		A400EB3C1EF9211E0024D9A2 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				A400EB3D1EF9212A0024D9A2 /* StubViewController.swift */,
+				A400EB3F1EF921480024D9A2 /* MockNavigationController.swift */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
 		A48809091DA16580003CF8F3 = {
 			isa = PBXGroup;
 			children = (
 				A48809151DA16580003CF8F3 /* AppFlowController */,
+				A400EB281EF8FEE20024D9A2 /* AppFlowControllerTests */,
 				A48809141DA16580003CF8F3 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -55,6 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				A48809131DA16580003CF8F3 /* AppFlowController.framework */,
+				A400EB271EF8FEE20024D9A2 /* AppFlowControllerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -90,6 +149,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		A400EB261EF8FEE20024D9A2 /* AppFlowControllerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A400EB311EF8FEE20024D9A2 /* Build configuration list for PBXNativeTarget "AppFlowControllerTests" */;
+			buildPhases = (
+				A400EB231EF8FEE20024D9A2 /* Sources */,
+				A400EB241EF8FEE20024D9A2 /* Frameworks */,
+				A400EB251EF8FEE20024D9A2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A400EB2E1EF8FEE20024D9A2 /* PBXTargetDependency */,
+			);
+			name = AppFlowControllerTests;
+			productName = AppFlowControllerTests;
+			productReference = A400EB271EF8FEE20024D9A2 /* AppFlowControllerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		A48809121DA16580003CF8F3 /* AppFlowController */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A488091B1DA16580003CF8F3 /* Build configuration list for PBXNativeTarget "AppFlowController" */;
@@ -114,9 +191,14 @@
 		A488090A1DA16580003CF8F3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0830;
 				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Paweł Sporysz";
 				TargetAttributes = {
+					A400EB261EF8FEE20024D9A2 = {
+						CreatedOnToolsVersion = 8.3.3;
+						ProvisioningStyle = Automatic;
+					};
 					A48809121DA16580003CF8F3 = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = EZ57PM2RP9;
@@ -138,11 +220,19 @@
 			projectRoot = "";
 			targets = (
 				A48809121DA16580003CF8F3 /* AppFlowController */,
+				A400EB261EF8FEE20024D9A2 /* AppFlowControllerTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		A400EB251EF8FEE20024D9A2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A48809111DA16580003CF8F3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -153,6 +243,17 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		A400EB231EF8FEE20024D9A2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A400EB3E1EF9212A0024D9A2 /* StubViewController.swift in Sources */,
+				A400EB3A1EF9164D0024D9A2 /* AppFlowController+UIViewControllerExtensionTests.swift in Sources */,
+				A400EB2A1EF8FEE20024D9A2 /* AppFlowController+UINavigationControllerExtensionTests.swift in Sources */,
+				A400EB401EF921480024D9A2 /* MockNavigationController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A488090E1DA16580003CF8F3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -170,7 +271,41 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		A400EB2E1EF8FEE20024D9A2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A48809121DA16580003CF8F3 /* AppFlowController */;
+			targetProxy = A400EB2D1EF8FEE20024D9A2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		A400EB2F1EF8FEE20024D9A2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				INFOPLIST_FILE = AppFlowControllerTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.pawelsporysz.AppFlowControllerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		A400EB301EF8FEE20024D9A2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				INFOPLIST_FILE = AppFlowControllerTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.pawelsporysz.AppFlowControllerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
 		A48809191DA16580003CF8F3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -316,6 +451,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		A400EB311EF8FEE20024D9A2 /* Build configuration list for PBXNativeTarget "AppFlowControllerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A400EB2F1EF8FEE20024D9A2 /* Debug */,
+				A400EB301EF8FEE20024D9A2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		A488090D1DA16580003CF8F3 /* Build configuration list for PBXProject "AppFlowController" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

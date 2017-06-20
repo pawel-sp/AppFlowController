@@ -137,7 +137,7 @@ open class AppFlowController {
             
             var parent = visible.parent
             var viewController:UIViewController?
-            let navigationController = rootNavigationController?.activeNavigationController
+            let navigationController = rootNavigationController?.visibleNavigationController
             
             while viewController == nil {
                 if let name = parent?.current.name {
@@ -155,7 +155,7 @@ open class AppFlowController {
     }
     
     public func popToItem(_ item:AppFlowControllerItem) {
-        guard let navigationController = rootNavigationController?.activeNavigationController else {
+        guard let navigationController = rootNavigationController?.visibleNavigationController else {
             return
         }
         guard let targetViewController = tracker.viewController(forKey: item.name) else {
@@ -224,7 +224,7 @@ open class AppFlowController {
     // MARK: - Helpers
     
     private func visibleStep() -> PathStep? {
-        let navigationController  = rootNavigationController?.activeNavigationController
+        let navigationController  = rootNavigationController?.visibleNavigationController
         if let visibleViewController = navigationController?.visibleViewController, let key = tracker.key(forViewController: visibleViewController) {
             return rootPathStep?.search(forName: key)
         } else {
@@ -263,7 +263,7 @@ open class AppFlowController {
         let item  = items[index]
         let name  = item.name
         
-        guard let navigationController = rootNavigationController?.activeNavigationController else {
+        guard let navigationController = rootNavigationController?.visibleNavigationController else {
             completionBlock?()
             return
         }
@@ -339,7 +339,7 @@ open class AppFlowController {
                 completionBlock?()
                 return
             }
-            guard let navigationController = rootNavigationController?.activeNavigationController else {
+            guard let navigationController = rootNavigationController?.visibleNavigationController else {
                 completionBlock?()
                 return
             }
