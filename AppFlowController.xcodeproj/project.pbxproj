@@ -107,8 +107,8 @@
 		A400EB3C1EF9211E0024D9A2 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				A400EB3D1EF9212A0024D9A2 /* StubViewController.swift */,
 				A49CFA251EFA90A90045AB93 /* MockViewController.swift */,
+				A400EB3D1EF9212A0024D9A2 /* StubViewController.swift */,
 				A400EB3F1EF921480024D9A2 /* MockNavigationController.swift */,
 				A49CFA281EFA98BD0045AB93 /* StubNavigationController.swift */,
 			);

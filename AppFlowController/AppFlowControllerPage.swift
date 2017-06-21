@@ -104,8 +104,8 @@ extension AppFlowControllerPage: Equatable {
             lhs.name == rhs.name &&
             lhs.supportVariants == rhs.supportVariants &&
             lhs.viewControllerType == rhs.viewControllerType &&
-            lhs.forwardTransition?.isEqual(rhs.forwardTransition) == true &&
-            lhs.backwardTransition?.isEqual(rhs.backwardTransition) == true &&
+            (lhs.forwardTransition?.isEqual(rhs.forwardTransition) == true || lhs.forwardTransition == nil && rhs.forwardTransition == nil ) &&
+            (lhs.backwardTransition?.isEqual(rhs.backwardTransition) == true || lhs.backwardTransition == nil && rhs.backwardTransition == nil) &&
             lhs.variantName == rhs.variantName
     }
     

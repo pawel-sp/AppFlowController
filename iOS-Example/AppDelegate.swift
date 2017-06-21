@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             AppPage.start =>
             AppPage.home =>> [
                 AppPage.play,
-                alpha => AppPage.registration,
+                alpha => AppPage.registration => AppPage.play,
                 AppPage.login =>> [
                     modal => AppPage.play,
                     AppPage.forgotPassword => AppPage.play,

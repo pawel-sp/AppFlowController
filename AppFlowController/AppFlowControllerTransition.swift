@@ -25,7 +25,6 @@
 //
 
 import UIKit
-import Foundation
 
 public typealias AppFlowControllerTransitionBlock = (UINavigationController, UIViewController) -> Void
 

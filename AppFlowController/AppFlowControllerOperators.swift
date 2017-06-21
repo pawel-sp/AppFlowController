@@ -27,7 +27,9 @@
 infix operator =>:AdditionPrecedence
 infix operator =>>:AdditionPrecedence
 
-public func => (lhs:AppFlowControllerPage, rhs:AppFlowControllerTransition) -> (item:AppFlowControllerPage, transition:AppFlowControllerTransition) {
+// MARK: - =>
+
+public func => (lhs:AppFlowControllerPage, rhs:AppFlowControllerTransition) -> (page:AppFlowControllerPage, transition:AppFlowControllerTransition) {
     return (lhs, rhs)
 }
 
@@ -39,52 +41,21 @@ public func => (lhs:AppFlowControllerTransition, rhs:AppFlowControllerPage) -> A
 }
 
 public func => (lhs:AppFlowControllerPage, rhs:AppFlowControllerPage) -> [AppFlowControllerPage] {
-    var rhs = rhs
-    if rhs.forwardTransition == nil {
-        rhs.forwardTransition = PushPopAppFlowControllerTransition.default
-    }
-    if rhs.backwardTransition == nil {
-        rhs.backwardTransition = PushPopAppFlowControllerTransition.default
-    }
-    return [lhs, rhs]
-}
-
-public func => (lhs:(item:AppFlowControllerPage, transition:AppFlowControllerTransition), rhs:AppFlowControllerPage) -> [AppFlowControllerPage] {
-    var rhs = rhs
-    rhs.backwardTransition = lhs.transition
-    rhs.forwardTransition  = lhs.transition
-    return [lhs.item, rhs]
-}
-
-public func => (lhs:[AppFlowControllerPage], rhs:AppFlowControllerTransition) -> (items:[AppFlowControllerPage], transition:AppFlowControllerTransition) {
-    return (lhs, rhs)
-}
-
-func => (lhs:AppFlowControllerTransition, rhs:[AppFlowControllerPage]) -> [AppFlowControllerPage] {
-    if var first = rhs.first {
-        first.forwardTransition = lhs
-        first.backwardTransition = lhs
-        return [first] + rhs.dropFirst()
-    } else {
-        return rhs
-    }
+    return [lhs] => rhs
 }
 
 public func => (lhs:[AppFlowControllerPage], rhs:AppFlowControllerPage) -> [AppFlowControllerPage] {
-    var rhs = rhs
-    if rhs.forwardTransition == nil {
-        rhs.forwardTransition = PushPopAppFlowControllerTransition.default
-    }
-    if rhs.backwardTransition == nil {
-        rhs.backwardTransition = PushPopAppFlowControllerTransition.default
-    }
-    return lhs + [rhs]
+    return lhs => [rhs]
+}
+
+public func => (lhs:AppFlowControllerPage, rhs:[AppFlowControllerPage]) -> [AppFlowControllerPage] {
+    return [lhs] => rhs
 }
 
 public func => (lhs:[AppFlowControllerPage], rhs:[AppFlowControllerPage]) -> [AppFlowControllerPage] {
     if var first = rhs.first {
         if first.forwardTransition == nil {
-            first.forwardTransition  = PushPopAppFlowControllerTransition.default
+            first.forwardTransition = PushPopAppFlowControllerTransition.default
         }
         if first.backwardTransition == nil {
             first.backwardTransition = PushPopAppFlowControllerTransition.default
@@ -95,41 +66,35 @@ public func => (lhs:[AppFlowControllerPage], rhs:[AppFlowControllerPage]) -> [Ap
     }
 }
 
-public func => (lhs:AppFlowControllerPage, rhs:[AppFlowControllerPage]) -> [AppFlowControllerPage] {
+public func => (lhs:(page:AppFlowControllerPage, transition:AppFlowControllerTransition), rhs:AppFlowControllerPage) -> [AppFlowControllerPage] {
+    return ([lhs.page], lhs.transition) => rhs
+}
+
+public func => (lhs:[AppFlowControllerPage], rhs:AppFlowControllerTransition) -> (pages:[AppFlowControllerPage], transition:AppFlowControllerTransition) {
+    return (lhs, rhs)
+}
+
+public func => (lhs:AppFlowControllerTransition, rhs:[AppFlowControllerPage]) -> [AppFlowControllerPage] {
     if var first = rhs.first {
-        if first.forwardTransition == nil {
-            first.forwardTransition = PushPopAppFlowControllerTransition.default
-        }
-        if first.backwardTransition == nil {
-            first.backwardTransition = PushPopAppFlowControllerTransition.default
-        }
-        return [lhs] + ([first] + rhs.dropFirst())
+        first.forwardTransition = lhs
+        first.backwardTransition = lhs
+        return [first] + rhs.dropFirst()
     } else {
-        return [lhs] + rhs
+        return rhs
     }
 }
 
-public func => (lhs:(items:[AppFlowControllerPage], transition:AppFlowControllerTransition), rhs:AppFlowControllerPage) -> [AppFlowControllerPage] {
+public func => (lhs:(pages:[AppFlowControllerPage], transition:AppFlowControllerTransition), rhs:AppFlowControllerPage) -> [AppFlowControllerPage] {
     var rhs = rhs
     rhs.backwardTransition = lhs.transition
     rhs.forwardTransition  = lhs.transition
-    return lhs.items + [rhs]
+    return lhs.pages + [rhs]
 }
 
+// MARK: - =>>
+
 public func =>> (lhs:AppFlowControllerPage, rhs:[Any]) -> [[AppFlowControllerPage]] {
-    var result:[[AppFlowControllerPage]] = []
-    for element in rhs {
-        if let item = element as? AppFlowControllerPage {
-            result.append(lhs => item)
-        } else if let items = element as? [AppFlowControllerPage] {
-            result.append(lhs => items)
-        } else if let anyItems = element as? [Any] {
-            for every in lhs =>> anyItems {
-                result.append(every)
-            }
-        }
-    }
-    return result
+    return [lhs] =>> rhs
 }
 
 public func =>> (lhs:[AppFlowControllerPage], rhs:[Any]) -> [[AppFlowControllerPage]] {
