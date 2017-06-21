@@ -82,13 +82,7 @@ public class ModalAppFlowControllerTransition<T:UINavigationController>: NSObjec
     // MARK: - Utilities
     
     private func modalNavigationController<T:UINavigationController>(rootViewController: UIViewController) -> T {
-        if let navigationBarClass = navigationBarClass {
-            let navigationController = T.init(navigationBarClass: navigationBarClass, toolbarClass: nil)
-            navigationController.viewControllers = [rootViewController]
-            return navigationController
-        } else {
-            return T.init(rootViewController: rootViewController)
-        }
+        return UINavigationController.new(with: rootViewController, navigationBarClass: navigationBarClass)
     }
     
     // MARK: - AppFlowControllerForwardTransition
@@ -133,8 +127,7 @@ public class TabBarAppFlowControllerTransition: NSObject, AppFlowControllerTrans
     public func forwardTransitionBlock(animated: Bool, completionBlock:@escaping ()->()) -> AppFlowControllerTransitionBlock {
         return { navigationController, viewController in
             if let tabBarController = navigationController.topViewController as? UITabBarController {
-                if let found = tabBarController.viewControllers?.filter({ $0.isKind(of: type(of: viewController)) }).first {
-                    let index = tabBarController.viewControllers?.index(of: found) ?? 0
+                if let found = tabBarController.viewControllers?.filter({ $0.isKind(of: type(of: viewController)) }).first, let index = tabBarController.viewControllers?.index(of: found) {
                     tabBarController.selectedIndex = index
                 }
             }

@@ -86,4 +86,17 @@ class AppFlowController_PageTests: XCTestCase {
         XCTAssertEqual(storyboard.lastIdentifier, "CustomViewController")
     }
     
+    // MARK: - Identifier
+    
+    func testIdentifier_containsOnlyNameWhenVariantNameIsNil() {
+        let page = AppFlowControllerPage(name: "Name", viewControllerBlock: { UIViewController() }, viewControllerType: UIViewController.self)
+        XCTAssertEqual(page.identifier, "Name")
+    }
+    
+    func testIdentifier_containsVariantAndNameWhenVariantIsNotNil() {
+        var page = AppFlowControllerPage(name: "Name", viewControllerBlock: { UIViewController() }, viewControllerType: UIViewController.self)
+        page.variantName = "Variant"
+        XCTAssertEqual(page.identifier, "Variant_Name")
+    }
+    
 }
