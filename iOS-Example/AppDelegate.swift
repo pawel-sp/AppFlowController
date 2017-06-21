@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let flowController = AppFlowController.shared
         let alpha          = AlphaTransition()
-        let modal          = ModalAppFlowControllerTransition()
+        let modal          = DefaultModalAppFlowControllerTransition.default
         let tab            = TabBarAppFlowControllerTransition.default
         
         flowController.prepare(forWindow:window!)
@@ -53,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        flowController.register(path: AppPage.home => AppPage.tabs => tab => AppPage.tabPage1)
 //        flowController.register(path: AppPage.home => AppPage.tabs => tab => AppPage.tabPage2)
         
-        flowController.show(item:AppPage.login)
+        flowController.show(item:AppPage.start)
         return true
     }
 

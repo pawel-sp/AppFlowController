@@ -23,6 +23,9 @@
 		A48809271DA165B6003CF8F3 /* AppFlowControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48809221DA165B6003CF8F3 /* AppFlowControllerExtensions.swift */; };
 		A493C4B41DA44D8100BB4A08 /* AppFlowControllerPathStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = A493C4B31DA44D8100BB4A08 /* AppFlowControllerPathStep.swift */; };
 		A493C4B61DA44F6300BB4A08 /* AppFlowControllerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A493C4B51DA44F6300BB4A08 /* AppFlowControllerError.swift */; };
+		A49CFA241EFA76B40045AB93 /* AppFlowController+TransitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA231EFA76B40045AB93 /* AppFlowController+TransitionTests.swift */; };
+		A49CFA261EFA90A90045AB93 /* MockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA251EFA90A90045AB93 /* MockViewController.swift */; };
+		A49CFA291EFA98BD0045AB93 /* StubNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA281EFA98BD0045AB93 /* StubNavigationController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +58,9 @@
 		A48809221DA165B6003CF8F3 /* AppFlowControllerExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowControllerExtensions.swift; sourceTree = "<group>"; };
 		A493C4B31DA44D8100BB4A08 /* AppFlowControllerPathStep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowControllerPathStep.swift; sourceTree = "<group>"; };
 		A493C4B51DA44F6300BB4A08 /* AppFlowControllerError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowControllerError.swift; sourceTree = "<group>"; };
+		A49CFA231EFA76B40045AB93 /* AppFlowController+TransitionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+TransitionTests.swift"; sourceTree = "<group>"; };
+		A49CFA251EFA90A90045AB93 /* MockViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockViewController.swift; sourceTree = "<group>"; };
+		A49CFA281EFA98BD0045AB93 /* StubNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StubNavigationController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +99,7 @@
 				A400EB291EF8FEE20024D9A2 /* AppFlowController+UINavigationControllerExtensionTests.swift */,
 				A400EB441EF95DF40024D9A2 /* AppFlowController+OperatorsTests.swift */,
 				A400EB491EFA50D00024D9A2 /* AppFlowController+PageTests.swift */,
+				A49CFA231EFA76B40045AB93 /* AppFlowController+TransitionTests.swift */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -101,7 +108,9 @@
 			isa = PBXGroup;
 			children = (
 				A400EB3D1EF9212A0024D9A2 /* StubViewController.swift */,
+				A49CFA251EFA90A90045AB93 /* MockViewController.swift */,
 				A400EB3F1EF921480024D9A2 /* MockNavigationController.swift */,
+				A49CFA281EFA98BD0045AB93 /* StubNavigationController.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -257,8 +266,11 @@
 				A400EB3E1EF9212A0024D9A2 /* StubViewController.swift in Sources */,
 				A400EB4A1EFA50D00024D9A2 /* AppFlowController+PageTests.swift in Sources */,
 				A400EB3A1EF9164D0024D9A2 /* AppFlowController+UIViewControllerExtensionTests.swift in Sources */,
+				A49CFA291EFA98BD0045AB93 /* StubNavigationController.swift in Sources */,
+				A49CFA261EFA90A90045AB93 /* MockViewController.swift in Sources */,
 				A400EB2A1EF8FEE20024D9A2 /* AppFlowController+UINavigationControllerExtensionTests.swift in Sources */,
 				A400EB401EF921480024D9A2 /* MockNavigationController.swift in Sources */,
+				A49CFA241EFA76B40045AB93 /* AppFlowController+TransitionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,6 +13,7 @@ class MockNavigationController: UINavigationController {
     var pushViewControllerParams:(UIViewController, Bool)?
     var popViewControllerParams:(Bool)?
     var setViewControllersParams:([UIViewController], Bool)?
+    var presentViewControllerParams:(UIViewController, Bool)?
     
     var visibleViewControllerResult:UIViewController?
     
@@ -23,6 +24,11 @@ class MockNavigationController: UINavigationController {
     override func popViewController(animated: Bool) -> UIViewController? {
         popViewControllerParams = (animated)
         return nil
+    }
+    
+    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        presentViewControllerParams = (viewControllerToPresent, flag)
+        completion?()
     }
     
     override func setViewControllers(_ viewControllers: [UIViewController], animated: Bool) {

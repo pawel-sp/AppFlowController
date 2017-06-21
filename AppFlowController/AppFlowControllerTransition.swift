@@ -27,21 +27,21 @@
 import UIKit
 import Foundation
 
+public typealias AppFlowControllerTransitionBlock = (UINavigationController, UIViewController) -> Void
+
 public protocol AppFlowControllerForwardTransition: NSObjectProtocol {
     
-    func forwardTransitionBlock(animated:Bool, completionBlock:@escaping ()->()) -> (UINavigationController, UIViewController) -> Void
+    func forwardTransitionBlock(animated:Bool, completionBlock:@escaping ()->()) -> AppFlowControllerTransitionBlock
     
 }
 
 public protocol AppFlowControllerBackwardTransition: NSObjectProtocol {
     
-    func backwardTransitionBlock(animated:Bool, completionBlock:@escaping()->()) -> (UINavigationController, UIViewController) -> Void
+    func backwardTransitionBlock(animated:Bool, completionBlock:@escaping()->()) -> AppFlowControllerTransitionBlock
     
 }
 
-public protocol AppFlowControllerTransition:AppFlowControllerForwardTransition, AppFlowControllerBackwardTransition{
-    
-}
+public protocol AppFlowControllerTransition: AppFlowControllerForwardTransition, AppFlowControllerBackwardTransition {}
 
 public class PushPopAppFlowControllerTransition: NSObject, AppFlowControllerTransition {
     
@@ -51,7 +51,7 @@ public class PushPopAppFlowControllerTransition: NSObject, AppFlowControllerTran
     
     // MARK: - AppFlowControllerForwardTransition
     
-    public func forwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> (UINavigationController, UIViewController) -> Void {
+    public func forwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> AppFlowControllerTransitionBlock {
         return { navigationController, viewController in
             navigationController.pushViewController(viewController, animated: animated, completion:completionBlock)
         }
@@ -59,7 +59,7 @@ public class PushPopAppFlowControllerTransition: NSObject, AppFlowControllerTran
     
     // MARK: - AppFlowControllerBackwardTransition
     
-    public func backwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> (UINavigationController, UIViewController) -> Void {
+    public func backwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> AppFlowControllerTransitionBlock {
         return { navigationController, viewController in
             let _ = navigationController.popViewController(animated: animated, completion: completionBlock)
         }
@@ -93,7 +93,7 @@ public class ModalAppFlowControllerTransition<T:UINavigationController>: NSObjec
     
     // MARK: - AppFlowControllerForwardTransition
     
-    public func forwardTransitionBlock(animated: Bool, completionBlock:@escaping ()->()) -> (UINavigationController, UIViewController) -> Void {
+    public func forwardTransitionBlock(animated: Bool, completionBlock:@escaping ()->()) -> AppFlowControllerTransitionBlock {
         return { navigationController, viewController in
             if viewController.navigationController == nil {
                 let modalNavigationController:T = self.modalNavigationController(rootViewController: viewController)
@@ -106,11 +106,19 @@ public class ModalAppFlowControllerTransition<T:UINavigationController>: NSObjec
     
     // MARK: - AppFlowControllerBackwardTransition
     
-    public func backwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> (UINavigationController, UIViewController) -> Void {
+    public func backwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> AppFlowControllerTransitionBlock {
         return { navigationController, viewController in
             viewController.dismiss(animated: animated, completion: completionBlock)
         }
     }
+    
+}
+
+public class DefaultModalAppFlowControllerTransition: ModalAppFlowControllerTransition<UINavigationController> {
+    
+    // MARK: - Properties
+    
+    public static let `default` = DefaultModalAppFlowControllerTransition()
     
 }
 
@@ -122,24 +130,23 @@ public class TabBarAppFlowControllerTransition: NSObject, AppFlowControllerTrans
     
     // MARK: - AppFlowControllerForwardTransition
     
-    public func forwardTransitionBlock(animated: Bool, completionBlock:@escaping ()->()) -> (UINavigationController, UIViewController) -> Void {
+    public func forwardTransitionBlock(animated: Bool, completionBlock:@escaping ()->()) -> AppFlowControllerTransitionBlock {
         return { navigationController, viewController in
             if let tabBarController = navigationController.topViewController as? UITabBarController {
                 if let found = tabBarController.viewControllers?.filter({ $0.isKind(of: type(of: viewController)) }).first {
                     let index = tabBarController.viewControllers?.index(of: found) ?? 0
                     tabBarController.selectedIndex = index
                 }
-            } else {
-                PushPopAppFlowControllerTransition.default.forwardTransitionBlock(animated: animated, completionBlock: completionBlock)(navigationController, viewController)
             }
+            completionBlock()
         }
     }
     
     // MARK: - AppFlowControllerBackwardTransition
     
-    public func backwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> (UINavigationController, UIViewController) -> Void {
+    public func backwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> AppFlowControllerTransitionBlock {
         return { navigationController, viewController in
-            
+            completionBlock()
         }
     }
     
