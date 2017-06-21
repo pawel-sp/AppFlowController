@@ -124,6 +124,7 @@ public class TabBarAppFlowControllerTransition: NSObject, AppFlowControllerTrans
     
     // MARK: - AppFlowControllerForwardTransition
     
+    // That transition assumes that every tab bar viewcontroller has different class
     public func forwardTransitionBlock(animated: Bool, completionBlock:@escaping ()->()) -> AppFlowControllerTransitionBlock {
         return { navigationController, viewController in
             if let tabBarController = navigationController.topViewController as? UITabBarController {
