@@ -28,6 +28,7 @@
 		A49CFA291EFA98BD0045AB93 /* StubNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA281EFA98BD0045AB93 /* StubNavigationController.swift */; };
 		A49CFA2E1EFBE99C0045AB93 /* AppFlowController+TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA2D1EFBE99C0045AB93 /* AppFlowController+TrackerTests.swift */; };
 		A49CFA301EFBF7CF0045AB93 /* AppFlowController+PathStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA2F1EFBF7CF0045AB93 /* AppFlowController+PathStepTests.swift */; };
+		A49CFA331EFC16F60045AB93 /* AppFlowController+CoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA321EFC16F60045AB93 /* AppFlowController+CoreTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		A49CFA281EFA98BD0045AB93 /* StubNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StubNavigationController.swift; sourceTree = "<group>"; };
 		A49CFA2D1EFBE99C0045AB93 /* AppFlowController+TrackerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+TrackerTests.swift"; sourceTree = "<group>"; };
 		A49CFA2F1EFBF7CF0045AB93 /* AppFlowController+PathStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+PathStepTests.swift"; sourceTree = "<group>"; };
+		A49CFA321EFC16F60045AB93 /* AppFlowController+CoreTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+CoreTests.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				A49CFA231EFA76B40045AB93 /* AppFlowController+TransitionTests.swift */,
 				A49CFA2D1EFBE99C0045AB93 /* AppFlowController+TrackerTests.swift */,
 				A49CFA2F1EFBF7CF0045AB93 /* AppFlowController+PathStepTests.swift */,
+				A49CFA321EFC16F60045AB93 /* AppFlowController+CoreTests.swift */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -268,6 +271,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A49CFA331EFC16F60045AB93 /* AppFlowController+CoreTests.swift in Sources */,
 				A400EB451EF95DF40024D9A2 /* AppFlowController+OperatorsTests.swift in Sources */,
 				A400EB3E1EF9212A0024D9A2 /* StubViewController.swift in Sources */,
 				A400EB4A1EFA50D00024D9A2 /* AppFlowController+PageTests.swift in Sources */,

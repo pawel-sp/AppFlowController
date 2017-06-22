@@ -7,9 +7,17 @@
 //
 
 import UIKit
+import AppFlowController
 
 class PlayViewController: BaseViewController {
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        if let parameter = AppFlowController.shared.parameterForCurrentItem() {
+            print(parameter)
+        }
+    }
+    
     @IBAction func dismiss(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }

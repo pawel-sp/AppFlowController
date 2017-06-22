@@ -22,28 +22,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let modal          = DefaultModalAppFlowControllerTransition.default
         let tab            = TabBarAppFlowControllerTransition.default
         
-        flowController.prepare(forWindow:window!)
+        flowController.prepare(for:window!)
         
-        flowController.register(path:
-            AppPage.start =>
-            AppPage.home =>> [
-                AppPage.play,
-                alpha => AppPage.registration => AppPage.play,
-                AppPage.login =>> [
-                    modal => AppPage.play,
-                    AppPage.forgotPassword => AppPage.play,
-                    modal => AppPage.forgotPasswordAlert =>> [
+        do {
+            try flowController.register(path:
+                AppPage.start =>
+                    AppPage.home =>> [
                         AppPage.play,
-                        AppPage.info => AppPage.play
-                    ]
-                ],
-                AppPage.items => AppPage.details => AppPage.play,
-                AppPage.tabs =>> [
-                    tab => AppPage.tabPage1,
-                    tab => AppPage.tabPage2
+                        alpha => AppPage.registration => AppPage.play,
+                        AppPage.login =>> [
+                            modal => AppPage.play,
+                            AppPage.forgotPassword => AppPage.play,
+                            modal => AppPage.forgotPasswordAlert =>> [
+                                AppPage.play,
+                                AppPage.info => AppPage.play
+                            ]
+                        ],
+                        AppPage.items => AppPage.details => AppPage.play,
+                        AppPage.tabs =>> [
+                            tab => AppPage.tabPage1,
+                            tab => AppPage.tabPage2
+                        ]
                 ]
-            ]
-        )
+            )
+        } catch let error {
+            if let appFlowControllerError = error as? AppFlowControllerError {
+                fatalError(appFlowControllerError.info)
+            } else {
+                fatalError(error.localizedDescription)
+            }
+        }
+        
         
         // old way for registering paths - it's still working anyway!
 //        flowController.register(path: AppPage.home => alpha => AppPage.registration)
@@ -142,6 +151,5 @@ class AppPage {
         viewControllerType: PlayViewController.self
     )
     
-    // TODO: - refactor name in register for variants
 }
 

@@ -19,8 +19,16 @@ class BaseViewController: UIViewController {
     }
     
     func showPlayPage() {
+        var parameters:[AppFlowControllerPage:String]?
+        if isKind(of: HomeViewController.self) {
+            parameters = [AppPage.play : "from_home"]
+        }
         if let current = AppFlowController.shared.currentItem() {
-            AppFlowController.shared.show(item: AppPage.play, variant: current)
+            AppFlowController.shared.show(
+                item: AppPage.play,
+                variant: current,
+                parameters: parameters
+            )
         }
         
     }

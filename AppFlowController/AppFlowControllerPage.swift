@@ -110,3 +110,11 @@ extension AppFlowControllerPage: Equatable {
     }
     
 }
+
+extension AppFlowControllerPage: Hashable {
+    
+    public var hashValue: Int {
+        return identifier.hashValue
+    }
+    
+}

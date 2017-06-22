@@ -26,24 +26,24 @@
 
 import UIKit
 
-enum AppFlowControllerError:Error {
+public enum AppFlowControllerError:Error, Equatable {
     
-    case pathNameAlreadyRegistered(name:String)
+    case pathAlreadyRegistered(identifier:String)
     case internalError
-    case unregisteredPathName(name:String, variant:String?)
+    case unregisteredPathIdentifier(identifier:String)
     case missingConfigurationForAppFlowController
     case unregisteredViewControllerType(viewControllerType:UIViewController.Type)
     case missingVariant(name:String)
     case variantNotSupported(name:String)
     
-    var errorInfo:String {
+    public var info:String {
         switch self {
-            case .pathNameAlreadyRegistered(let name):
-                return "\(name) is already registered, if you want to register the same UIViewController for presenting it in a different way you need to create separate AppFlowControllerItem case with the same UIViewController or use supportVariants property in AppFlowControllerItem"
+            case .pathAlreadyRegistered(let identifier):
+                return "\(identifier) is already registered, if you want to register the same UIViewController for presenting it in a different way you need to create separate AppFlowControllerItem case with the same UIViewController or use supportVariants property in AppFlowControllerItem"
             case .internalError:
                 return "Internal error"
-            case .unregisteredPathName(let name, let variant):
-                return "Unregistered path for item \(name)" + (variant == nil ? "" : " for variant \(variant!)")
+            case .unregisteredPathIdentifier(let identifier):
+                return "Unregistered path for item \(identifier)"
             case .missingConfigurationForAppFlowController:
                 return "You need to invoke prepare(forWindow:UIWindow) function first"
             case .unregisteredViewControllerType(let viewControllerType):
@@ -55,4 +55,25 @@ enum AppFlowControllerError:Error {
         }
     }
     
+}
+
+public func ==(lhs:AppFlowControllerError, rhs:AppFlowControllerError) -> Bool {
+    switch (lhs, rhs) {
+        case (.pathAlreadyRegistered(let id1), .pathAlreadyRegistered(let id2)):
+            return id1 == id2
+        case (.internalError, .internalError):
+            return true
+        case (.unregisteredPathIdentifier(let id1), .unregisteredPathIdentifier(let id2)):
+            return id1 == id2
+        case (.missingConfigurationForAppFlowController, .missingConfigurationForAppFlowController):
+            return true
+        case (.unregisteredViewControllerType(let viewControllerType1), .unregisteredViewControllerType(let viewControllerType2)):
+            return viewControllerType1 == viewControllerType2
+        case (.missingVariant(let name1), .missingVariant(let name2)):
+            return name1 == name2
+        case (.variantNotSupported(let name1), .variantNotSupported(let name2)):
+            return name1 == name2
+        default:
+            return false
+    }
 }

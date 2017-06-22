@@ -127,7 +127,7 @@ extension PathStep: Equatable {
         return
             lhs.current == rhs.current &&
             lhs.children == rhs.children &&
-            (lhs.parent == rhs.parent || (lhs.parent == nil && rhs.parent == nil))
+            ((lhs.parent == nil && rhs.parent == nil) || lhs.parent?.current == rhs.parent?.current)
     }
     
 }

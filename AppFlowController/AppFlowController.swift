@@ -33,8 +33,8 @@ open class AppFlowController {
     public static let shared = AppFlowController()
     public var rootNavigationController:UINavigationController?
     
-    private var rootPathStep:PathStep?
-    private var tracker = Tracker()
+    private(set) var rootPathStep:PathStep?
+    private(set) var tracker = Tracker()
     
     // MARK: - Init
     
@@ -42,55 +42,49 @@ open class AppFlowController {
     
     // MARK: - Setup
     
-    public func prepare(forWindow window:UIWindow, rootNavigationController:UINavigationController = UINavigationController()) {
+    public func prepare(for window:UIWindow, rootNavigationController:UINavigationController = UINavigationController()) {
         self.rootNavigationController = rootNavigationController
         window.rootViewController = rootNavigationController
     }
     
-    public func register(path:AppFlowControllerPage) {
-        register(path:[path])
+    public func register(path:AppFlowControllerPage) throws {
+        try register(path:[path])
     }
     
-    public func register(path:[AppFlowControllerPage]) {
-        register(path:[path])
-    }
-    
-    // If you are using custom transition you need to remember to use it in every path where specific path step exists (look at example)
-    public func register(path:[[AppFlowControllerPage]]) {
+    public func register(path:[AppFlowControllerPage]) throws {
+        if let lastPath = path.last, !lastPath.supportVariants, rootPathStep?.search(page: lastPath) != nil {
+            throw AppFlowControllerError.pathAlreadyRegistered(identifier: lastPath.identifier)
+        }
         
-        for subpath in path {
-            
-            if let lastPath = subpath.last, !lastPath.supportVariants, rootPathStep?.search(page: lastPath) != nil {
-                assertError(error: .pathNameAlreadyRegistered(name: lastPath.name))
-            }
-            
-            var previousStep:PathStep?
-            
-            for var element in subpath {
-                if let found = rootPathStep?.search(page: element) {
-                    previousStep = found
-                    continue
-                } else {
-                    if let previous = previousStep {
-                        if element.supportVariants {
-                            element.variantName = previous.current.name
-                        }
-                        previousStep = previous.add(page: element)
-                    } else {
-                        rootPathStep = PathStep(page: element)
-                        previousStep = rootPathStep
+        var previousStep:PathStep?
+        
+        for var element in path {
+            if let found = rootPathStep?.search(page: element) {
+                previousStep = found
+                continue
+            } else {
+                if let previous = previousStep {
+                    if element.supportVariants {
+                        element.variantName = previous.current.name
                     }
+                    previousStep = previous.add(page: element)
+                } else {
+                    rootPathStep = PathStep(page: element)
+                    previousStep = rootPathStep
                 }
             }
         }
-        
+    }
+    
+    public func register(path:[[AppFlowControllerPage]]) throws {
+        for subpath in path {
+            try register(path: subpath)
+        }
     }
     
     // MARK: - Navigation
     
-    // parameters need to keys equals item names to have correct behaviour.
-    // skipItems - those items won't be within view controllers stack! It's only for items to show, not to dismiss!
-    open func show(item:AppFlowControllerPage, variant:AppFlowControllerPage? = nil, parameters:[String:String]? = nil, animated:Bool = true, skipDismissTransitions:Bool = false, skipItems:[AppFlowControllerPage]? = nil) {
+    open func show(item:AppFlowControllerPage, variant:AppFlowControllerPage? = nil, parameters:[AppFlowControllerPage:String]? = nil, animated:Bool = true, skipDismissTransitions:Bool = false, skipItems:[AppFlowControllerPage]? = nil) {
         
         var item = item
         
@@ -107,7 +101,7 @@ open class AppFlowController {
         }
         
         guard let foundStep = rootPathStep?.search(page: item) else {
-            assertError(error: .unregisteredPathName(name: item.name, variant: variant?.name))
+            assertError(error: .unregisteredPathIdentifier(identifier: item.identifier))
             return
         }
         
@@ -128,6 +122,7 @@ open class AppFlowController {
             let displayRange:Range<Int> = 0 ..< newItems.count
             dismiss(items: currentItems, fromIndexRange: dismissRange, animated: animated, skipTransition: skipDismissTransitions) {
                 self.register(parameters:parameters)
+                self.tracker.disableSkip(for: item.name)
                 self.display(items: newItems, fromIndexRange: displayRange, animated: animated, skipItems: skipItems, completionBlock: nil)
             }
         } else {
@@ -171,18 +166,19 @@ open class AppFlowController {
     }
     
     // When you need present view controller in different way then using AppFlowController you need to register that view controller right after presenting that to keep structure of AppFlowController.
+    // TODO: - what about variants?
     public func register(viewController:UIViewController, forPathName pathName:String) {
         if let _ = rootPathStep?.search(name: pathName) {
             self.tracker.register(viewController: viewController, for: pathName)
         } else {
-            assertError(error: AppFlowControllerError.unregisteredPathName(name: pathName, variant: nil))
+            assertError(error: AppFlowControllerError.unregisteredPathIdentifier(identifier: pathName))
         }
     }
     
     open func pathComponents(forItem item:AppFlowControllerPage) -> String? {
         
         guard let foundStep = rootPathStep?.search(page: item) else {
-            assertError(error: .unregisteredPathName(name: item.name, variant: nil))
+            assertError(error: .unregisteredPathIdentifier(identifier: item.identifier))
             return nil
         }
         
@@ -255,10 +251,10 @@ open class AppFlowController {
         }
     }
     
-    private func register(parameters:[String : String]?) {
+    private func register(parameters:[AppFlowControllerPage : String]?) {
         if let parameters = parameters {
             for (key, value) in parameters {
-                self.tracker.register(parameter: value, for: key)
+                self.tracker.register(parameter: value, for: key.identifier)
             }
         }
     }
@@ -288,8 +284,6 @@ open class AppFlowController {
                 )
             }
         }
-        
-        tracker.disableSkip(for: name)
         
         if navigationController.viewControllers.count == 0 {
             var viewControllersToPush = [item]
@@ -376,7 +370,7 @@ open class AppFlowController {
     }
     
     private func assertError(error:AppFlowControllerError) {
-        assert(false, "AppFlowController: \(error.errorInfo)")
+        assert(false, "AppFlowController: \(error.localizedDescription)")
     }
     
 }
