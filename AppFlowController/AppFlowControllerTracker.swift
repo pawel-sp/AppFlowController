@@ -97,11 +97,11 @@ class AppFlowControllerTracker {
     }
     
     func isItemAtKeySkipped(key:String) -> Bool {
-        if let item = items.filter({ $0.key == key }).first, item.value.viewController != nil {
-            return item.value.skipped
-        } else {
-            return false // if view is deallocated cannot be skipped
-        }
+        return items.filter({ $0.key == key }).first?.value.skipped ?? false 
+    }
+    
+    func disableSkip(forKey key:String) {
+        items.filter({ $0.key == key }).first?.value.skipped = false
     }
     
 }

@@ -289,6 +289,8 @@ open class AppFlowController {
             }
         }
         
+        tracker.disableSkip(forKey: name)
+        
         if navigationController.viewControllers.count == 0 {
             var viewControllersToPush = [item]
             for item in items[1..<items.count] {
