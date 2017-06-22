@@ -58,11 +58,7 @@ class AppFlowControllerTracker {
     
     // MARK: - Utilities
     
-    func reset() {
-        items.removeAll()
-    }
-    
-    func register(viewController:UIViewController?, forKey key:String, skipped:Bool = false) {
+    func register(viewController:UIViewController?, for key:String, skipped:Bool = false) {
         if let found = items[key] {
             found.viewController = viewController
             found.skipped        = skipped
@@ -71,7 +67,7 @@ class AppFlowControllerTracker {
         }
     }
     
-    func register(parameter:String?, forKey key:String) {
+    func register(parameter:String?, for key:String) {
         if let found = items[key] {
             found.parameter = parameter
         } else {
@@ -79,29 +75,33 @@ class AppFlowControllerTracker {
         }
     }
     
-    func viewController(forKey key:String) -> UIViewController? {
+    func viewController(for key:String) -> UIViewController? {
         return items[key]?.viewController
     }
     
-    func key(forViewController viewController:UIViewController) -> String? {
+    func key(for viewController:UIViewController) -> String? {
         let filtered = items.filter({ $0.value.viewController === viewController })
         return filtered.first?.key
     }
     
-    func parameter(forKey key:String) -> String? {
+    func parameter(for key:String) -> String? {
         return items[key]?.parameter
     }
     
-    func isKeyRegistered(key:String) -> Bool {
-        return items.contains(where: { $0.key == key })
-    }
-    
-    func isItemAtKeySkipped(key:String) -> Bool {
+    func isItemSkipped(at key:String) -> Bool {
         return items.filter({ $0.key == key }).first?.value.skipped ?? false 
     }
     
-    func disableSkip(forKey key:String) {
+    func disableSkip(for key:String) {
         items.filter({ $0.key == key }).first?.value.skipped = false
+    }
+    
+    func reset() {
+        items.removeAll()
+    }
+    
+    func isEmpty() -> Bool {
+        return items.count == 0
     }
     
 }

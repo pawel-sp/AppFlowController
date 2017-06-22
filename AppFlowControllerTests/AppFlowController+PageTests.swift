@@ -99,4 +99,51 @@ class AppFlowController_PageTests: XCTestCase {
         XCTAssertEqual(page.identifier, "Variant_Name")
     }
     
+    // MARK: - Equatable
+    
+    func testEquatable_allParametersAreEqual() {
+        var page1 = AppFlowControllerPage(name: "page", viewControllerBlock: { UIViewController() }, viewControllerType: UIViewController.self)
+        var page2 = AppFlowControllerPage(name: "page", viewControllerBlock: { UIViewController() }, viewControllerType: UIViewController.self)
+        
+        page1.variantName = "Variant"
+        page2.variantName = "Variant"
+        
+        page1.forwardTransition  = PushPopAppFlowControllerTransition.default
+        page1.backwardTransition = PushPopAppFlowControllerTransition.default
+        page2.forwardTransition  = PushPopAppFlowControllerTransition.default
+        page2.backwardTransition = PushPopAppFlowControllerTransition.default
+        
+        XCTAssertTrue(page1 == page2)
+    }
+    
+    func testEquatable_allParametersAreDifferent() {
+        var page1 = AppFlowControllerPage(name: "page1", viewControllerBlock: { UIViewController() }, viewControllerType: UIViewController.self)
+        var page2 = AppFlowControllerPage(name: "page2", viewControllerBlock: { CustomViewController() }, viewControllerType: CustomViewController.self)
+        
+        page1.variantName = "Variant1"
+        page2.variantName = "Variant2"
+        
+        page1.forwardTransition  = PushPopAppFlowControllerTransition.default
+        page1.backwardTransition = PushPopAppFlowControllerTransition.default
+        page2.forwardTransition  = DefaultModalAppFlowControllerTransition.default
+        page2.backwardTransition = DefaultModalAppFlowControllerTransition.default
+        
+        XCTAssertFalse(page1 == page2)
+    }
+    
+    func testEquatable_onlyOneParameterIsDifferent() {
+        var page1 = AppFlowControllerPage(name: "page1", viewControllerBlock: { UIViewController() }, viewControllerType: UIViewController.self)
+        var page2 = AppFlowControllerPage(name: "page2", viewControllerBlock: { UIViewController() }, viewControllerType: UIViewController.self)
+        
+        page1.variantName = "Variant"
+        page2.variantName = "Variant"
+        
+        page1.forwardTransition  = PushPopAppFlowControllerTransition.default
+        page1.backwardTransition = PushPopAppFlowControllerTransition.default
+        page2.forwardTransition  = PushPopAppFlowControllerTransition.default
+        page2.backwardTransition = PushPopAppFlowControllerTransition.default
+        
+        XCTAssertFalse(page1 == page2)
+    }
+    
 }
