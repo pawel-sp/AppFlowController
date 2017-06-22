@@ -13,12 +13,12 @@ class AppFlowController_TrackerTests: XCTestCase {
     
     // MARK: - Properties
     
-    var tracker:AppFlowControllerTracker!
+    var tracker:Tracker!
     
     // MARK: - Setup
     
     override func setUp() {
-        tracker = AppFlowControllerTracker()
+        tracker = Tracker()
     }
     
     // MARK: - Tests

@@ -34,7 +34,7 @@ open class AppFlowController {
     public var rootNavigationController:UINavigationController?
     
     private var rootPathStep:PathStep?
-    private var tracker = AppFlowControllerTracker()
+    private var tracker = Tracker()
     
     // MARK: - Init
     
@@ -60,14 +60,14 @@ open class AppFlowController {
         
         for subpath in path {
             
-            if let lastPath = subpath.last, !lastPath.supportVariants, rootPathStep?.search(item: lastPath) != nil {
+            if let lastPath = subpath.last, !lastPath.supportVariants, rootPathStep?.search(page: lastPath) != nil {
                 assertError(error: .pathNameAlreadyRegistered(name: lastPath.name))
             }
             
             var previousStep:PathStep?
             
             for var element in subpath {
-                if let found = rootPathStep?.search(item: element) {
+                if let found = rootPathStep?.search(page: element) {
                     previousStep = found
                     continue
                 } else {
@@ -75,9 +75,9 @@ open class AppFlowController {
                         if element.supportVariants {
                             element.variantName = previous.current.name
                         }
-                        previousStep = previous.add(item: element)
+                        previousStep = previous.add(page: element)
                     } else {
-                        rootPathStep = PathStep(item: element)
+                        rootPathStep = PathStep(page: element)
                         previousStep = rootPathStep
                     }
                 }
@@ -106,7 +106,7 @@ open class AppFlowController {
             item.variantName = variant?.name
         }
         
-        guard let foundStep = rootPathStep?.search(item: item) else {
+        guard let foundStep = rootPathStep?.search(page: item) else {
             assertError(error: .unregisteredPathName(name: item.name, variant: variant?.name))
             return
         }
@@ -116,14 +116,14 @@ open class AppFlowController {
             return
         }
         
-        let newItems         = rootPathStep?.allParentItems(fromStep: foundStep) ?? []
+        let newItems         = rootPathStep?.allParentPages(from: foundStep) ?? []
         let currentStep      = visibleStep()
-        let currentItems     = currentStep == nil ? [] : (rootPathStep?.allParentItems(fromStep: currentStep!) ?? [])
+        let currentItems     = currentStep == nil ? [] : (rootPathStep?.allParentPages(from: currentStep!) ?? [])
         
         if let currentStep = currentStep {
-            let distance                = rootPathStep?.distanceBetween(step: currentStep, andStep: foundStep)
-            let dismissCounter          = distance?.up   ?? 0
-            let _                       = distance?.down ?? 0
+            let distance                = PathStep.distanceBetween(step: currentStep, and: foundStep)
+            let dismissCounter          = distance.up
+            let _                       = distance.down
             let dismissRange:Range<Int> = dismissCounter == 0 ? 0..<0 : (currentItems.count - dismissCounter) ..< currentItems.count
             let displayRange:Range<Int> = 0 ..< newItems.count
             dismiss(items: currentItems, fromIndexRange: dismissRange, animated: animated, skipTransition: skipDismissTransitions) {
@@ -172,7 +172,7 @@ open class AppFlowController {
     
     // When you need present view controller in different way then using AppFlowController you need to register that view controller right after presenting that to keep structure of AppFlowController.
     public func register(viewController:UIViewController, forPathName pathName:String) {
-        if let _ = rootPathStep?.search(forName: pathName) {
+        if let _ = rootPathStep?.search(name: pathName) {
             self.tracker.register(viewController: viewController, for: pathName)
         } else {
             assertError(error: AppFlowControllerError.unregisteredPathName(name: pathName, variant: nil))
@@ -181,12 +181,12 @@ open class AppFlowController {
     
     open func pathComponents(forItem item:AppFlowControllerPage) -> String? {
         
-        guard let foundStep = rootPathStep?.search(item: item) else {
+        guard let foundStep = rootPathStep?.search(page: item) else {
             assertError(error: .unregisteredPathName(name: item.name, variant: nil))
             return nil
         }
         
-        let items       = rootPathStep?.allParentItems(fromStep: foundStep) ?? []
+        let items       = rootPathStep?.allParentPages(from: foundStep) ?? []
         let itemStrings = items.map({ $0.name })
         
         return itemStrings.joined(separator: "/")
@@ -194,7 +194,7 @@ open class AppFlowController {
     
     open func currentPathComponents() -> String? {
         if let visibleStep = visibleStep() {
-            let items       = rootPathStep?.allParentItems(fromStep: visibleStep) ?? []
+            let items       = rootPathStep?.allParentPages(from: visibleStep) ?? []
             let itemStrings = items.map({ $0.name })
             return itemStrings.joined(separator: "/")
         } else {
@@ -232,7 +232,7 @@ open class AppFlowController {
     private func visibleStep() -> PathStep? {
         let navigationController  = rootNavigationController?.visibleNavigationController
         if let visibleViewController = navigationController?.visibleViewController, let key = tracker.key(for: visibleViewController) {
-            return rootPathStep?.search(forName: key)
+            return rootPathStep?.search(name: key)
         } else {
             return nil
         }
@@ -241,8 +241,8 @@ open class AppFlowController {
     private func viewController(fromItem item:AppFlowControllerPage) -> UIViewController {
         let viewController = item.viewControllerBlock()
         if (viewController.isKind(of: UITabBarController.self)) {
-            if let step = rootPathStep?.search(item: item) {
-                let children            = step.getChildren()
+            if let step = rootPathStep?.search(page: item) {
+                let children            = step.children
                 let tabBarController    = viewController as! UITabBarController
                 let tabsViewControllers = children.map({ $0.current.viewControllerBlock() })
                 tabBarController.viewControllers = tabsViewControllers

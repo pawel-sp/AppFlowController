@@ -26,7 +26,7 @@
 
 import Foundation
 
-class AppFlowControllerTracker {
+class Tracker {
 
     // MARK: - Classes
     

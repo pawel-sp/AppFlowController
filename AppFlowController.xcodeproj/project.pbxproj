@@ -27,6 +27,7 @@
 		A49CFA261EFA90A90045AB93 /* MockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA251EFA90A90045AB93 /* MockViewController.swift */; };
 		A49CFA291EFA98BD0045AB93 /* StubNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA281EFA98BD0045AB93 /* StubNavigationController.swift */; };
 		A49CFA2E1EFBE99C0045AB93 /* AppFlowController+TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA2D1EFBE99C0045AB93 /* AppFlowController+TrackerTests.swift */; };
+		A49CFA301EFBF7CF0045AB93 /* AppFlowController+PathStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA2F1EFBF7CF0045AB93 /* AppFlowController+PathStepTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		A49CFA251EFA90A90045AB93 /* MockViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockViewController.swift; sourceTree = "<group>"; };
 		A49CFA281EFA98BD0045AB93 /* StubNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StubNavigationController.swift; sourceTree = "<group>"; };
 		A49CFA2D1EFBE99C0045AB93 /* AppFlowController+TrackerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+TrackerTests.swift"; sourceTree = "<group>"; };
+		A49CFA2F1EFBF7CF0045AB93 /* AppFlowController+PathStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+PathStepTests.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				A400EB491EFA50D00024D9A2 /* AppFlowController+PageTests.swift */,
 				A49CFA231EFA76B40045AB93 /* AppFlowController+TransitionTests.swift */,
 				A49CFA2D1EFBE99C0045AB93 /* AppFlowController+TrackerTests.swift */,
+				A49CFA2F1EFBF7CF0045AB93 /* AppFlowController+PathStepTests.swift */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -271,6 +274,7 @@
 				A400EB3A1EF9164D0024D9A2 /* AppFlowController+UIViewControllerExtensionTests.swift in Sources */,
 				A49CFA2E1EFBE99C0045AB93 /* AppFlowController+TrackerTests.swift in Sources */,
 				A49CFA291EFA98BD0045AB93 /* StubNavigationController.swift in Sources */,
+				A49CFA301EFBF7CF0045AB93 /* AppFlowController+PathStepTests.swift in Sources */,
 				A49CFA261EFA90A90045AB93 /* MockViewController.swift in Sources */,
 				A400EB2A1EF8FEE20024D9A2 /* AppFlowController+UINavigationControllerExtensionTests.swift in Sources */,
 				A400EB401EF921480024D9A2 /* MockNavigationController.swift in Sources */,

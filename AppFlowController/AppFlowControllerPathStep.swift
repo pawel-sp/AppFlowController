@@ -31,75 +31,74 @@ class PathStep {
     // MARK: - Properties
     
     let current:AppFlowControllerPage
-    private var children:[PathStep] = []
-    weak var parent:PathStep?
+    private(set) var children:[PathStep] = []
+    private(set) weak var parent:PathStep?
     
     // MARK: - Init
     
-    init(item:AppFlowControllerPage) {
-        self.current = item
+    init(page:AppFlowControllerPage) {
+        self.current = page
     }
     
     // MARK: - Utilities
     
-    func add(item:AppFlowControllerPage) -> PathStep {
-        let step = PathStep(item: item)
+    @discardableResult
+    func add(page:AppFlowControllerPage) -> PathStep {
+        let step = PathStep(page: page)
         children.append(step)
         step.parent = self
         return step
     }
     
-    func getChildren() -> [PathStep] {
-        return children
+    func search(page:AppFlowControllerPage) -> PathStep? {
+        return search(compareBlock: { $0.current.identifier == page.identifier })
     }
     
-    func search(item:AppFlowControllerPage) -> PathStep? {
-        return search(compareBlock: { $0.current.identifier == item.identifier })
-    }
-    
-    func search(forName name:String) -> PathStep? {
+    func search(name:String) -> PathStep? {
         return search(compareBlock: { $0.current.name == name })
     }
     
-    func allParentItems(fromStep step:PathStep, includeSelf:Bool = true) -> [AppFlowControllerPage] {
-        var items:[AppFlowControllerPage] = includeSelf ? [step.current] : []
+    func allParentPages(from step:PathStep, includeSelf:Bool = true) -> [AppFlowControllerPage] {
+        var pages:[AppFlowControllerPage] = includeSelf ? [step.current] : []
         var current = step
         while let parent = current.parent {
             current = parent
-            items.insert(parent.current, at: 0)
+            pages.insert(parent.current, at: 0)
         }
-        return items
+        return pages
     }
     
-    func distanceToStepWithItem(item:AppFlowControllerPage) -> Int? {
+    func distanceToStep(with page:AppFlowControllerPage) -> Int? {
+        
+        guard current.identifier != page.identifier else { return 0 }
+        
         var counter = 0
-        var found   = false
-        var current = self
-        while let parent = current.parent {
-            current = parent
+        var currentParent = self
+        
+        while let parent = currentParent.parent {
+            currentParent = parent
             counter += 1
-            if parent.current.identifier == item.identifier {
-                found = true
-                break
+            if parent.current.identifier == page.identifier {
+                return counter
             }
         }
-        return found ? counter : nil
+        return nil
     }
     
-    func distanceBetween(step step1:PathStep, andStep step2:PathStep) -> (up:Int, down:Int) {
-        let step1Parents = step1.allParentItems(fromStep: step1)
-        let step2Parents = step2.allParentItems(fromStep: step2)
-        var commonItems:[AppFlowControllerPage] = []
+    static func distanceBetween(step step1:PathStep, and step2:PathStep) -> (up:Int, down:Int) {
+        let step1Parents = step1.allParentPages(from: step1)
+        let step2Parents = step2.allParentPages(from: step2)
+        var commonPages:[AppFlowControllerPage] = []
         for step1Parent in step1Parents {
             for step2Parent in step2Parents {
                 if step1Parent.identifier == step2Parent.identifier {
-                    commonItems.append(step1Parent)
+                    commonPages.append(step1Parent)
                 }
             }
         }
-        if let firtCommonItem = commonItems.last {
-            let step1Distance = step1.distanceToStepWithItem(item: firtCommonItem)
-            let step2Distance = step2.distanceToStepWithItem(item: firtCommonItem)
+        if let firtCommonItem = commonPages.last {
+            let step1Distance = step1.distanceToStep(with: firtCommonItem)
+            let step2Distance = step2.distanceToStep(with: firtCommonItem)
             return (step1Distance ?? 0, step2Distance ?? 0)
         } else {
             return (0,0)
@@ -121,3 +120,17 @@ class PathStep {
         }
     }
 }
+
+extension PathStep: Equatable {
+    
+    public static func ==(lhs:PathStep, rhs:PathStep) -> Bool {
+        return
+            lhs.current == rhs.current &&
+            lhs.children == rhs.children &&
+            (lhs.parent == rhs.parent || (lhs.parent == nil && rhs.parent == nil))
+    }
+    
+}
+
+
+
