@@ -12,14 +12,14 @@ import AppFlowController
 class LoginViewController: BaseViewController {
 
     @IBAction func forgotPasswordAction(_ sender: AnyObject) {
-         AppFlowController.shared.show(item: AppPage.forgotPassword)
+        try! AppFlowController.shared.show(page: AppPage.forgotPassword)
     }
 
     @IBAction func registrationAction(_ sender: AnyObject) {
-        AppFlowController.shared.show(item: AppPage.registration, animated: false)
+        try! AppFlowController.shared.show(page: AppPage.registration, animated: false)
     }
     
     @IBAction func forgotPasswordAlertAction(_ sender: AnyObject) {
-        AppFlowController.shared.show(item: AppPage.forgotPasswordAlert)
+        try! AppFlowController.shared.show(page: AppPage.forgotPasswordAlert)
     }
 }

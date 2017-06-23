@@ -31,10 +31,11 @@ public enum AppFlowControllerError:Error, Equatable {
     case pathAlreadyRegistered(identifier:String)
     case internalError
     case unregisteredPathIdentifier(identifier:String)
-    case missingConfigurationForAppFlowController
+    case missingConfiguration
     case unregisteredViewControllerType(viewControllerType:UIViewController.Type)
     case missingVariant(identifier:String)
     case variantNotSupported(identifier:String)
+    case missingPathStepTransition(identifier:String)
     
     public var info:String {
         switch self {
@@ -44,7 +45,7 @@ public enum AppFlowControllerError:Error, Equatable {
                 return "Internal error"
             case .unregisteredPathIdentifier(let identifier):
                 return "Unregistered path for item \(identifier)"
-            case .missingConfigurationForAppFlowController:
+            case .missingConfiguration:
                 return "You need to invoke prepare(forWindow:UIWindow) function first"
             case .unregisteredViewControllerType(let viewControllerType):
                 return "Unregistered view controller type \(viewControllerType)"
@@ -52,6 +53,8 @@ public enum AppFlowControllerError:Error, Equatable {
                 return "\(identifier) supports variants and cannot be shown without it. Use variant parameter in show method"
             case .variantNotSupported(let identifier):
                 return "\(identifier) doesn't support variants"
+            case .missingPathStepTransition(let identifier):
+                return "\(identifier) doesn't have forward or/and backward transition"
         }
     }
     
@@ -65,13 +68,15 @@ public func ==(lhs:AppFlowControllerError, rhs:AppFlowControllerError) -> Bool {
             return true
         case (.unregisteredPathIdentifier(let id1), .unregisteredPathIdentifier(let id2)):
             return id1 == id2
-        case (.missingConfigurationForAppFlowController, .missingConfigurationForAppFlowController):
+        case (.missingConfiguration, .missingConfiguration):
             return true
         case (.unregisteredViewControllerType(let viewControllerType1), .unregisteredViewControllerType(let viewControllerType2)):
             return viewControllerType1 == viewControllerType2
         case (.missingVariant(let id1), .missingVariant(let id2)):
             return id1 == id2
         case (.variantNotSupported(let id1), .variantNotSupported(let id2)):
+            return id1 == id2
+        case (.missingPathStepTransition(let id1), .missingPathStepTransition(let id2)):
             return id1 == id2
         default:
             return false

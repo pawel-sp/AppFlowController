@@ -53,16 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         
-        
-        // old way for registering paths - it's still working anyway!
-//        flowController.register(path: AppPage.home => alpha => AppPage.registration)
-//        flowController.register(path: AppPage.home => AppPage.login => AppPage.forgotPassword)
-//        flowController.register(path: AppPage.home => AppPage.items => AppPage.details)
-//        flowController.register(path: AppPage.home => AppPage.login => modal => AppPage.forgotPasswordAlert => AppPage.info)
-//        flowController.register(path: AppPage.home => AppPage.tabs => tab => AppPage.tabPage1)
-//        flowController.register(path: AppPage.home => AppPage.tabs => tab => AppPage.tabPage2)
-        
-        flowController.show(item:AppPage.start)
+        try! flowController.show(page:AppPage.home)
         return true
     }
 

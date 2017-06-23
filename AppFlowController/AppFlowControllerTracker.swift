@@ -85,7 +85,11 @@ class Tracker {
     }
     
     func parameter(for key:String) -> String? {
-        return items[key]?.parameter
+        if let item = items[key] {
+            return item.viewController == nil ? nil : item.parameter
+        } else {
+            return nil
+        }
     }
     
     func isItemSkipped(at key:String) -> Bool {
@@ -94,6 +98,12 @@ class Tracker {
     
     func disableSkip(for key:String) {
         items.filter({ $0.key == key }).first?.value.skipped = false
+    }
+    
+    func disableSKip(for keys:[String]) {
+        for key in keys {
+            disableSkip(for: key)
+        }
     }
     
     func reset() {

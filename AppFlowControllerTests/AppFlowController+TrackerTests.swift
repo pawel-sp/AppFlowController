@@ -45,14 +45,19 @@ class AppFlowController_TrackerTests: XCTestCase {
     // MARK: - register parameter
     
     func testRegisterParameter_itemForKeyDoesntExist() {
+        XCTAssertNil(tracker.parameter(for: "key"))
+    }
+    
+    func testRegisterParameter_itemForKeyAlreadyExists_viewControllerIsNotNil() {
+        let viewController = UIViewController()
+        tracker.register(viewController: viewController, for: "key")
         tracker.register(parameter: "parameter", for: "key")
         XCTAssertEqual(tracker.parameter(for: "key"), "parameter")
     }
     
-    func testRegisterParameter_itemForKeyAlreadyExists() {
-        tracker.register(viewController: UIViewController(), for: "key")
+    func testRegisterParameter_itemForKeyAlreadyExists_viewControllerIsNil() {
         tracker.register(parameter: "parameter", for: "key")
-        XCTAssertEqual(tracker.parameter(for: "key"), "parameter")
+        XCTAssertNil(tracker.parameter(for: "key"))
     }
     
     // MARK: - view controller for key

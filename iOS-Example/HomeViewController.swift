@@ -15,25 +15,25 @@ class HomeViewController: BaseViewController {
     
     @IBAction func loginAction(_ sender: AnyObject) {
         if skipSwitch.isOn {
-            AppFlowController.shared.show(
-                item: AppPage.forgotPassword,
-                skipItems: [AppPage.login]
+            try! AppFlowController.shared.show(
+                page: AppPage.forgotPassword,
+                skipPages: [AppPage.login]
             )
         } else {
-            AppFlowController.shared.show(item: AppPage.login)
+            try! AppFlowController.shared.show(page: AppPage.login)
         }
     }
 
     @IBAction func registrationAction(_ sender: AnyObject) {
-        AppFlowController.shared.show(item: AppPage.registration)
+        try! AppFlowController.shared.show(page: AppPage.registration)
     }
 
     @IBAction func itemsAction(_ sender: AnyObject) {
-        AppFlowController.shared.show(item: AppPage.items)
+        try! AppFlowController.shared.show(page: AppPage.items)
     }
     
     @IBAction func tabsAction(_ sender: AnyObject) {
-        AppFlowController.shared.show(item: AppPage.tabPage2)
+        try! AppFlowController.shared.show(page: AppPage.tabPage2)
     }
     
 }

@@ -28,7 +28,7 @@ import UIKit
 
 extension UINavigationController {
     
-    public func pushViewController(_ viewController: UIViewController, animated: Bool, completion: (() -> ())?) {
+    open func pushViewController(_ viewController: UIViewController, animated: Bool, completion: (() -> ())?) {
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)
         pushViewController(viewController, animated: animated)
@@ -36,7 +36,7 @@ extension UINavigationController {
     }
     
     @discardableResult
-    public func popViewController(animated: Bool, completion: (() -> ())?) -> UIViewController? {
+    open func popViewController(animated: Bool, completion: (() -> ())?) -> UIViewController? {
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)
         let vc = popViewController(animated: animated)
@@ -44,7 +44,7 @@ extension UINavigationController {
         return vc
     }
     
-    public func setViewControllers(_ viewControllers: [UIViewController], animated: Bool, completion: (() -> ())?) {
+    open func setViewControllers(_ viewControllers: [UIViewController], animated: Bool, completion: (() -> ())?) {
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)
         setViewControllers(viewControllers, animated: animated)
@@ -52,7 +52,7 @@ extension UINavigationController {
     }
     
     
-    public var visibleNavigationController:UINavigationController {
+    open var visibleNavigationController:UINavigationController {
         return visibleViewController?.navigationController ?? self
     }
     
@@ -70,7 +70,7 @@ extension UINavigationController {
 
 extension UIViewController {
     
-    public var topPresentedViewController: UIViewController? {
+    open var topPresentedViewController: UIViewController? {
         var presentedVC = presentedViewController
         while presentedVC?.presentedViewController != nil {
             presentedVC = presentedVC?.presentedViewController
@@ -78,7 +78,7 @@ extension UIViewController {
         return presentedVC
     }
     
-    public func dismissAllPresentedViewControllers(completionBlock:(()->())?) {
+    open func dismissAllPresentedViewControllers(completionBlock:(()->())?) {
         if let vc = topPresentedViewController {
             vc.dismiss(animated: false) { [weak self] in
                 self?.dismissAllPresentedViewControllers(completionBlock: completionBlock)

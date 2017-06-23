@@ -67,6 +67,9 @@ open class AppFlowController {
                     if element.supportVariants {
                         element.variantName = previous.current.identifier
                     }
+                    if element.forwardTransition == nil || element.backwardTransition == nil {
+                        throw AppFlowControllerError.missingPathStepTransition(identifier: element.identifier)
+                    }
                     previousStep = previous.add(page: element)
                 } else {
                     rootPathStep = PathStep(page: element)
@@ -84,52 +87,59 @@ open class AppFlowController {
     
     // MARK: - Navigation
     
-    open func show(item:AppFlowControllerPage, variant:AppFlowControllerPage? = nil, parameters:[AppFlowControllerParameter]? = nil, animated:Bool = true, skipDismissTransitions:Bool = false, skipItems:[AppFlowControllerPage]? = nil) {
+    open func show(
+        page:AppFlowControllerPage,
+        variant:AppFlowControllerPage? = nil,
+        parameters:[AppFlowControllerParameter]? = nil,
+        animated:Bool = true,
+        skipDismissTransitions:Bool = false,
+        skipPages:[AppFlowControllerPage]? = nil
+    ) throws {
         
-        var item = item
-        
-        if item.supportVariants && variant == nil {
-            assertError(error: .missingVariant(identifier: item.identifier))
-        }
-        
-        if !item.supportVariants && variant != nil {
-            assertError(error: .variantNotSupported(identifier: item.identifier))
-        }
-        
-        if item.supportVariants && variant != nil {
-            item.variantName = variant?.identifier
-        }
-        
-        guard let foundStep = rootPathStep?.search(page: item) else {
-            assertError(error: .unregisteredPathIdentifier(identifier: item.identifier))
-            return
-        }
+        var page = page
         
         guard let rootNavigationController = rootNavigationController else {
-            assertError(error: .missingConfigurationForAppFlowController)
-            return
+            throw AppFlowControllerError.missingConfiguration
         }
         
-        let newItems         = rootPathStep?.allParentPages(from: foundStep) ?? []
+        if page.supportVariants && variant == nil {
+            throw AppFlowControllerError.missingVariant(identifier: page.identifier)
+        }
+        
+        if !page.supportVariants && variant != nil {
+            throw AppFlowControllerError.variantNotSupported(identifier: page.identifier)
+        }
+        
+        if page.supportVariants && variant != nil {
+            page.variantName = variant?.identifier
+        }
+        
+        guard let foundStep = rootPathStep?.search(page: page) else {
+            throw AppFlowControllerError.unregisteredPathIdentifier(identifier: page.identifier)
+        }
+        
+        let newPages         = rootPathStep?.allParentPages(from: foundStep) ?? []
         let currentStep      = visibleStep()
-        let currentItems     = currentStep == nil ? [] : (rootPathStep?.allParentPages(from: currentStep!) ?? [])
+        let currentPages     = currentStep == nil ? [] : (rootPathStep?.allParentPages(from: currentStep!) ?? [])
+        let keysToClearSkip  = newPages.filter({ !currentPages.contains($0) }).map({ $0.identifier })
         
         if let currentStep = currentStep {
             let distance                = PathStep.distanceBetween(step: currentStep, and: foundStep)
             let dismissCounter          = distance.up
             let _                       = distance.down
-            let dismissRange:Range<Int> = dismissCounter == 0 ? 0..<0 : (currentItems.count - dismissCounter) ..< currentItems.count
-            let displayRange:Range<Int> = 0 ..< newItems.count
-            dismiss(items: currentItems, fromIndexRange: dismissRange, animated: animated, skipTransition: skipDismissTransitions) {
-                self.register(parameters:parameters)
-                self.tracker.disableSkip(for: item.identifier)
-                self.display(items: newItems, fromIndexRange: displayRange, animated: animated, skipItems: skipItems, completionBlock: nil)
+            let dismissRange:Range<Int> = dismissCounter == 0 ? 0..<0 : (currentPages.count - dismissCounter) ..< currentPages.count
+            let displayRange:Range<Int> = 0 ..< newPages.count
+            dismiss(pages: currentPages, fromIndexRange: dismissRange, animated: animated, skipTransition: skipDismissTransitions) {
+                self.register(parameters:parameters, for: newPages, skippedPages: skipPages)
+                self.tracker.disableSKip(for: keysToClearSkip)
+                self.display(pages: newPages, fromIndexRange: displayRange, animated: animated, skipPages: skipPages, completionBlock: nil)
             }
         } else {
             rootNavigationController.viewControllers.removeAll()
             tracker.reset()
-            register(parameters:parameters)
-            display(items: newItems, fromIndexRange: 0..<newItems.count, animated: animated, skipItems: skipItems, completionBlock: nil)
+            register(parameters:parameters, for: newPages, skippedPages: skipPages)
+            tracker.disableSKip(for: keysToClearSkip)
+            display(pages: newPages, fromIndexRange: 0..<newPages.count, animated: animated, skipPages: skipPages, completionBlock: nil)
         }
     }
     
@@ -253,18 +263,24 @@ open class AppFlowController {
         }
     }
     
-    private func register(parameters:[AppFlowControllerParameter]?) {
+    private func register(parameters:[AppFlowControllerParameter]?, for pages:[AppFlowControllerPage], skippedPages:[AppFlowControllerPage]?) {
         if let parameters = parameters {
             for parameter in parameters {
+                if pages.filter({ $0.identifier == parameter.identifier }).count == 0 {
+                    continue
+                }
+                if (skippedPages?.filter({ $0.identifier == parameter.identifier }).count ?? 0) > 0 {
+                    continue
+                }
                 self.tracker.register(parameter: parameter.value, for: parameter.identifier)
             }
         }
     }
     
-    private func display(items:[AppFlowControllerPage], fromIndexRange indexRange:Range<Int>, animated:Bool, skipItems:[AppFlowControllerPage]? = nil, completionBlock:(() -> ())?) {
+    private func display(pages:[AppFlowControllerPage], fromIndexRange indexRange:Range<Int>, animated:Bool, skipPages:[AppFlowControllerPage]? = nil, completionBlock:(() -> ())?) {
         
         let index      = indexRange.lowerBound
-        let item       = items[index]
+        let item       = pages[index]
         let identifier = item.identifier
         
         guard let navigationController = rootNavigationController?.visibleNavigationController else {
@@ -278,10 +294,10 @@ open class AppFlowController {
                 completionBlock?()
             } else {
                 self.display(
-                    items: items,
+                    pages: pages,
                     fromIndexRange: newRange,
                     animated: animated,
-                    skipItems: skipItems,
+                    skipPages: skipPages,
                     completionBlock: completionBlock
                 )
             }
@@ -289,7 +305,12 @@ open class AppFlowController {
         
         if navigationController.viewControllers.count == 0 {
             var viewControllersToPush = [item]
-            for item in items[1..<items.count] {
+            var skippedPages:Int = 0
+            for item in pages[1..<pages.count] {
+                if skipPages?.contains(where: { $0.identifier == item.identifier }) == true {
+                    skippedPages += 1
+                    continue
+                }
                 if item.forwardTransition is PushPopAppFlowControllerTransition {
                     viewControllersToPush += [item]
                 } else {
@@ -302,11 +323,11 @@ open class AppFlowController {
                 tracker.register(viewController: viewController, for: identifier)
             }
             navigationController.setViewControllers(viewControllers, animated: false) {
-                displayNextItem(range: indexRange, animated: false, offset:max(0, viewControllersToPush.count - 1))
+                displayNextItem(range: indexRange, animated: false, offset:max(0, viewControllersToPush.count - 1 + skippedPages))
             }
         } else if tracker.viewController(for: item.identifier) == nil && !tracker.isItemSkipped(at: item.identifier) {
             
-            let shouldSkipViewController = skipItems?.contains(where: { $0.identifier == item.identifier }) == true
+            let shouldSkipViewController = skipPages?.contains(where: { $0.identifier == item.identifier }) == true
             
             if shouldSkipViewController {
                 
@@ -329,7 +350,7 @@ open class AppFlowController {
         }
     }
     
-    private func dismiss(items:[AppFlowControllerPage], fromIndexRange indexRange:Range<Int>, animated:Bool, skipTransition:Bool = false, completionBlock:(() -> ())?) {
+    private func dismiss(pages:[AppFlowControllerPage], fromIndexRange indexRange:Range<Int>, animated:Bool, skipTransition:Bool = false, completionBlock:(() -> ())?) {
         if indexRange.count == 0 {
             
             completionBlock?()
@@ -337,7 +358,7 @@ open class AppFlowController {
         } else {
             
             let index = indexRange.upperBound - 1
-            let item  = items[index]
+            let item  = pages[index]
             
             guard let viewController = tracker.viewController(for: item.identifier) else {
                 completionBlock?()
@@ -351,7 +372,7 @@ open class AppFlowController {
             if !skipTransition {
                 item.backwardTransition?.backwardTransitionBlock(animated: animated){
                     self.dismiss(
-                        items: items,
+                        pages: pages,
                         fromIndexRange: indexRange.lowerBound..<indexRange.upperBound - 1,
                         animated: animated,
                         skipTransition: skipTransition,
@@ -360,7 +381,7 @@ open class AppFlowController {
                     }(navigationController, viewController)
             } else {
                 self.dismiss(
-                    items: items,
+                    pages: pages,
                     fromIndexRange: indexRange.lowerBound..<indexRange.upperBound - 1,
                     animated: animated,
                     skipTransition: skipTransition,
