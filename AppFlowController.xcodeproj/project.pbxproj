@@ -29,6 +29,7 @@
 		A49CFA2E1EFBE99C0045AB93 /* AppFlowController+TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA2D1EFBE99C0045AB93 /* AppFlowController+TrackerTests.swift */; };
 		A49CFA301EFBF7CF0045AB93 /* AppFlowController+PathStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA2F1EFBF7CF0045AB93 /* AppFlowController+PathStepTests.swift */; };
 		A49CFA331EFC16F60045AB93 /* AppFlowController+CoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA321EFC16F60045AB93 /* AppFlowController+CoreTests.swift */; };
+		A49CFA3C1EFD42650045AB93 /* AppFlowControllerParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA3B1EFD42650045AB93 /* AppFlowControllerParameter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		A49CFA2D1EFBE99C0045AB93 /* AppFlowController+TrackerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+TrackerTests.swift"; sourceTree = "<group>"; };
 		A49CFA2F1EFBF7CF0045AB93 /* AppFlowController+PathStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+PathStepTests.swift"; sourceTree = "<group>"; };
 		A49CFA321EFC16F60045AB93 /* AppFlowController+CoreTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+CoreTests.swift"; sourceTree = "<group>"; };
+		A49CFA3B1EFD42650045AB93 /* AppFlowControllerParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowControllerParameter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +148,7 @@
 			isa = PBXGroup;
 			children = (
 				A488091E1DA165B6003CF8F3 /* AppFlowController.swift */,
+				A49CFA3B1EFD42650045AB93 /* AppFlowControllerParameter.swift */,
 				A447D3CD1DAD3F6E000BE4B9 /* AppFlowControllerTracker.swift */,
 				A493C4B31DA44D8100BB4A08 /* AppFlowControllerPathStep.swift */,
 				A493C4B51DA44F6300BB4A08 /* AppFlowControllerError.swift */,
@@ -298,6 +301,7 @@
 				A48809271DA165B6003CF8F3 /* AppFlowControllerExtensions.swift in Sources */,
 				A48809261DA165B6003CF8F3 /* AppFlowControllerOperators.swift in Sources */,
 				A48809231DA165B6003CF8F3 /* AppFlowController.swift in Sources */,
+				A49CFA3C1EFD42650045AB93 /* AppFlowControllerParameter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

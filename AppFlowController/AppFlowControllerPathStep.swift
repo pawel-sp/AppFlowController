@@ -51,11 +51,11 @@ class PathStep {
     }
     
     func search(page:AppFlowControllerPage) -> PathStep? {
-        return search(compareBlock: { $0.current.identifier == page.identifier })
+        return search(identifier: page.identifier)
     }
     
-    func search(name:String) -> PathStep? {
-        return search(compareBlock: { $0.current.name == name })
+    func search(identifier:String) -> PathStep? {
+        return search(compareBlock: { $0.current.identifier == identifier })
     }
     
     func allParentPages(from step:PathStep, includeSelf:Bool = true) -> [AppFlowControllerPage] {

@@ -33,8 +33,8 @@ public enum AppFlowControllerError:Error, Equatable {
     case unregisteredPathIdentifier(identifier:String)
     case missingConfigurationForAppFlowController
     case unregisteredViewControllerType(viewControllerType:UIViewController.Type)
-    case missingVariant(name:String)
-    case variantNotSupported(name:String)
+    case missingVariant(identifier:String)
+    case variantNotSupported(identifier:String)
     
     public var info:String {
         switch self {
@@ -48,10 +48,10 @@ public enum AppFlowControllerError:Error, Equatable {
                 return "You need to invoke prepare(forWindow:UIWindow) function first"
             case .unregisteredViewControllerType(let viewControllerType):
                 return "Unregistered view controller type \(viewControllerType)"
-            case .missingVariant(let name):
-                return "\(name) supports variants and cannot be shown without it. Use variant parameter in show method"
-            case .variantNotSupported(let name):
-                return "\(name) doesn't support variants"
+            case .missingVariant(let identifier):
+                return "\(identifier) supports variants and cannot be shown without it. Use variant parameter in show method"
+            case .variantNotSupported(let identifier):
+                return "\(identifier) doesn't support variants"
         }
     }
     
@@ -69,10 +69,10 @@ public func ==(lhs:AppFlowControllerError, rhs:AppFlowControllerError) -> Bool {
             return true
         case (.unregisteredViewControllerType(let viewControllerType1), .unregisteredViewControllerType(let viewControllerType2)):
             return viewControllerType1 == viewControllerType2
-        case (.missingVariant(let name1), .missingVariant(let name2)):
-            return name1 == name2
-        case (.variantNotSupported(let name1), .variantNotSupported(let name2)):
-            return name1 == name2
+        case (.missingVariant(let id1), .missingVariant(let id2)):
+            return id1 == id2
+        case (.variantNotSupported(let id1), .variantNotSupported(let id2)):
+            return id1 == id2
         default:
             return false
     }

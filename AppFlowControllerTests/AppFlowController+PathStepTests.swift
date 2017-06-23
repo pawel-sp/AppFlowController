@@ -61,15 +61,15 @@ class AppFlowController_PathStepTests: XCTestCase {
     }
     
     func testSearchName_nameDoesntExist() {
-        XCTAssertNil(root.search(name: "page"))
+        XCTAssertNil(root.search(identifier: "page"))
     }
     
     func testSearchName_nameAlreadyExists() {
         let page = newPage(name: "page_to_find")
         root.add(page: page)
-        XCTAssertEqual(root.search(name: "page_to_find")?.current, page)
-        XCTAssertEqual(root.search(name: "page_to_find")?.parent, root)
-        XCTAssertEqual(root.search(name: "page_to_find")!.children, [])
+        XCTAssertEqual(root.search(identifier: "page_to_find")?.current, page)
+        XCTAssertEqual(root.search(identifier: "page_to_find")?.parent, root)
+        XCTAssertEqual(root.search(identifier: "page_to_find")!.children, [])
     }
     
     func testAllParentPages_stepHasNoParents_includeSelfIsFalse() {

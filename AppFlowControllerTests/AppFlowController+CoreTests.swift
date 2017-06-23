@@ -101,7 +101,7 @@ class AppFlowController_CoreTests: XCTestCase {
             try flowController.register(path: page)
         } catch let error {
             if let afcError = error as? AppFlowControllerError {
-                XCTAssertEqual(afcError, AppFlowControllerError.pathNameAlreadyRegistered(name: "1"))
+                XCTAssertEqual(afcError, AppFlowControllerError.pathAlreadyRegistered(identifier: "1"))
             } else {
                 XCTFail()
             }

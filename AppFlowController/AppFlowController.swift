@@ -65,7 +65,7 @@ open class AppFlowController {
             } else {
                 if let previous = previousStep {
                     if element.supportVariants {
-                        element.variantName = previous.current.name
+                        element.variantName = previous.current.identifier
                     }
                     previousStep = previous.add(page: element)
                 } else {
@@ -84,20 +84,20 @@ open class AppFlowController {
     
     // MARK: - Navigation
     
-    open func show(item:AppFlowControllerPage, variant:AppFlowControllerPage? = nil, parameters:[AppFlowControllerPage:String]? = nil, animated:Bool = true, skipDismissTransitions:Bool = false, skipItems:[AppFlowControllerPage]? = nil) {
+    open func show(item:AppFlowControllerPage, variant:AppFlowControllerPage? = nil, parameters:[AppFlowControllerParameter]? = nil, animated:Bool = true, skipDismissTransitions:Bool = false, skipItems:[AppFlowControllerPage]? = nil) {
         
         var item = item
         
         if item.supportVariants && variant == nil {
-            assertError(error: .missingVariant(name: item.name))
+            assertError(error: .missingVariant(identifier: item.identifier))
         }
         
         if !item.supportVariants && variant != nil {
-            assertError(error: .variantNotSupported(name: item.name))
+            assertError(error: .variantNotSupported(identifier: item.identifier))
         }
         
         if item.supportVariants && variant != nil {
-            item.variantName = variant?.name
+            item.variantName = variant?.identifier
         }
         
         guard let foundStep = rootPathStep?.search(page: item) else {
@@ -122,7 +122,7 @@ open class AppFlowController {
             let displayRange:Range<Int> = 0 ..< newItems.count
             dismiss(items: currentItems, fromIndexRange: dismissRange, animated: animated, skipTransition: skipDismissTransitions) {
                 self.register(parameters:parameters)
-                self.tracker.disableSkip(for: item.name)
+                self.tracker.disableSkip(for: item.identifier)
                 self.display(items: newItems, fromIndexRange: displayRange, animated: animated, skipItems: skipItems, completionBlock: nil)
             }
         } else {
@@ -141,8 +141,8 @@ open class AppFlowController {
             let navigationController = rootNavigationController?.visibleNavigationController
             
             while viewController == nil {
-                if let name = parent?.current.name {
-                    viewController = tracker.viewController(for: name)
+                if let identifier = parent?.current.identifier {
+                    viewController = tracker.viewController(for: identifier)
                 } else {
                     break
                 }
@@ -159,7 +159,7 @@ open class AppFlowController {
         guard let navigationController = rootNavigationController?.visibleNavigationController else {
             return
         }
-        guard let targetViewController = tracker.viewController(for: item.name) else {
+        guard let targetViewController = tracker.viewController(for: item.identifier) else {
             return
         }
         navigationController.popToViewController(targetViewController, animated: true)
@@ -168,7 +168,7 @@ open class AppFlowController {
     // When you need present view controller in different way then using AppFlowController you need to register that view controller right after presenting that to keep structure of AppFlowController.
     // TODO: - what about variants?
     public func register(viewController:UIViewController, forPathName pathName:String) {
-        if let _ = rootPathStep?.search(name: pathName) {
+        if let _ = rootPathStep?.search(identifier: pathName) {
             self.tracker.register(viewController: viewController, for: pathName)
         } else {
             assertError(error: AppFlowControllerError.unregisteredPathIdentifier(identifier: pathName))
@@ -183,7 +183,7 @@ open class AppFlowController {
         }
         
         let items       = rootPathStep?.allParentPages(from: foundStep) ?? []
-        let itemStrings = items.map({ $0.name })
+        let itemStrings = items.map({ $0.identifier })
         
         return itemStrings.joined(separator: "/")
     }
@@ -191,7 +191,7 @@ open class AppFlowController {
     open func currentPathComponents() -> String? {
         if let visibleStep = visibleStep() {
             let items       = rootPathStep?.allParentPages(from: visibleStep) ?? []
-            let itemStrings = items.map({ $0.name })
+            let itemStrings = items.map({ $0.identifier })
             return itemStrings.joined(separator: "/")
         } else {
             return nil
@@ -203,16 +203,18 @@ open class AppFlowController {
     }
     
     open func parameterForCurrentItem() -> String? {
-        if let currentItemName = currentItem()?.name {
-            return tracker.parameter(for: currentItemName)
+        if let currentItemID = currentItem()?.identifier {
+            return tracker.parameter(for: currentItemID)
         } else {
             return nil
         }
     }
     
     // Use it when there is no visible item yet
-    open func parameterForItem(item:AppFlowControllerPage) -> String? {
-        return tracker.parameter(for: item.name)
+    open func parameterForItem(item:AppFlowControllerPage, variant:AppFlowControllerPage? = nil) -> String? {
+        var item = item
+        item.variantName = variant?.identifier
+        return tracker.parameter(for: item.identifier)
     }
     
     open func reset(completionBlock:(()->())?) {
@@ -228,7 +230,7 @@ open class AppFlowController {
     private func visibleStep() -> PathStep? {
         let navigationController  = rootNavigationController?.visibleNavigationController
         if let visibleViewController = navigationController?.visibleViewController, let key = tracker.key(for: visibleViewController) {
-            return rootPathStep?.search(name: key)
+            return rootPathStep?.search(identifier: key)
         } else {
             return nil
         }
@@ -251,19 +253,19 @@ open class AppFlowController {
         }
     }
     
-    private func register(parameters:[AppFlowControllerPage : String]?) {
+    private func register(parameters:[AppFlowControllerParameter]?) {
         if let parameters = parameters {
-            for (key, value) in parameters {
-                self.tracker.register(parameter: value, for: key.identifier)
+            for parameter in parameters {
+                self.tracker.register(parameter: parameter.value, for: parameter.identifier)
             }
         }
     }
     
     private func display(items:[AppFlowControllerPage], fromIndexRange indexRange:Range<Int>, animated:Bool, skipItems:[AppFlowControllerPage]? = nil, completionBlock:(() -> ())?) {
         
-        let index = indexRange.lowerBound
-        let item  = items[index]
-        let name  = item.name
+        let index      = indexRange.lowerBound
+        let item       = items[index]
+        let identifier = item.identifier
         
         guard let navigationController = rootNavigationController?.visibleNavigationController else {
             completionBlock?()
@@ -296,25 +298,25 @@ open class AppFlowController {
             }
             let viewControllers = viewControllersToPush.map({ self.viewController(fromItem: $0) })
             for (index, viewController) in viewControllers.enumerated() {
-                let name = viewControllersToPush[index].name
-                tracker.register(viewController: viewController, for: name)
+                let identifier = viewControllersToPush[index].identifier
+                tracker.register(viewController: viewController, for: identifier)
             }
             navigationController.setViewControllers(viewControllers, animated: false) {
                 displayNextItem(range: indexRange, animated: false, offset:max(0, viewControllersToPush.count - 1))
             }
-        } else if tracker.viewController(for: item.name) == nil && !tracker.isItemSkipped(at: item.name) {
+        } else if tracker.viewController(for: item.identifier) == nil && !tracker.isItemSkipped(at: item.identifier) {
             
             let shouldSkipViewController = skipItems?.contains(where: { $0.identifier == item.identifier }) == true
             
             if shouldSkipViewController {
                 
-                tracker.register(viewController: nil, for: item.name, skipped:shouldSkipViewController)
+                tracker.register(viewController: nil, for: item.identifier, skipped:shouldSkipViewController)
                 displayNextItem(range: indexRange, animated: animated)
                 
             } else {
                 
                 let viewController = self.viewController(fromItem:item)
-                tracker.register(viewController: viewController, for: item.name, skipped:shouldSkipViewController)
+                tracker.register(viewController: viewController, for: item.identifier, skipped:shouldSkipViewController)
                 item.forwardTransition?.forwardTransitionBlock(animated: animated){
                     displayNextItem(range: indexRange, animated: animated)
                 }(navigationController, viewController)
@@ -337,7 +339,7 @@ open class AppFlowController {
             let index = indexRange.upperBound - 1
             let item  = items[index]
             
-            guard let viewController = tracker.viewController(for: item.name) else {
+            guard let viewController = tracker.viewController(for: item.identifier) else {
                 completionBlock?()
                 return
             }
