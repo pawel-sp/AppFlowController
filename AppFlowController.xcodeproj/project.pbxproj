@@ -30,6 +30,7 @@
 		A49CFA301EFBF7CF0045AB93 /* AppFlowController+PathStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA2F1EFBF7CF0045AB93 /* AppFlowController+PathStepTests.swift */; };
 		A49CFA331EFC16F60045AB93 /* AppFlowController+CoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA321EFC16F60045AB93 /* AppFlowController+CoreTests.swift */; };
 		A49CFA3C1EFD42650045AB93 /* AppFlowControllerParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA3B1EFD42650045AB93 /* AppFlowControllerParameter.swift */; };
+		A49CFA3E1EFD47EA0045AB93 /* AppFlowController+ParameterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA3D1EFD47EA0045AB93 /* AppFlowController+ParameterTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		A49CFA2F1EFBF7CF0045AB93 /* AppFlowController+PathStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+PathStepTests.swift"; sourceTree = "<group>"; };
 		A49CFA321EFC16F60045AB93 /* AppFlowController+CoreTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+CoreTests.swift"; sourceTree = "<group>"; };
 		A49CFA3B1EFD42650045AB93 /* AppFlowControllerParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowControllerParameter.swift; sourceTree = "<group>"; };
+		A49CFA3D1EFD47EA0045AB93 /* AppFlowController+ParameterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+ParameterTests.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +113,7 @@
 				A49CFA2D1EFBE99C0045AB93 /* AppFlowController+TrackerTests.swift */,
 				A49CFA2F1EFBF7CF0045AB93 /* AppFlowController+PathStepTests.swift */,
 				A49CFA321EFC16F60045AB93 /* AppFlowController+CoreTests.swift */,
+				A49CFA3D1EFD47EA0045AB93 /* AppFlowController+ParameterTests.swift */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -286,6 +289,7 @@
 				A400EB2A1EF8FEE20024D9A2 /* AppFlowController+UINavigationControllerExtensionTests.swift in Sources */,
 				A400EB401EF921480024D9A2 /* MockNavigationController.swift in Sources */,
 				A49CFA241EFA76B40045AB93 /* AppFlowController+TransitionTests.swift in Sources */,
+				A49CFA3E1EFD47EA0045AB93 /* AppFlowController+ParameterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

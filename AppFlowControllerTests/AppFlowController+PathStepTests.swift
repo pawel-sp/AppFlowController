@@ -13,8 +13,10 @@ class AppFlowController_PathStepTests: XCTestCase {
     
     // MARK: - Helpers
     
-    func newPage(name:String = "page") -> AppFlowControllerPage {
-        return AppFlowControllerPage(name: name, viewControllerBlock: { UIViewController() }, viewControllerType: UIViewController.self)
+    func newPage(name:String = "page", variant:String? = nil) -> AppFlowControllerPage {
+        var result = AppFlowControllerPage(name: name, viewControllerBlock: { UIViewController() }, viewControllerType: UIViewController.self)
+        result.variantName = variant
+        return result
     }
     
     func newRootStep() -> PathStep {
@@ -60,16 +62,41 @@ class AppFlowController_PathStepTests: XCTestCase {
         XCTAssertEqual(root.search(page: page)!.children, [])
     }
     
-    func testSearchName_nameDoesntExist() {
+    func testSearchPage_idExistsButWithVariant() {
+        let page = newPage(name: "page", variant: "variant")
+        let page_withoutVariant = newPage(name: "page", variant: nil)
+        
+        root.add(page: page)
+        
+        XCTAssertEqual(root.search(page: page)?.current, page)
+        XCTAssertEqual(root.search(page: page)?.parent, root)
+        XCTAssertEqual(root.search(page: page)!.children, [])
+        
+        XCTAssertNil(root.search(page: page_withoutVariant))
+    }
+    
+    func testSearchID_idDoesntExist() {
         XCTAssertNil(root.search(identifier: "page"))
     }
     
-    func testSearchName_nameAlreadyExists() {
+    func testSearchID_idAlreadyExists() {
         let page = newPage(name: "page_to_find")
         root.add(page: page)
         XCTAssertEqual(root.search(identifier: "page_to_find")?.current, page)
         XCTAssertEqual(root.search(identifier: "page_to_find")?.parent, root)
         XCTAssertEqual(root.search(identifier: "page_to_find")!.children, [])
+    }
+    
+    func testSearchID_idExistsButWithVariant() {
+        let page = newPage(name: "page_to_find", variant: "variant")
+        
+        root.add(page: page)
+        
+        XCTAssertEqual(root.search(identifier: "variant_page_to_find")?.current, page)
+        XCTAssertEqual(root.search(identifier: "variant_page_to_find")?.parent, root)
+        XCTAssertEqual(root.search(identifier: "variant_page_to_find")!.children, [])
+        
+        XCTAssertNil(root.search(identifier: "page_to_find"))
     }
     
     func testAllParentPages_stepHasNoParents_includeSelfIsFalse() {
