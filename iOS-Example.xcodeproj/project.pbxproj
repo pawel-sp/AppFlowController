@@ -39,6 +39,13 @@
 			remoteGlobalIDString = A48809131DA16580003CF8F3;
 			remoteInfo = AppFlowController;
 		};
+		A4DC3DC11EFE72D700975AA9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A488095E1DA16696003CF8F3 /* AppFlowController.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A400EB271EF8FEE20024D9A2;
+			remoteInfo = AppFlowControllerTests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -146,6 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				A48809631DA16696003CF8F3 /* AppFlowController.framework */,
+				A4DC3DC21EFE72D700975AA9 /* AppFlowControllerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -198,7 +206,6 @@
 				TargetAttributes = {
 					A48809301DA165E9003CF8F3 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = EZ57PM2RP9;
 						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 					};
@@ -234,6 +241,13 @@
 			fileType = wrapper.framework;
 			path = AppFlowController.framework;
 			remoteRef = A48809621DA16696003CF8F3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A4DC3DC21EFE72D700975AA9 /* AppFlowControllerTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = AppFlowControllerTests.xctest;
+			remoteRef = A4DC3DC11EFE72D700975AA9 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -389,10 +403,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = EZ57PM2RP9;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "iOS-Example/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "co.untitledkingdom.iOS-Example";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pawelsporysz.iOS-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -404,10 +418,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = EZ57PM2RP9;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "iOS-Example/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "co.untitledkingdom.iOS-Example";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pawelsporysz.iOS-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
