@@ -143,12 +143,17 @@ open class AppFlowController {
         }
     }
     
-    public func goBack(animated:Bool = true) {
+    public func goBack(animated:Bool = true) throws {
+        
+        guard let rootNavigationController = rootNavigationController else {
+            throw AppFlowControllerError.missingConfiguration
+        }
+        
         if let visible = visibleStep() {
             
             var parent = visible.parent
             var viewController:UIViewController?
-            let navigationController = rootNavigationController?.visibleNavigationController
+            let navigationController = rootNavigationController.visibleNavigationController
             
             while viewController == nil {
                 if let identifier = parent?.current.identifier {
@@ -159,7 +164,7 @@ open class AppFlowController {
                 parent = parent?.parent
             }
             
-            if let viewController = viewController, let navigationController = navigationController {
+            if let viewController = viewController {
                 visible.current.backwardTransition?.backwardTransitionBlock(animated: animated){}(navigationController, viewController)
             }
         }
