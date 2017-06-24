@@ -421,6 +421,14 @@
                                     <action selector="forgotPasswordAction:" destination="p0O-7X-BQT" eventType="touchUpInside" id="WU8-TN-A75"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oov-Cy-uOH">
+                                <rect key="frame" x="142" y="405" width="90" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <state key="normal" title="Pop to Home"/>
+                                <connections>
+                                    <action selector="popToHomeAction:" destination="p0O-7X-BQT" eventType="touchUpInside" id="wJ0-Mr-A6j"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.46666666670000001" blue="0.70980392160000005" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -428,8 +436,10 @@
                             <constraint firstItem="0wP-Gr-hs2" firstAttribute="centerY" secondItem="Tav-p4-HlE" secondAttribute="centerY" constant="-20" id="Mr6-jU-THh"/>
                             <constraint firstItem="S0r-z7-qN6" firstAttribute="centerX" secondItem="Tav-p4-HlE" secondAttribute="centerX" id="Qra-G7-5MQ"/>
                             <constraint firstItem="jAj-L6-TDH" firstAttribute="centerX" secondItem="Tav-p4-HlE" secondAttribute="centerX" id="X4p-CL-lpz"/>
+                            <constraint firstItem="oov-Cy-uOH" firstAttribute="centerX" secondItem="Tav-p4-HlE" secondAttribute="centerX" id="dNe-3F-kgV"/>
                             <constraint firstItem="jAj-L6-TDH" firstAttribute="top" secondItem="S0r-z7-qN6" secondAttribute="bottom" constant="7.5" id="m3r-NM-egz"/>
                             <constraint firstItem="S0r-z7-qN6" firstAttribute="top" secondItem="0wP-Gr-hs2" secondAttribute="bottom" constant="2" id="scB-yn-Lje"/>
+                            <constraint firstItem="oov-Cy-uOH" firstAttribute="top" secondItem="jAj-L6-TDH" secondAttribute="bottom" constant="7" id="vPf-Oh-rNu"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Forgot password" id="8GJ-qO-2hb"/>

@@ -170,14 +170,21 @@ open class AppFlowController {
         }
     }
     
-    public func popToItem(_ item:AppFlowControllerPage) {
-        guard let navigationController = rootNavigationController?.visibleNavigationController else {
-            return
+    public func pop(to page:AppFlowControllerPage, animated:Bool = true) throws {
+        
+        guard let rootNavigationController = rootNavigationController else {
+            throw AppFlowControllerError.missingConfiguration
         }
-        guard let targetViewController = tracker.viewController(for: item.identifier) else {
-            return
+        
+        guard let foundStep = rootPathStep?.search(page: page) else {
+            throw AppFlowControllerError.unregisteredPathIdentifier(identifier: page.identifier)
         }
-        navigationController.popToViewController(targetViewController, animated: true)
+        
+        guard let targetViewController = tracker.viewController(for: foundStep.current.identifier) else {
+            throw AppFlowControllerError.popToSkippedPath(identifier: foundStep.current.identifier)
+        }
+        
+        rootNavigationController.popToViewController(targetViewController, animated: animated)
     }
     
     // When you need present view controller in different way then using AppFlowController you need to register that view controller right after presenting that to keep structure of AppFlowController.
