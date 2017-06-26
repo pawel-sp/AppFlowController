@@ -42,7 +42,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         AppPage.tabs =>> [
                             tab => AppPage.tabPage1,
                             tab => AppPage.tabPage2
-                        ]
+                        ],
+                        AppPage.custom
                 ]
             )
         } catch let error {
@@ -140,6 +141,12 @@ class AppPage {
         supportVariants: true,
         storyboardName: "Main",
         viewControllerType: PlayViewController.self
+    )
+    
+    static let custom = AppFlowControllerPage(
+        name: "custom",
+        storyboardName: "Main",
+        viewControllerType: CustomViewController.self
     )
     
 }

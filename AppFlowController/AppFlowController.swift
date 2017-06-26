@@ -187,13 +187,11 @@ open class AppFlowController {
         rootNavigationController.popToViewController(targetViewController, animated: animated)
     }
     
-    // When you need present view controller in different way then using AppFlowController you need to register that view controller right after presenting that to keep structure of AppFlowController.
-    // TODO: - what about variants?
-    public func register(viewController:UIViewController, forPathName pathName:String) {
-        if let _ = rootPathStep?.search(identifier: pathName) {
-            self.tracker.register(viewController: viewController, for: pathName)
+    public func updateCurrentPage(with viewController:UIViewController, for name:String) throws {
+        if let _ = rootPathStep?.search(identifier: name) {
+            self.tracker.register(viewController: viewController, for: name)
         } else {
-            assertError(error: AppFlowControllerError.unregisteredPathIdentifier(identifier: pathName))
+            throw AppFlowControllerError.unregisteredPathIdentifier(identifier: name)
         }
     }
     
