@@ -192,14 +192,12 @@ open class AppFlowController {
         }
     }
     
-    open func pathComponents(for page:AppFlowControllerPage, variant:AppFlowControllerPage? = nil) throws -> String? {
+    open func pathComponents(for page:AppFlowControllerPage, variant:AppFlowControllerPage? = nil) throws -> String {
         let foundStep   = try pathStep(from: page, variant: variant)
         let pages       = rootPathStep?.allParentPages(from: foundStep) ?? []
         let pageStrings = pages.map({ $0.identifier })
         return pageStrings.joined(separator: "/")
     }
-    
-
     
     open func currentPathComponents() -> String? {
         if let visibleStep = visibleStep() {
@@ -211,13 +209,13 @@ open class AppFlowController {
         }
     }
     
-    open func currentItem() -> AppFlowControllerPage? {
+    open func currentPage() -> AppFlowControllerPage? {
         return visibleStep()?.current
     }
     
-    open func parameterForCurrentItem() -> String? {
-        if let currentItemID = currentItem()?.identifier {
-            return tracker.parameter(for: currentItemID)
+    open func parameterForCurrentPage() -> String? {
+        if let currentPageID = currentPage()?.identifier {
+            return tracker.parameter(for: currentPageID)
         } else {
             return nil
         }

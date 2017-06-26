@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             tab => AppPage.tabPage1,
                             tab => AppPage.tabPage2
                         ],
-                        AppPage.custom
+                        AppPage.custom => AppPage.play
                 ]
             )
         } catch let error {
@@ -54,7 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         
-        try! flowController.show(page:AppPage.home)
+        try! flowController.show(page:AppPage.start)
         return true
     }
 
