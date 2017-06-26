@@ -1,5 +1,5 @@
 //
-//  AppFlowController+CoreTests+Register.swift
+//  AppFlowController+CoreTests+UpdateCurrentPage.swift
 //  AppFlowController
 //
 //  Created by Paweł Sporysz on 26.06.2017.

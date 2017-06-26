@@ -204,6 +204,30 @@ extension AppFlowController_CoreTests {
         }
     }
     
+    func testShow_noCurrentStep_parameters_variants_incorrectVariant() {
+        prepareFlowController()
+        let variantedPage = newPage("4", supportVariants: true)
+        let pages = newPage("1") =>> [
+            newPage("2") => variantedPage,
+            newPage("3") => variantedPage
+        ]
+        do {
+            try flowController.register(path: pages)
+            try flowController.show(
+                page: variantedPage,
+                variant: pages[0][0],
+                animated: false
+            )
+            XCTFail()
+        } catch let error {
+            if let afcError = error as? AppFlowControllerError {
+                XCTAssertEqual(afcError, AppFlowControllerError.unregisteredPathIdentifier(identifier: "1_4"))
+            } else {
+                XCTFail()
+            }
+        }
+    }
+    
     func testShow_noCurrectStep_parameters_variants_skippingPages() {
         prepareFlowController()
         let variantedPage = newPage("5", supportVariants: true)

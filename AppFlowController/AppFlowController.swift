@@ -185,12 +185,10 @@ open class AppFlowController {
         }
         
         func pop(to viewController:UIViewController, animated:Bool) {
-            
             if rootNavigationController == rootNavigationController.visibleNavigationController {
                 rootNavigationController.popToViewController(viewController, animated: animated)
                 return
             }
-            
             if rootNavigationController.visibleNavigationController.viewControllers.contains(targetViewController) {
                 rootNavigationController.visibleNavigationController.popToViewController(targetViewController, animated: animated)
             } else {
@@ -211,17 +209,30 @@ open class AppFlowController {
         }
     }
     
-    open func pathComponents(forItem item:AppFlowControllerPage) -> String? {
+    open func pathComponents(for page:AppFlowControllerPage, variant:AppFlowControllerPage? = nil) throws -> String? {
         
-        guard let foundStep = rootPathStep?.search(page: item) else {
-            assertError(error: .unregisteredPathIdentifier(identifier: item.identifier))
-            return nil
+        var page = page
+        
+        if page.supportVariants && variant == nil {
+            throw AppFlowControllerError.missingVariant(identifier: page.identifier)
         }
         
-        let items       = rootPathStep?.allParentPages(from: foundStep) ?? []
-        let itemStrings = items.map({ $0.identifier })
+        if !page.supportVariants && variant != nil {
+            throw AppFlowControllerError.variantNotSupported(identifier: page.identifier)
+        }
         
-        return itemStrings.joined(separator: "/")
+        if page.supportVariants && variant != nil {
+            page.variantName = variant?.identifier
+        }
+        
+        guard let foundStep = rootPathStep?.search(page: page) else {
+            throw AppFlowControllerError.unregisteredPathIdentifier(identifier: page.identifier)
+        }
+        
+        let pages       = rootPathStep?.allParentPages(from: foundStep) ?? []
+        let pageStrings = pages.map({ $0.identifier })
+        
+        return pageStrings.joined(separator: "/")
     }
     
     open func currentPathComponents() -> String? {
