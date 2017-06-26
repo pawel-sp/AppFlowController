@@ -39,6 +39,7 @@
 		A4DC3DD31F00EE0500975AA9 /* AppFlowController+CoreTests+UpdateCurrentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DC3DD21F00EE0500975AA9 /* AppFlowController+CoreTests+UpdateCurrentPage.swift */; };
 		A4DC3DD61F00F3FB00975AA9 /* AppFlowController+CoreTests+PathComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DC3DD51F00F3FB00975AA9 /* AppFlowController+CoreTests+PathComponents.swift */; };
 		A4DC3DDC1F0100A300975AA9 /* AppFlowController+CoreTests+CurrentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DC3DDB1F0100A300975AA9 /* AppFlowController+CoreTests+CurrentPage.swift */; };
+		A4DC3DDE1F0104B200975AA9 /* AppFlowController+CoreTests+Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DC3DDD1F0104B200975AA9 /* AppFlowController+CoreTests+Parameters.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +88,7 @@
 		A4DC3DD21F00EE0500975AA9 /* AppFlowController+CoreTests+UpdateCurrentPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+CoreTests+UpdateCurrentPage.swift"; sourceTree = "<group>"; };
 		A4DC3DD51F00F3FB00975AA9 /* AppFlowController+CoreTests+PathComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+CoreTests+PathComponents.swift"; sourceTree = "<group>"; };
 		A4DC3DDB1F0100A300975AA9 /* AppFlowController+CoreTests+CurrentPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+CoreTests+CurrentPage.swift"; sourceTree = "<group>"; };
+		A4DC3DDD1F0104B200975AA9 /* AppFlowController+CoreTests+Parameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+CoreTests+Parameters.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +137,7 @@
 				A4DC3DD21F00EE0500975AA9 /* AppFlowController+CoreTests+UpdateCurrentPage.swift */,
 				A4DC3DD51F00F3FB00975AA9 /* AppFlowController+CoreTests+PathComponents.swift */,
 				A4DC3DDB1F0100A300975AA9 /* AppFlowController+CoreTests+CurrentPage.swift */,
+				A4DC3DDD1F0104B200975AA9 /* AppFlowController+CoreTests+Parameters.swift */,
 				A49CFA3D1EFD47EA0045AB93 /* AppFlowController+ParameterTests.swift */,
 			);
 			name = Tests;
@@ -310,6 +313,7 @@
 				A400EB3A1EF9164D0024D9A2 /* AppFlowController+UIViewControllerExtensionTests.swift in Sources */,
 				A49CFA451EFD71D30045AB93 /* FakeNavigationController.swift in Sources */,
 				A49CFA2E1EFBE99C0045AB93 /* AppFlowController+TrackerTests.swift in Sources */,
+				A4DC3DDE1F0104B200975AA9 /* AppFlowController+CoreTests+Parameters.swift in Sources */,
 				A49CFA291EFA98BD0045AB93 /* StubNavigationController.swift in Sources */,
 				A49CFA301EFBF7CF0045AB93 /* AppFlowController+PathStepTests.swift in Sources */,
 				A4DC3DC51EFE738700975AA9 /* AppFlowController+CoreTests+GoBack.swift in Sources */,

@@ -213,7 +213,7 @@ open class AppFlowController {
         return visibleStep()?.current
     }
     
-    open func parameterForCurrentPage() -> String? {
+    open func currentPageParameter() -> String? {
         if let currentPageID = currentPage()?.identifier {
             return tracker.parameter(for: currentPageID)
         } else {
@@ -221,11 +221,9 @@ open class AppFlowController {
         }
     }
     
-    // Use it when there is no visible item yet
-    open func parameterForItem(item:AppFlowControllerPage, variant:AppFlowControllerPage? = nil) -> String? {
-        var item = item
-        item.variantName = variant?.identifier
-        return tracker.parameter(for: item.identifier)
+    open func parameter(for page:AppFlowControllerPage, variant:AppFlowControllerPage? = nil) throws -> String? {
+        let step = try pathStep(from: page, variant: variant)
+        return tracker.parameter(for: step.current.identifier)
     }
     
     open func reset(completionBlock:(()->())?) {

@@ -19,7 +19,7 @@ class BaseViewController: UIViewController {
     }
     
     func showPlayPage() {
-        if let current = AppFlowController.shared.currentItem() {
+        if let current = AppFlowController.shared.currentPage() {
             try! AppFlowController.shared.show(
                 page: AppPage.play,
                 variant: current,

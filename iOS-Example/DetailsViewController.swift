@@ -13,7 +13,7 @@ class DetailsViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let parameter = AppFlowController.shared.parameterForCurrentItem() {
+        if let parameter = AppFlowController.shared.currentPageParameter() {
             print(parameter)
         }
     }
