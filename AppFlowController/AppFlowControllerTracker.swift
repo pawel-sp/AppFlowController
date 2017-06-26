@@ -54,7 +54,7 @@ class Tracker {
     
     // MARK: - Init
     
-    init() {}
+    required init() {}
     
     // MARK: - Utilities
     
@@ -100,7 +100,7 @@ class Tracker {
         items.filter({ $0.key == key }).first?.value.skipped = false
     }
     
-    func disableSKip(for keys:[String]) {
+    func disableSkip(for keys:[String]) {
         for key in keys {
             disableSkip(for: key)
         }

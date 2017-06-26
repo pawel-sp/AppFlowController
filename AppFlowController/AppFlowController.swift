@@ -34,11 +34,17 @@ open class AppFlowController {
     public var rootNavigationController:UINavigationController?
     
     private(set) var rootPathStep:PathStep?
-    private(set) var tracker = Tracker()
+    let tracker:Tracker
     
     // MARK: - Init
     
-    public init() {}
+    init(trackerClass:Tracker.Type) {
+        tracker = trackerClass.init()
+    }
+    
+    public convenience init() {
+        self.init(trackerClass: Tracker.self)
+    }
     
     // MARK: - Setup
     
@@ -114,14 +120,14 @@ open class AppFlowController {
             let displayRange:Range<Int> = 0 ..< newPages.count
             dismiss(pages: currentPages, fromIndexRange: dismissRange, animated: animated, skipTransition: skipDismissTransitions) {
                 self.register(parameters:parameters, for: newPages, skippedPages: skipPages)
-                self.tracker.disableSKip(for: keysToClearSkip)
+                self.tracker.disableSkip(for: keysToClearSkip)
                 self.display(pages: newPages, fromIndexRange: displayRange, animated: animated, skipPages: skipPages, completionBlock: nil)
             }
         } else {
             rootNavigationController.viewControllers.removeAll()
             tracker.reset()
             register(parameters:parameters, for: newPages, skippedPages: skipPages)
-            tracker.disableSKip(for: keysToClearSkip)
+            tracker.disableSkip(for: keysToClearSkip)
             display(pages: newPages, fromIndexRange: 0..<newPages.count, animated: animated, skipPages: skipPages, completionBlock: nil)
         }
     }
@@ -226,7 +232,7 @@ open class AppFlowController {
         return tracker.parameter(for: step.current.identifier)
     }
     
-    open func reset(completionBlock:(()->())?) {
+    open func reset(completionBlock:(()->())? = nil) {
         rootNavigationController?.dismissAllPresentedViewControllers() {
             self.rootNavigationController?.viewControllers.removeAll()
             self.tracker.reset()
