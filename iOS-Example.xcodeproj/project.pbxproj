@@ -30,6 +30,7 @@
 		A4ACF4C51DA16C99009FFEA8 /* AlphaTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4ACF4C41DA16C99009FFEA8 /* AlphaTransition.swift */; };
 		A4D91B871DA7A25900B10901 /* AppFlowController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A48809631DA16696003CF8F3 /* AppFlowController.framework */; };
 		A4DC3DCF1F00EA3100975AA9 /* CustomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DC3DCE1F00EA3100975AA9 /* CustomViewController.swift */; };
+		A4DC3DE91F01310700975AA9 /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DC3DE81F01310700975AA9 /* ContactViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,7 @@
 		A493C4821DA4425A00BB4A08 /* BaseTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTabBarController.swift; sourceTree = "<group>"; };
 		A4ACF4C41DA16C99009FFEA8 /* AlphaTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlphaTransition.swift; sourceTree = "<group>"; };
 		A4DC3DCE1F00EA3100975AA9 /* CustomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomViewController.swift; sourceTree = "<group>"; };
+		A4DC3DE81F01310700975AA9 /* ContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +150,7 @@
 				A41D64841EA5F80B0046F53D /* StartViewController.swift */,
 				A400EAE21EF8339B0024D9A2 /* PlayViewController.swift */,
 				A4DC3DCE1F00EA3100975AA9 /* CustomViewController.swift */,
+				A4DC3DE81F01310700975AA9 /* ContactViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -282,6 +285,7 @@
 				A493C47F1DA3FFC300BB4A08 /* TabPage1ViewController.swift in Sources */,
 				A4ACF4C51DA16C99009FFEA8 /* AlphaTransition.swift in Sources */,
 				A493C4811DA3FFD500BB4A08 /* TabPage2ViewController.swift in Sources */,
+				A4DC3DE91F01310700975AA9 /* ContactViewController.swift in Sources */,
 				A48809471DA16644003CF8F3 /* AppDelegate.swift in Sources */,
 				A400EAE31EF8339B0024D9A2 /* PlayViewController.swift in Sources */,
 				A41D64851EA5F80B0046F53D /* StartViewController.swift in Sources */,

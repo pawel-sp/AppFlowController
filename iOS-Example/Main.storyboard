@@ -290,6 +290,26 @@
             </objects>
             <point key="canvasLocation" x="1121" y="-615"/>
         </scene>
+        <!--Contact-->
+        <scene sceneID="WwT-by-0qX">
+            <objects>
+                <viewController storyboardIdentifier="ContactViewController" id="VOW-xV-27X" customClass="ContactViewController" customModule="iOS_Example" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="kuf-94-26g"/>
+                        <viewControllerLayoutGuide type="bottom" id="TJU-57-8wF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ybc-5f-zJx">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.60372953865714285" green="0.09309403451428569" blue="0.37518655901428571" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Contact" id="Y0G-WH-cHa"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uCT-p2-0QV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1850" y="-612"/>
+        </scene>
         <!--Custom-->
         <scene sceneID="C64-qY-GgJ">
             <objects>

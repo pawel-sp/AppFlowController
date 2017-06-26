@@ -37,6 +37,7 @@ public enum AppFlowControllerError:Error, Equatable {
     case variantNotSupported(identifier:String)
     case missingPathStepTransition(identifier:String)
     case popToSkippedPath(identifier:String)
+    case tabBarPageViewControllerIncorrect
     
     public var info:String {
         switch self {
@@ -58,6 +59,8 @@ public enum AppFlowControllerError:Error, Equatable {
                 return "\(identifier) doesn't have forward or/and backward transition"
             case .popToSkippedPath(let identifier):
                 return "You cannot pop to step \(identifier) which is currently skipped"
+            case .tabBarPageViewControllerIncorrect:
+                return "All tab bar view controllers need to have different classes"
         }
     }
     
@@ -83,6 +86,8 @@ public func ==(lhs:AppFlowControllerError, rhs:AppFlowControllerError) -> Bool {
             return id1 == id2
         case (.popToSkippedPath(let id1), .popToSkippedPath(let id2)):
             return id1 == id2
+        case (.tabBarPageViewControllerIncorrect, .tabBarPageViewControllerIncorrect):
+            return true
         default:
             return false
     }

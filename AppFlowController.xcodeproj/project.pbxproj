@@ -41,6 +41,7 @@
 		A4DC3DDC1F0100A300975AA9 /* AppFlowController+CoreTests+CurrentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DC3DDB1F0100A300975AA9 /* AppFlowController+CoreTests+CurrentPage.swift */; };
 		A4DC3DDE1F0104B200975AA9 /* AppFlowController+CoreTests+Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DC3DDD1F0104B200975AA9 /* AppFlowController+CoreTests+Parameters.swift */; };
 		A4DC3DE11F010B4600975AA9 /* AppFlowController+CoreTests+Reset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DC3DE01F010B4600975AA9 /* AppFlowController+CoreTests+Reset.swift */; };
+		A4DC3DED1F0139CA00975AA9 /* AppFlowController+CoreTests+TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DC3DEC1F0139CA00975AA9 /* AppFlowController+CoreTests+TabBarVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +92,7 @@
 		A4DC3DDB1F0100A300975AA9 /* AppFlowController+CoreTests+CurrentPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+CoreTests+CurrentPage.swift"; sourceTree = "<group>"; };
 		A4DC3DDD1F0104B200975AA9 /* AppFlowController+CoreTests+Parameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+CoreTests+Parameters.swift"; sourceTree = "<group>"; };
 		A4DC3DE01F010B4600975AA9 /* AppFlowController+CoreTests+Reset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+CoreTests+Reset.swift"; sourceTree = "<group>"; };
+		A4DC3DEC1F0139CA00975AA9 /* AppFlowController+CoreTests+TabBarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+CoreTests+TabBarVC.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +143,7 @@
 				A4DC3DDB1F0100A300975AA9 /* AppFlowController+CoreTests+CurrentPage.swift */,
 				A4DC3DDD1F0104B200975AA9 /* AppFlowController+CoreTests+Parameters.swift */,
 				A4DC3DE01F010B4600975AA9 /* AppFlowController+CoreTests+Reset.swift */,
+				A4DC3DEC1F0139CA00975AA9 /* AppFlowController+CoreTests+TabBarVC.swift */,
 				A49CFA3D1EFD47EA0045AB93 /* AppFlowController+ParameterTests.swift */,
 			);
 			name = Tests;
@@ -323,6 +326,7 @@
 				A4DC3DC51EFE738700975AA9 /* AppFlowController+CoreTests+GoBack.swift in Sources */,
 				A49CFA261EFA90A90045AB93 /* MockViewController.swift in Sources */,
 				A4DC3DCB1EFE786400975AA9 /* AppFlowController+CoreTests+Pop.swift in Sources */,
+				A4DC3DED1F0139CA00975AA9 /* AppFlowController+CoreTests+TabBarVC.swift in Sources */,
 				A400EB2A1EF8FEE20024D9A2 /* AppFlowController+UINavigationControllerExtensionTests.swift in Sources */,
 				A4DC3DD31F00EE0500975AA9 /* AppFlowController+CoreTests+UpdateCurrentPage.swift in Sources */,
 				A400EB401EF921480024D9A2 /* MockNavigationController.swift in Sources */,

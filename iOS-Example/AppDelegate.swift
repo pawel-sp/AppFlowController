@@ -40,6 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         ],
                         AppPage.items => AppPage.details => AppPage.play,
                         AppPage.tabs =>> [
+                            AppPage.contact,
                             tab => AppPage.tabPage1,
                             tab => AppPage.tabPage2
                         ],
@@ -147,6 +148,12 @@ class AppPage {
         name: "custom",
         storyboardName: "Main",
         viewControllerType: CustomViewController.self
+    )
+    
+    static let contact = AppFlowControllerPage(
+        name: "contact",
+        storyboardName: "Main",
+        viewControllerType: ContactViewController.self
     )
     
 }

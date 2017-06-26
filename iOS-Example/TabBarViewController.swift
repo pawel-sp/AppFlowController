@@ -7,5 +7,17 @@
 //
 
 import UIKit
+import AppFlowController
 
-class TabBarViewController: BaseTabBarController {}
+class TabBarViewController: BaseTabBarController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Contact", style: .plain, target: self, action: #selector(TabBarViewController.showContact))
+    }
+    
+    func showContact() {
+        try! AppFlowController.shared.show(page: AppPage.contact)
+    }
+    
+}

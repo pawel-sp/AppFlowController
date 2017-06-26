@@ -76,6 +76,9 @@ open class AppFlowController {
                     if element.forwardTransition == nil || element.backwardTransition == nil {
                         throw AppFlowControllerError.missingPathStepTransition(identifier: element.identifier)
                     }
+                    if previous.current.viewControllerType.isSubclass(of: UITabBarController.self), previous.children.contains(where: { $0.current.viewControllerType.isSubclass(of: element.viewControllerType) }) {
+                        throw AppFlowControllerError.tabBarPageViewControllerIncorrect
+                    }
                     previousStep = previous.add(page: element)
                 } else {
                     rootPathStep = PathStep(page: element)
@@ -85,7 +88,8 @@ open class AppFlowController {
         }
     }
     
-    public func register(path:[[AppFlowControllerPage]]) throws {
+    public func register(path:[[AppFlowControllerPage]
+        ]) throws {
         for subpath in path {
             try register(path: subpath)
         }
@@ -244,27 +248,60 @@ open class AppFlowController {
     
     private func visibleStep() -> PathStep? {
         let navigationController  = rootNavigationController?.visibleNavigationController
-        if let visibleViewController = navigationController?.visibleViewController, let key = tracker.key(for: visibleViewController) {
-            return rootPathStep?.search(identifier: key)
+        if let visibleViewController = navigationController?.visibleViewController {
+            
+            guard let vc = { _ -> UIViewController? in
+                if let tabBarViewController = visibleViewController as? UITabBarController {
+                    return tabBarViewController.viewControllers?[tabBarViewController.selectedIndex]
+                } else {
+                    return visibleViewController
+                }
+            }() else { return nil }
+
+            if let key = tracker.key(for: vc) {
+                return rootPathStep?.search(identifier: key)
+            } else {
+                return nil
+            }
+            
         } else {
             return nil
         }
     }
     
-    private func viewController(fromItem item:AppFlowControllerPage) -> UIViewController {
-        let viewController = item.viewControllerBlock()
-        if (viewController.isKind(of: UITabBarController.self)) {
-            if let step = rootPathStep?.search(page: item) {
-                let children            = step.children
-                let tabBarController    = viewController as! UITabBarController
-                let tabsViewControllers = children.map({ $0.current.viewControllerBlock() })
-                tabBarController.viewControllers = tabsViewControllers
-                return tabBarController
+    private func parentBelongsToTabBar(for page:AppFlowControllerPage) -> Bool {
+        guard let parentPage = rootPathStep?.search(page: page)?.parent?.current else { return false }
+        return parentPage.viewControllerType.isSubclass(of: UITabBarController.self)
+    }
+    
+    private func viewController(from page:AppFlowControllerPage) -> UIViewController {
+        if
+            let parentPage = rootPathStep?.search(page: page)?.parent?.current,
+            parentBelongsToTabBar(for: page),
+            page.forwardTransition?.isKind(of: TabBarAppFlowControllerTransition.self) == true
+        {
+            let existingViewController = (tracker.viewController(for: parentPage.identifier) as? UITabBarController)?.viewControllers?.first(where: { $0.isKind(of: page.viewControllerType) })
+            return existingViewController!
+        } else {
+            let viewController = page.viewControllerBlock()
+            if (viewController.isKind(of: UITabBarController.self)) {
+                if let step = rootPathStep?.search(page: page) {
+                    let children            = step.children.filter({ $0.current.forwardTransition?.isKind(of: TabBarAppFlowControllerTransition.self) == true })
+                    let tabBarController    = viewController as! UITabBarController
+                    var viewControllers:[UIViewController] = []
+                    for item in children {
+                        let viewController = item.current.viewControllerBlock()
+                        viewControllers.append(viewController)
+                        tracker.register(viewController: viewController, for: item.current.identifier)
+                    }
+                    tabBarController.viewControllers = viewControllers
+                    return tabBarController
+                } else {
+                    return viewController
+                }
             } else {
                 return viewController
             }
-        } else {
-            return viewController
         }
     }
     
@@ -308,6 +345,10 @@ open class AppFlowController {
             }
         }
         
+        let viewControllerExists          = tracker.viewController(for: item.identifier) != nil
+        let viewControllerBelongsToTabBar = parentBelongsToTabBar(for: item)
+        let pageSkipped                   = tracker.isItemSkipped(at: item.identifier)
+        
         if navigationController.viewControllers.count == 0 {
             var viewControllersToPush = [item]
             var skippedPages:Int = 0
@@ -322,7 +363,7 @@ open class AppFlowController {
                     break
                 }
             }
-            let viewControllers = viewControllersToPush.map({ self.viewController(fromItem: $0) })
+            let viewControllers = viewControllersToPush.map({ self.viewController(from: $0) })
             for (index, viewController) in viewControllers.enumerated() {
                 let identifier = viewControllersToPush[index].identifier
                 tracker.register(viewController: viewController, for: identifier)
@@ -330,7 +371,7 @@ open class AppFlowController {
             navigationController.setViewControllers(viewControllers, animated: false) {
                 displayNextItem(range: indexRange, animated: false, offset:max(0, viewControllersToPush.count - 1 + skippedPages))
             }
-        } else if tracker.viewController(for: item.identifier) == nil && !tracker.isItemSkipped(at: item.identifier) {
+        } else if (!viewControllerExists || viewControllerBelongsToTabBar) && !pageSkipped {
             
             let shouldSkipViewController = skipPages?.contains(where: { $0.identifier == item.identifier }) == true
             
@@ -341,7 +382,8 @@ open class AppFlowController {
                 
             } else {
                 
-                let viewController = self.viewController(fromItem:item)
+                let viewController:UIViewController = self.viewController(from:item)
+                
                 tracker.register(viewController: viewController, for: item.identifier, skipped:shouldSkipViewController)
                 item.forwardTransition?.forwardTransitionBlock(animated: animated){
                     displayNextItem(range: indexRange, animated: animated)
