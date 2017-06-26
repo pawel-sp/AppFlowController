@@ -96,28 +96,11 @@ open class AppFlowController {
         skipPages:[AppFlowControllerPage]? = nil
     ) throws {
         
-        var page = page
-        
         guard let rootNavigationController = rootNavigationController else {
             throw AppFlowControllerError.missingConfiguration
         }
         
-        if page.supportVariants && variant == nil {
-            throw AppFlowControllerError.missingVariant(identifier: page.identifier)
-        }
-        
-        if !page.supportVariants && variant != nil {
-            throw AppFlowControllerError.variantNotSupported(identifier: page.identifier)
-        }
-        
-        if page.supportVariants && variant != nil {
-            page.variantName = variant?.identifier
-        }
-        
-        guard let foundStep = rootPathStep?.search(page: page) else {
-            throw AppFlowControllerError.unregisteredPathIdentifier(identifier: page.identifier)
-        }
-        
+        let foundStep        = try pathStep(from: page, variant: variant)
         let newPages         = rootPathStep?.allParentPages(from: foundStep) ?? []
         let currentStep      = visibleStep()
         let currentPages     = currentStep == nil ? [] : (rootPathStep?.allParentPages(from: currentStep!) ?? [])
@@ -210,30 +193,13 @@ open class AppFlowController {
     }
     
     open func pathComponents(for page:AppFlowControllerPage, variant:AppFlowControllerPage? = nil) throws -> String? {
-        
-        var page = page
-        
-        if page.supportVariants && variant == nil {
-            throw AppFlowControllerError.missingVariant(identifier: page.identifier)
-        }
-        
-        if !page.supportVariants && variant != nil {
-            throw AppFlowControllerError.variantNotSupported(identifier: page.identifier)
-        }
-        
-        if page.supportVariants && variant != nil {
-            page.variantName = variant?.identifier
-        }
-        
-        guard let foundStep = rootPathStep?.search(page: page) else {
-            throw AppFlowControllerError.unregisteredPathIdentifier(identifier: page.identifier)
-        }
-        
+        let foundStep   = try pathStep(from: page, variant: variant)
         let pages       = rootPathStep?.allParentPages(from: foundStep) ?? []
         let pageStrings = pages.map({ $0.identifier })
-        
         return pageStrings.joined(separator: "/")
     }
+    
+
     
     open func currentPathComponents() -> String? {
         if let visibleStep = visibleStep() {
@@ -429,8 +395,27 @@ open class AppFlowController {
         }
     }
     
-    private func assertError(error:AppFlowControllerError) {
-        assert(false, "AppFlowController: \(error.localizedDescription)")
+    private func pathStep(from page:AppFlowControllerPage, variant:AppFlowControllerPage? = nil) throws -> PathStep {
+        
+        var page = page
+        
+        if page.supportVariants && variant == nil {
+            throw AppFlowControllerError.missingVariant(identifier: page.identifier)
+        }
+        
+        if !page.supportVariants && variant != nil {
+            throw AppFlowControllerError.variantNotSupported(identifier: page.identifier)
+        }
+        
+        if page.supportVariants && variant != nil {
+            page.variantName = variant?.identifier
+        }
+        
+        guard let foundStep = rootPathStep?.search(page: page) else {
+            throw AppFlowControllerError.unregisteredPathIdentifier(identifier: page.identifier)
+        }
+        
+        return foundStep
     }
     
 }
