@@ -184,7 +184,23 @@ open class AppFlowController {
             throw AppFlowControllerError.popToSkippedPath(identifier: foundStep.current.identifier)
         }
         
-        rootNavigationController.popToViewController(targetViewController, animated: animated)
+        func pop(to viewController:UIViewController, animated:Bool) {
+            
+            if rootNavigationController == rootNavigationController.visibleNavigationController {
+                rootNavigationController.popToViewController(viewController, animated: animated)
+                return
+            }
+            
+            if rootNavigationController.visibleNavigationController.viewControllers.contains(targetViewController) {
+                rootNavigationController.visibleNavigationController.popToViewController(targetViewController, animated: animated)
+            } else {
+                rootNavigationController.visibleViewController?.dismiss(animated: animated) {
+                    pop(to: viewController, animated: animated)
+                }
+            }
+        }
+        
+        pop(to: targetViewController, animated: animated)
     }
     
     public func updateCurrentPage(with viewController:UIViewController, for name:String) throws {

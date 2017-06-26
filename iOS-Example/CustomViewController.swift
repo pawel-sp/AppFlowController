@@ -13,7 +13,7 @@ class CustomViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        try! AppFlowController.shared.register(viewController: self, for: AppPage.custom.name)
+        try! AppFlowController.shared.updateCurrentPage(with: self, for: AppPage.custom.name)
     }
     
     @IBAction func loginAction(_ sender:Any) {
