@@ -96,7 +96,7 @@ open class AppFlowController {
     }
     
     // MARK: - Navigation
-    
+
     open func show(
         page:AppFlowControllerPage,
         variant:AppFlowControllerPage? = nil,
@@ -412,17 +412,6 @@ open class AppFlowController {
             
         } else {
             
-            func dismissNext(viewControllerForSkippedPage:UIViewController? = nil) {
-                self.dismiss(
-                    pages: pages,
-                    fromIndexRange: indexRange.lowerBound..<indexRange.upperBound - 1,
-                    animated: animated,
-                    skipTransition: skipTransition,
-                    viewControllerForSkippedPage: viewControllerForSkippedPage,
-                    completionBlock: completionBlock
-                )
-            }
-            
             let index          = indexRange.upperBound - 1
             let item           = pages[index]
             let parentPage     = rootPathStep?.search(page: item)?.parent?.current
@@ -435,26 +424,35 @@ open class AppFlowController {
                 return
             }
             
+            func dismissNext(viewControllerForSkippedPage:UIViewController? = nil) {
+                self.dismiss(
+                    pages: pages,
+                    fromIndexRange: indexRange.lowerBound..<indexRange.upperBound - 1,
+                    animated: animated,
+                    skipTransition: skipTransition,
+                    viewControllerForSkippedPage: viewControllerForSkippedPage,
+                    completionBlock: completionBlock
+                )
+            }
+            
+            func dismiss(useTransition:Bool, navigationController:UINavigationController, viewController:UIViewController) {
+                if useTransition {
+                    item.backwardTransition?.backwardTransitionBlock(animated: animated){
+                        dismissNext()
+                    }(navigationController, viewController)
+                } else {
+                    dismissNext()
+                }
+            }
+            
             if skipParentPage {
-                
                 dismissNext(viewControllerForSkippedPage: viewController ?? viewControllerForSkippedPage)
-                
             } else if let viewController = viewControllerForSkippedPage, skippedPage {
-                
-                item.backwardTransition?.backwardTransitionBlock(animated: animated){
-                    dismissNext()
-                }(navigationController, viewController)
-                
+                dismiss(useTransition: !skipTransition, navigationController: navigationController, viewController: viewController)
             } else if let viewController = viewController, !skippedPage {
-                
-                item.backwardTransition?.backwardTransitionBlock(animated: animated){
-                    dismissNext()
-                }(navigationController, viewController)
-                
+                dismiss(useTransition: !skipTransition, navigationController: navigationController, viewController: viewController)
             } else {
-                
                 completionBlock?()
-                
             }
    
         }
