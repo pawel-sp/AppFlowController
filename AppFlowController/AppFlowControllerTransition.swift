@@ -42,7 +42,7 @@ public protocol AppFlowControllerBackwardTransition: NSObjectProtocol {
 
 public protocol AppFlowControllerTransition: AppFlowControllerForwardTransition, AppFlowControllerBackwardTransition {}
 
-public class PushPopAppFlowControllerTransition: NSObject, AppFlowControllerTransition {
+open class PushPopAppFlowControllerTransition: NSObject, AppFlowControllerTransition {
     
     // MARK: - Properties
     
@@ -50,7 +50,7 @@ public class PushPopAppFlowControllerTransition: NSObject, AppFlowControllerTran
     
     // MARK: - AppFlowControllerForwardTransition
     
-    public func forwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> AppFlowControllerTransitionBlock {
+    open func forwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> AppFlowControllerTransitionBlock {
         return { navigationController, viewController in
             navigationController.pushViewController(viewController, animated: animated, completion:completionBlock)
         }
@@ -58,7 +58,7 @@ public class PushPopAppFlowControllerTransition: NSObject, AppFlowControllerTran
     
     // MARK: - AppFlowControllerBackwardTransition
     
-    public func backwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> AppFlowControllerTransitionBlock {
+    open func backwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> AppFlowControllerTransitionBlock {
         return { navigationController, viewController in
             let _ = navigationController.popViewController(animated: animated, completion: completionBlock)
         }
@@ -66,7 +66,7 @@ public class PushPopAppFlowControllerTransition: NSObject, AppFlowControllerTran
     
 }
 
-public class ModalAppFlowControllerTransition<T:UINavigationController>: NSObject, AppFlowControllerTransition {
+open class ModalAppFlowControllerTransition<T:UINavigationController>: NSObject, AppFlowControllerTransition {
  
     // MARK: - Properties
     
@@ -86,7 +86,7 @@ public class ModalAppFlowControllerTransition<T:UINavigationController>: NSObjec
     
     // MARK: - AppFlowControllerForwardTransition
     
-    public func forwardTransitionBlock(animated: Bool, completionBlock:@escaping ()->()) -> AppFlowControllerTransitionBlock {
+    open func forwardTransitionBlock(animated: Bool, completionBlock:@escaping ()->()) -> AppFlowControllerTransitionBlock {
         return { navigationController, viewController in
             if viewController.navigationController == nil {
                 let modalNavigationController:T = self.modalNavigationController(rootViewController: viewController)
@@ -99,7 +99,7 @@ public class ModalAppFlowControllerTransition<T:UINavigationController>: NSObjec
     
     // MARK: - AppFlowControllerBackwardTransition
     
-    public func backwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> AppFlowControllerTransitionBlock {
+    open func backwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> AppFlowControllerTransitionBlock {
         return { navigationController, viewController in
             viewController.dismiss(animated: animated, completion: completionBlock)
         }
@@ -107,7 +107,7 @@ public class ModalAppFlowControllerTransition<T:UINavigationController>: NSObjec
     
 }
 
-public class DefaultModalAppFlowControllerTransition: ModalAppFlowControllerTransition<UINavigationController> {
+open class DefaultModalAppFlowControllerTransition: ModalAppFlowControllerTransition<UINavigationController> {
     
     // MARK: - Properties
     
@@ -115,7 +115,7 @@ public class DefaultModalAppFlowControllerTransition: ModalAppFlowControllerTran
     
 }
 
-public class TabBarAppFlowControllerTransition: NSObject, AppFlowControllerTransition {
+open class TabBarAppFlowControllerTransition: NSObject, AppFlowControllerTransition {
     
     // MARK: - Properties
     
@@ -124,7 +124,7 @@ public class TabBarAppFlowControllerTransition: NSObject, AppFlowControllerTrans
     // MARK: - AppFlowControllerForwardTransition
     
     // That transition assumes that every tab bar viewcontroller has different class
-    public func forwardTransitionBlock(animated: Bool, completionBlock:@escaping ()->()) -> AppFlowControllerTransitionBlock {
+    open func forwardTransitionBlock(animated: Bool, completionBlock:@escaping ()->()) -> AppFlowControllerTransitionBlock {
         return { navigationController, viewController in
             if let tabBarController = navigationController.topViewController as? UITabBarController {
                 if let found = tabBarController.viewControllers?.filter({ $0.isKind(of: type(of: viewController)) }).first, let index = tabBarController.viewControllers?.index(of: found) {
@@ -137,7 +137,7 @@ public class TabBarAppFlowControllerTransition: NSObject, AppFlowControllerTrans
     
     // MARK: - AppFlowControllerBackwardTransition
     
-    public func backwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> AppFlowControllerTransitionBlock {
+    open func backwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> AppFlowControllerTransitionBlock {
         return { navigationController, viewController in
             completionBlock()
         }

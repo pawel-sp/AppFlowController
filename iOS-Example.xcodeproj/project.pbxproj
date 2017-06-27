@@ -27,6 +27,10 @@
 		A493C47F1DA3FFC300BB4A08 /* TabPage1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A493C47E1DA3FFC300BB4A08 /* TabPage1ViewController.swift */; };
 		A493C4811DA3FFD500BB4A08 /* TabPage2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A493C4801DA3FFD500BB4A08 /* TabPage2ViewController.swift */; };
 		A493C4831DA4425A00BB4A08 /* BaseTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A493C4821DA4425A00BB4A08 /* BaseTabBarController.swift */; };
+		A499B8001F026FD300ABD7CC /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A499B7FF1F026FD300ABD7CC /* ContainerViewController.swift */; };
+		A499B8041F0271E800ABD7CC /* ContainerTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A499B8031F0271E800ABD7CC /* ContainerTransition.swift */; };
+		A499B8061F0272FA00ABD7CC /* Segment1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A499B8051F0272FA00ABD7CC /* Segment1ViewController.swift */; };
+		A499B8081F02732D00ABD7CC /* Segment2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A499B8071F02732D00ABD7CC /* Segment2ViewController.swift */; };
 		A4ACF4C51DA16C99009FFEA8 /* AlphaTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4ACF4C41DA16C99009FFEA8 /* AlphaTransition.swift */; };
 		A4D91B871DA7A25900B10901 /* AppFlowController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A48809631DA16696003CF8F3 /* AppFlowController.framework */; };
 		A4DC3DCF1F00EA3100975AA9 /* CustomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DC3DCE1F00EA3100975AA9 /* CustomViewController.swift */; };
@@ -74,6 +78,10 @@
 		A493C47E1DA3FFC300BB4A08 /* TabPage1ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabPage1ViewController.swift; sourceTree = "<group>"; };
 		A493C4801DA3FFD500BB4A08 /* TabPage2ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabPage2ViewController.swift; sourceTree = "<group>"; };
 		A493C4821DA4425A00BB4A08 /* BaseTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTabBarController.swift; sourceTree = "<group>"; };
+		A499B7FF1F026FD300ABD7CC /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
+		A499B8031F0271E800ABD7CC /* ContainerTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerTransition.swift; sourceTree = "<group>"; };
+		A499B8051F0272FA00ABD7CC /* Segment1ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Segment1ViewController.swift; sourceTree = "<group>"; };
+		A499B8071F02732D00ABD7CC /* Segment2ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Segment2ViewController.swift; sourceTree = "<group>"; };
 		A4ACF4C41DA16C99009FFEA8 /* AlphaTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlphaTransition.swift; sourceTree = "<group>"; };
 		A4DC3DCE1F00EA3100975AA9 /* CustomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomViewController.swift; sourceTree = "<group>"; };
 		A4DC3DE81F01310700975AA9 /* ContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactViewController.swift; sourceTree = "<group>"; };
@@ -151,6 +159,9 @@
 				A400EAE21EF8339B0024D9A2 /* PlayViewController.swift */,
 				A4DC3DCE1F00EA3100975AA9 /* CustomViewController.swift */,
 				A4DC3DE81F01310700975AA9 /* ContactViewController.swift */,
+				A499B7FF1F026FD300ABD7CC /* ContainerViewController.swift */,
+				A499B8051F0272FA00ABD7CC /* Segment1ViewController.swift */,
+				A499B8071F02732D00ABD7CC /* Segment2ViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -168,6 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				A4ACF4C41DA16C99009FFEA8 /* AlphaTransition.swift */,
+				A499B8031F0271E800ABD7CC /* ContainerTransition.swift */,
 			);
 			name = "Custom transitions";
 			sourceTree = "<group>";
@@ -278,6 +290,8 @@
 			files = (
 				A493C4831DA4425A00BB4A08 /* BaseTabBarController.swift in Sources */,
 				A488094E1DA1666E003CF8F3 /* BaseTableViewController.swift in Sources */,
+				A499B8061F0272FA00ABD7CC /* Segment1ViewController.swift in Sources */,
+				A499B8081F02732D00ABD7CC /* Segment2ViewController.swift in Sources */,
 				A488094F1DA1666E003CF8F3 /* BaseViewController.swift in Sources */,
 				A48809541DA16677003CF8F3 /* ForgotPasswordViewController.swift in Sources */,
 				A488095D1DA16683003CF8F3 /* RegistrationViewController.swift in Sources */,
@@ -290,8 +304,10 @@
 				A400EAE31EF8339B0024D9A2 /* PlayViewController.swift in Sources */,
 				A41D64851EA5F80B0046F53D /* StartViewController.swift in Sources */,
 				A4DC3DCF1F00EA3100975AA9 /* CustomViewController.swift in Sources */,
+				A499B8041F0271E800ABD7CC /* ContainerTransition.swift in Sources */,
 				A488095B1DA16683003CF8F3 /* ItemsTableViewController.swift in Sources */,
 				A48809551DA16677003CF8F3 /* HomeViewController.swift in Sources */,
+				A499B8001F026FD300ABD7CC /* ContainerViewController.swift in Sources */,
 				A488095A1DA16683003CF8F3 /* InfoViewController.swift in Sources */,
 				A493C47C1DA3FE6800BB4A08 /* TabBarViewController.swift in Sources */,
 				A488095C1DA16683003CF8F3 /* LoginViewController.swift in Sources */,

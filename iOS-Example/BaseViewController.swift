@@ -13,7 +13,15 @@ class BaseViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if !isKind(of: PlayViewController.self) && !isKind(of: ContactViewController.self) {
+        let skip = [
+            PlayViewController.self,
+            ContactViewController.self,
+            ContainerViewController.self,
+            Segment1ViewController.self,
+            Segment2ViewController.self
+        ]
+        
+        if !skip.contains(where: { self.isKind(of: $0) }) {
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(BaseViewController.showPlayPage))
         }
     }

@@ -17,12 +17,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         self.window = UIWindow(frame: UIScreen.main.bounds)
         
-        let flowController = AppFlowController.shared
-        let alpha          = AlphaTransition()
-        let modal          = DefaultModalAppFlowControllerTransition.default
-        let tab            = TabBarAppFlowControllerTransition.default
+        let flowController  = AppFlowController.shared
+        let alpha           = AlphaTransition()
+        let modal           = DefaultModalAppFlowControllerTransition.default
+        let tab             = TabBarAppFlowControllerTransition.default
+        let segment         = ContainerTransition()
+        let pushToContainer = PushToContainerTransition()
         
-        flowController.prepare(for:window!)
+        flowController.prepare(for:window!, rootNavigationController:RootNavigationController())
         
         do {
             try flowController.register(path:
@@ -44,7 +46,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             tab => AppPage.tabPage1,
                             tab => AppPage.tabPage2
                         ],
-                        AppPage.custom => AppPage.play
+                        AppPage.custom => AppPage.play,
+                        pushToContainer => AppPage.container =>> [
+                            segment => AppPage.segment1,
+                            segment => AppPage.segment2
+                        ]
                 ]
             )
         } catch let error {
@@ -59,6 +65,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+}
+
+class RootNavigationController: UINavigationController {
+    
+    override var visibleViewController: UIViewController? {
+        if let containerViewController = super.visibleViewController as? ContainerViewControllerInterface {
+            return containerViewController.childViewControllers.first ?? super.visibleViewController
+        } else {
+            return super.visibleViewController
+        }
+    }
+    
 }
 
 class AppPage {
@@ -154,6 +172,24 @@ class AppPage {
         name: "contact",
         storyboardName: "Main",
         viewControllerType: ContactViewController.self
+    )
+    
+    static let container = AppFlowControllerPage(
+        name: "container",
+        storyboardName: "Main",
+        viewControllerType: ContainerViewController.self
+    )
+    
+    static let segment1 = AppFlowControllerPage(
+        name: "segment1",
+        storyboardName: "Main",
+        viewControllerType: Segment1ViewController.self
+    )
+    
+    static let segment2 = AppFlowControllerPage(
+        name: "segment2",
+        storyboardName: "Main",
+        viewControllerType: Segment2ViewController.self
     )
     
 }
