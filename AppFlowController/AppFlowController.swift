@@ -117,22 +117,29 @@ open class AppFlowController {
         let keysToClearSkip  = newPages.filter({ !currentPages.contains($0) }).map({ $0.identifier })
         
         if let currentStep = currentStep {
+            
             let distance                = PathStep.distanceBetween(step: currentStep, and: foundStep)
             let dismissCounter          = distance.up
             let _                       = distance.down
             let dismissRange:Range<Int> = dismissCounter == 0 ? 0..<0 : (currentPages.count - dismissCounter) ..< currentPages.count
             let displayRange:Range<Int> = 0 ..< newPages.count
+            
+            try verify(pages: currentPages, distance: distance)
+            
             dismiss(pages: currentPages, fromIndexRange: dismissRange, animated: animated, skipTransition: skipDismissTransitions) {
                 self.register(parameters:parameters, for: newPages, skippedPages: skipPages)
                 self.tracker.disableSkip(for: keysToClearSkip)
                 self.display(pages: newPages, fromIndexRange: displayRange, animated: animated, skipPages: skipPages, completionBlock: nil)
             }
+            
         } else {
+            
             rootNavigationController.viewControllers.removeAll()
             tracker.reset()
             register(parameters:parameters, for: newPages, skippedPages: skipPages)
             tracker.disableSkip(for: keysToClearSkip)
             display(pages: newPages, fromIndexRange: 0..<newPages.count, animated: animated, skipPages: skipPages, completionBlock: nil)
+            
         }
     }
     
@@ -355,6 +362,7 @@ open class AppFlowController {
             for item in pages[1..<pages.count] {
                 if skipPages?.contains(where: { $0.identifier == item.identifier }) == true {
                     skippedPages += 1
+                    tracker.register(viewController: nil, for: item.identifier, skipped: true)
                     continue
                 }
                 if item.forwardTransition is PushPopAppFlowControllerTransition {
@@ -397,45 +405,58 @@ open class AppFlowController {
         }
     }
     
-    private func dismiss(pages:[AppFlowControllerPage], fromIndexRange indexRange:Range<Int>, animated:Bool, skipTransition:Bool = false, completionBlock:(() -> ())?) {
+    private func dismiss(pages:[AppFlowControllerPage], fromIndexRange indexRange:Range<Int>, animated:Bool, skipTransition:Bool = false, viewControllerForSkippedPage:UIViewController? = nil, completionBlock:(() -> ())?) {
         if indexRange.count == 0 {
             
             completionBlock?()
             
         } else {
             
-            let index = indexRange.upperBound - 1
-            let item  = pages[index]
-            
-            guard let viewController = tracker.viewController(for: item.identifier) else {
-                completionBlock?()
-                return
-            }
-            guard let navigationController = rootNavigationController?.visibleNavigationController else {
-                completionBlock?()
-                return
-            }
-            
-            if !skipTransition {
-                item.backwardTransition?.backwardTransitionBlock(animated: animated){
-                    self.dismiss(
-                        pages: pages,
-                        fromIndexRange: indexRange.lowerBound..<indexRange.upperBound - 1,
-                        animated: animated,
-                        skipTransition: skipTransition,
-                        completionBlock: completionBlock
-                    )
-                    }(navigationController, viewController)
-            } else {
+            func dismissNext(viewControllerForSkippedPage:UIViewController? = nil) {
                 self.dismiss(
                     pages: pages,
                     fromIndexRange: indexRange.lowerBound..<indexRange.upperBound - 1,
                     animated: animated,
                     skipTransition: skipTransition,
+                    viewControllerForSkippedPage: viewControllerForSkippedPage,
                     completionBlock: completionBlock
                 )
             }
             
+            let index          = indexRange.upperBound - 1
+            let item           = pages[index]
+            let parentPage     = rootPathStep?.search(page: item)?.parent?.current
+            let skipParentPage = parentPage == nil ? false : tracker.isItemSkipped(at: parentPage!.identifier)
+            let skippedPage    = tracker.isItemSkipped(at: item.identifier)
+            let viewController = tracker.viewController(for: item.identifier)
+            
+            guard let navigationController = rootNavigationController?.visibleNavigationController else {
+                completionBlock?()
+                return
+            }
+            
+            if skipParentPage {
+                
+                dismissNext(viewControllerForSkippedPage: viewController ?? viewControllerForSkippedPage)
+                
+            } else if let viewController = viewControllerForSkippedPage, skippedPage {
+                
+                item.backwardTransition?.backwardTransitionBlock(animated: animated){
+                    dismissNext()
+                }(navigationController, viewController)
+                
+            } else if let viewController = viewController, !skippedPage {
+                
+                item.backwardTransition?.backwardTransitionBlock(animated: animated){
+                    dismissNext()
+                }(navigationController, viewController)
+                
+            } else {
+                
+                completionBlock?()
+                
+            }
+   
         }
     }
     
@@ -460,6 +481,20 @@ open class AppFlowController {
         }
         
         return foundStep
+    }
+    
+    private func verify(pages:[AppFlowControllerPage], distance:(up:Int, down:Int)) throws {
+        
+        if distance.up > 0 {
+            let lastIndexToDismiss = pages.count - 1 - distance.up
+            if lastIndexToDismiss >= 0 && lastIndexToDismiss < pages.count - 1 {
+                let item = pages[lastIndexToDismiss]
+                if tracker.isItemSkipped(at: item.identifier) {
+                    throw AppFlowControllerError.showingSkippedPage(identifier: item.identifier)
+                }
+            }
+        }
+        
     }
     
 }

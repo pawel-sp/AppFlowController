@@ -430,5 +430,170 @@ extension AppFlowController_CoreTests {
             XCTFail()
         }
     }
+    
+    func testShow_currentStepExists_showPageWhichIsSkippedAtTheSameTime() {
+        prepareFlowController(fakeNC: true)
+        let pages = newPage("1") => newPage("2") => newPage("3")
+        do {
+            try flowController.register(path: pages)
+            try flowController.show(
+                page: pages[1],
+                animated: false,
+                skipPages:[pages[1]]
+            )
+            XCTAssertEqual(currentVCNames, ["1"])
+        } catch _ {
+            XCTFail()
+        }
+    }
+    
+    func testShow_currentStepExists_showPreviousPageWhereThereAreToSkippedPages_test1() {
+        prepareFlowController(fakeNC: true)
+        let pages = newPage("1") => newPage("2") => newPage("3") => newPage("4")
+        do {
+            try flowController.register(path: pages)
+            try flowController.show(
+                page: pages[3],
+                animated: false,
+                skipPages:[
+                    pages[2]
+                ]
+            )
+            
+            XCTAssertEqual(currentVCNames, ["1", "2", "4"])
+            
+            try flowController.show(
+                page: pages[0],
+                animated: false
+            )
+            
+            XCTAssertEqual(currentVCNames, ["1"])
+            
+        } catch _ {
+            XCTFail()
+        }
+    }
+    
+    func testShow_currentStepExists_showPreviousPageWhereThereAreToSkippedPages_test2() {
+        prepareFlowController(fakeNC: true)
+        let pages = newPage("1") => newPage("2") => newPage("3") => newPage("4")
+        do {
+            try flowController.register(path: pages)
+            try flowController.show(
+                page: pages[3],
+                animated: false,
+                skipPages:[
+                    pages[2]
+                ]
+            )
+            
+            XCTAssertEqual(currentVCNames, ["1", "2", "4"])
+            
+            try flowController.show(
+                page: pages[1],
+                animated: false
+            )
+            
+            XCTAssertEqual(currentVCNames, ["1", "2"])
+            
+        } catch _ {
+            XCTFail()
+        }
+    }
+    
+    func testShow_currentStepExists_showPreviousPageWhereThereAreToSkippedPages_test3() {
+        prepareFlowController(fakeNC: true)
+        let pages = newPage("1") => newPage("2") => newPage("3") => newPage("4")
+        do {
+            try flowController.register(path: pages)
+            try flowController.show(
+                page: pages[3],
+                animated: false,
+                skipPages:[
+                    pages[1],
+                    pages[2]
+                ]
+            )
+            
+            XCTAssertEqual(currentVCNames, ["1", "4"])
+            
+            try flowController.show(
+                page: pages[0],
+                animated: false
+            )
+            
+            XCTAssertEqual(currentVCNames, ["1"])
+            
+        } catch _ {
+            XCTFail()
+        }
+    }
+    
+    func testShow_currentStepExists_showPreviouslySkippedPage() {
+        prepareFlowController(fakeNC: true)
+        let pages = newPage("1") => newPage("2") => newPage("3") => newPage("4")
+        do {
+            try flowController.register(path: pages)
+            try flowController.show(
+                page: pages[3],
+                animated: false,
+                skipPages:[
+                    pages[2]
+                ]
+            )
+            
+            XCTAssertEqual(currentVCNames, ["1", "2", "4"])
+            
+            try flowController.show(
+                page: pages[2],
+                animated: false
+            )
+            
+            XCTFail()
+            
+        } catch let error {
+            if let afcError = error as? AppFlowControllerError {
+                XCTAssertEqual(afcError, AppFlowControllerError.showingSkippedPage(identifier: "3"))
+            } else {
+                XCTFail()
+            }
+        }
+    }
+    
+    func testShow_currentStepExists_tryingToShowPageFromSkippedPage() {
+        prepareFlowController(fakeNC: true)
+        let pages = newPage("1") => newPage("2") =>>
+        [
+                newPage("3") => newPage("4"),
+                newPage("5")
+        ]
+        do {
+            try flowController.register(path: pages)
+            try flowController.show(
+                page: pages[1][2],
+                animated: false,
+                skipPages:[
+                    pages[1][1]
+                ]
+            )
+            
+            XCTAssertEqual(currentVCNames, ["1", "5"])
+            
+            try flowController.show(
+                page: pages[0][3],
+                animated: false
+            )
+            
+            XCTFail()
+            
+        } catch let error {
+            if let afcError = error as? AppFlowControllerError {
+                XCTAssertEqual(afcError, AppFlowControllerError.showingSkippedPage(identifier: "2"))
+            } else {
+                XCTFail()
+            }
+        }
+
+    }
    
 }
