@@ -40,6 +40,9 @@ public struct AppFlowControllerPage {
     
     public internal(set) var variantName:String?
     
+    /**
+        Identifier of page. For not nil variant it has variant name prefix.
+    */
     public var identifier:String {
         if let variant = variantName {
             return "\(variant)_\(name)"
@@ -50,6 +53,14 @@ public struct AppFlowControllerPage {
     
     // MARK: - Init
     
+    /**
+        Creates new object of AppFlowControllerPage.
+     
+        - Parameter name:                   Name of the page. It need to be unique accross the whole registration paths. If you want to register the same page more then one time you need to set supportVariants = true and keep the name the same for those pages.
+        - Parameter supportVariants:        Use it only if you want to register the same page more then once. Default = false.
+        - Parameter viewControllerBlock:    Block to return newly allocated view controller.
+        - Parameter viewControllerType:     Type of view controller. It needs to be consistent with viewControllerBlock result.
+    */
     public init(
         name:String,
         supportVariants:Bool = false,
@@ -62,6 +73,16 @@ public struct AppFlowControllerPage {
         self.viewControllerType  = viewControllerType
     }
     
+    /**
+     Creates new object of AppFlowControllerPage.
+     
+     - Parameter name:                      Name of the page. It need to be unique accross the whole registration paths. If you want to register the same page more then one time you need to set supportVariants = true and keep the name the same for those pages.
+     - Parameter supportVariants:           Use it only if you want to register the same page more then once. Default = false.
+     - Parameter storyboardName:            Name of existing storyboard to load view controller by StoryboardID.
+     - Parameter storyboardInitBlock:       Set that property only if you want to change way of loading view controller from storyboard by StoryboardID.
+     - Parameter viewControllerIdentifier:  StoryboardID.
+     - Parameter viewControllerType:        Type of view controller. It needs to be the type of view controller for StoryboardID passed to viewControllerIdentifier.
+     */
     public init(
         name:String,
         supportVariants:Bool = false,
@@ -78,6 +99,15 @@ public struct AppFlowControllerPage {
         )
     }
     
+    /**
+     Creates new object of AppFlowControllerPage.
+     
+     - Parameter name:                      Name of the page. It need to be unique accross the whole registration paths. If you want to register the same page more then one time you need to set supportVariants = true and keep the name the same for those pages.
+     - Parameter supportVariants:           Use it only if you want to register the same page more then once. Default = false.
+     - Parameter storyboardName:            Name of existing storyboard to load view controller by StoryboardID.
+     - Parameter storyboardInitBlock:       Set that property only if you want to change way of loading view controller from storyboard by StoryboardID.
+     - Parameter viewControllerType:        Type of view controller. That init assumes that View Controller has exact the same StoryboardID as it's type.
+     */
     public init(
         name:String,
         supportVariants:Bool = false,

@@ -56,7 +56,7 @@ open class AppFlowController {
     public func register(path:AppFlowControllerPage) throws {
         try register(path:[path])
     }
-    
+
     public func register(path:[AppFlowControllerPage]) throws {
         if let lastPath = path.last, !lastPath.supportVariants, rootPathStep?.search(page: lastPath) != nil {
             throw AppFlowControllerError.pathAlreadyRegistered(identifier: lastPath.identifier)
@@ -88,8 +88,7 @@ open class AppFlowController {
         }
     }
     
-    public func register(path:[[AppFlowControllerPage]
-        ]) throws {
+    public func register(path:[[AppFlowControllerPage]]) throws {
         for subpath in path {
             try register(path: subpath)
         }
