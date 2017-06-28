@@ -23,7 +23,7 @@ extension AppFlowController_CoreTests {
         do {
             try flowController.register(path: pages)
             try flowController.show(page: pages[1], animated: false)
-            try flowController.goBack(animated:false)
+            flowController.goBack(animated:false)
             
             XCTAssertEqual(currentVCNames, ["1"])
         } catch _ {

@@ -13,9 +13,6 @@ extension AppFlowController_CoreTests {
 
     // MARK: - Helpers
     
-    class Tab1ViewController: UIViewController {}
-    class Tab2ViewController: UIViewController {}
-    
     func newTabBar(_ name:String = "tab_page") -> AppFlowControllerPage {
         return AppFlowControllerPage(
             name: name,
@@ -24,43 +21,15 @@ extension AppFlowController_CoreTests {
         )
     }
     
-    func newTabPage(_ name:String, vcClass:UIViewController.Type) -> AppFlowControllerPage {
-        return AppFlowControllerPage(
-            name: name,
-            viewControllerBlock: { vcClass.init() },
-            viewControllerType: vcClass
-        )
-    }
-    
     // MARK: - current page
     
-    func testRegister_tabPagesWithTheSameClasses() {
+    func testCurrentPageForTabVC_tabPageIsActive() {
         prepareFlowController(fakeNC: true)
         let tab = TabBarAppFlowControllerTransition()
         let pages = newPage("1") => newTabBar("tab") =>> [
             tab => newPage("2"),
             newPage("3"),
             tab => newPage("4")
-        ]
-        do {
-            try flowController.register(path: pages)
-            XCTFail()
-        }catch let error {
-            if let afcError = error as? AppFlowControllerError {
-                XCTAssertEqual(afcError, AppFlowControllerError.tabBarPageViewControllerIncorrect)
-            } else {
-                XCTFail()
-            }
-        }
-    }
-    
-    func testCurrentPageForTabVC_tabPageIsActive() {
-        prepareFlowController(fakeNC: true)
-        let tab = TabBarAppFlowControllerTransition()
-        let pages = newPage("1") => newTabBar("tab") =>> [
-            tab => newTabPage("2", vcClass: Tab1ViewController.self),
-            newPage("3"),
-            tab => newTabPage("4", vcClass: Tab2ViewController.self)
         ]
         do {
             try flowController.register(path: pages)
@@ -71,8 +40,6 @@ extension AppFlowController_CoreTests {
             XCTAssertEqual(flowController.currentPage(), pages[2][2])
             let tabBarViewControllers = flowController.rootNavigationController?.visibleViewController as? UITabBarController
             XCTAssertEqual(tabBarViewControllers?.viewControllers?.count ?? 0, 2)
-            XCTAssertTrue(tabBarViewControllers?.viewControllers?[0].isKind(of: Tab1ViewController.self) ?? false)
-            XCTAssertTrue(tabBarViewControllers?.viewControllers?[1].isKind(of: Tab2ViewController.self) ?? false)
         } catch _ {
             XCTFail()
         }
@@ -82,9 +49,9 @@ extension AppFlowController_CoreTests {
         prepareFlowController(fakeNC: true)
         let tab = TabBarAppFlowControllerTransition()
         let pages = newPage("1") => newTabBar("tab") =>> [
-            tab => newTabPage("2", vcClass: Tab1ViewController.self),
+            tab => newPage("2"),
             newPage("3"),
-            tab => newTabPage("4", vcClass: Tab2ViewController.self)
+            tab => newPage("4")
         ]
         do {
             try flowController.register(path: pages)
@@ -102,9 +69,9 @@ extension AppFlowController_CoreTests {
         prepareFlowController(fakeNC: true)
         let tab = TabBarAppFlowControllerTransition()
         let pages = newPage("1") => newTabBar("tab") =>> [
-            tab => newTabPage("2", vcClass: Tab1ViewController.self),
+            tab => newPage("2"),
             newPage("3"),
-            tab => newTabPage("4", vcClass: Tab2ViewController.self)
+            tab => newPage("4")
         ]
         do {
             try flowController.register(path: pages)
@@ -126,9 +93,9 @@ extension AppFlowController_CoreTests {
         prepareFlowController(fakeNC: true)
         let tab = TabBarAppFlowControllerTransition()
         let pages = newPage("1") => newTabBar("tab") =>> [
-            tab => newTabPage("2", vcClass: Tab1ViewController.self),
+            tab => newPage("2"),
             newPage("3"),
-            tab => newTabPage("4", vcClass: Tab2ViewController.self)
+            tab => newPage("4")
         ]
         do {
             try flowController.register(path: pages)
@@ -150,9 +117,9 @@ extension AppFlowController_CoreTests {
         prepareFlowController(fakeNC: true)
         let tab = TabBarAppFlowControllerTransition()
         let pages = newPage("1") => newTabBar("tab") =>> [
-            tab => newTabPage("2", vcClass: Tab1ViewController.self),
+            tab => newPage("2"),
             newPage("3"),
-            tab => newTabPage("4", vcClass: Tab2ViewController.self)
+            tab => newPage("4")
         ]
         do {
             try flowController.register(path: pages)

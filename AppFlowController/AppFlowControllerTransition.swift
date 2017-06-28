@@ -129,7 +129,7 @@ open class TabBarAppFlowControllerTransition: NSObject, AppFlowControllerTransit
     open func forwardTransitionBlock(animated: Bool, completionBlock:@escaping ()->()) -> AppFlowControllerForwardTransition.TransitionBlock {
         return { navigationController, viewController in
             if let tabBarController = navigationController.topViewController as? UITabBarController {
-                if let found = tabBarController.viewControllers?.filter({ $0.isKind(of: type(of: viewController)) }).first, let index = tabBarController.viewControllers?.index(of: found) {
+                if let index = tabBarController.viewControllers?.index(of: viewController) {
                     tabBarController.selectedIndex = index
                 }
             }

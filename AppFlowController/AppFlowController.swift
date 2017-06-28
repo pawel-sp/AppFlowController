@@ -76,9 +76,6 @@ open class AppFlowController {
                     if element.forwardTransition == nil || element.backwardTransition == nil {
                         throw AppFlowControllerError.missingPathStepTransition(identifier: element.identifier)
                     }
-                    if previous.current.viewControllerType.isSubclass(of: UITabBarController.self), previous.children.contains(where: { $0.current.viewControllerType.isSubclass(of: element.viewControllerType) }) {
-                        throw AppFlowControllerError.tabBarPageViewControllerIncorrect
-                    }
                     previousStep = previous.add(page: element)
                 } else {
                     rootPathStep = PathStep(page: element)
@@ -265,8 +262,13 @@ open class AppFlowController {
             parentBelongsToTabBar(for: page),
             page.forwardTransition?.isKind(of: TabBarAppFlowControllerTransition.self) == true
         {
-            let existingViewController = (tracker.viewController(for: parentPage.identifier) as? UITabBarController)?.viewControllers?.first(where: { $0.isKind(of: page.viewControllerType) })
-            return existingViewController!
+            let existingViewControllers = (tracker.viewController(for: parentPage.identifier) as? UITabBarController)?.viewControllers
+            for viewController in existingViewControllers ?? [] {
+                if tracker.key(for: viewController) == page.identifier {
+                    return viewController
+                }
+            }
+            return page.viewControllerBlock()
         } else {
             let viewController = page.viewControllerBlock()
             if (viewController.isKind(of: UITabBarController.self)) {
