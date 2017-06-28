@@ -20,12 +20,14 @@ class AppFlowController_TransitionTests: XCTestCase {
     // MARK: - Properties
     
     var mockNavigationController:MockNavigationController!
+    var mockPopNavigationController:MockPopNavigationController!
     var viewController:UIViewController!
     
     // MARK: - Setup
     
     override func setUp() {
-        mockNavigationController = MockNavigationController()
+        mockNavigationController    = MockNavigationController()
+        mockPopNavigationController = MockPopNavigationController()
         viewController  = UIViewController()
     }
     
@@ -80,6 +82,9 @@ class AppFlowController_TransitionTests: XCTestCase {
             exp.fulfill()
         }
         let transitionBlock = transition.backwardTransitionBlock(animated: false, completionBlock: completionBlock)
+        
+        mockPopNavigationController.viewControllers = [viewController]
+        
         transitionBlock(viewController)
         
         waitForExpectations(timeout: 0.1) { error in
@@ -87,7 +92,7 @@ class AppFlowController_TransitionTests: XCTestCase {
                 XCTFail(error.localizedDescription)
             }
         }
-        XCTAssertFalse(mockNavigationController.popViewControllerParams ?? true)
+        XCTAssertFalse(mockPopNavigationController.popViewControllerParams ?? true)
     }
     
     func testPushAndPopTransition_backwardTransitionUsesPop_animated() {
@@ -97,6 +102,9 @@ class AppFlowController_TransitionTests: XCTestCase {
             exp.fulfill()
         }
         let transitionBlock = transition.backwardTransitionBlock(animated: true, completionBlock: completionBlock)
+        
+        mockPopNavigationController.viewControllers = [viewController]
+        
         transitionBlock(viewController)
         
         waitForExpectations(timeout: 0.1) { error in
@@ -104,7 +112,7 @@ class AppFlowController_TransitionTests: XCTestCase {
                 XCTFail(error.localizedDescription)
             }
         }
-        XCTAssertTrue(mockNavigationController.popViewControllerParams ?? false)
+        XCTAssertTrue(mockPopNavigationController.popViewControllerParams ?? false)
     }
     
     // MARK: - ModalAppFlowControllerTransition
