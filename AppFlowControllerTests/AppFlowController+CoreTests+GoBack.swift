@@ -11,27 +11,10 @@ import XCTest
 
 extension AppFlowController_CoreTests {
     
-    func testGoBack_missingPrepareMethodInvokation() {
-        do {
-            try flowController.goBack()
-            XCTFail()
-        } catch let error {
-            if let afcError = error as? AppFlowControllerError {
-                XCTAssertEqual(afcError, AppFlowControllerError.missingConfiguration)
-            } else {
-                XCTFail()
-            }
-        }
-    }
-    
     func testGoBack_thereIsNoVisibleStep() {
         prepareFlowController()
-        do {
-            try flowController.goBack()
-            XCTAssertEqual(currentVCNames, [])
-        } catch _ {
-            XCTFail()
-        }
+        flowController.goBack()
+        XCTAssertEqual(currentVCNames, [])
     }
     
     func testGoBack_visibleStep_onePageBackward() {
@@ -60,7 +43,8 @@ extension AppFlowController_CoreTests {
                     pages[2]
                 ]
             )
-            try flowController.goBack(animated:false)
+            
+            flowController.goBack(animated:false)
             
             XCTAssertEqual(currentVCNames, ["1", "2"])
         } catch _ {
@@ -74,7 +58,8 @@ extension AppFlowController_CoreTests {
         do {
             try flowController.register(path: pages)
             try flowController.show(page: pages[0], animated: false)
-            try flowController.goBack(animated:false)
+            
+            flowController.goBack(animated:false)
             
             XCTAssertEqual(currentVCNames, ["1"])
         } catch _ {

@@ -80,7 +80,7 @@ class AppFlowController_TransitionTests: XCTestCase {
             exp.fulfill()
         }
         let transitionBlock = transition.backwardTransitionBlock(animated: false, completionBlock: completionBlock)
-        transitionBlock(mockNavigationController, viewController)
+        transitionBlock(viewController)
         
         waitForExpectations(timeout: 0.1) { error in
             if let error = error {
@@ -97,7 +97,7 @@ class AppFlowController_TransitionTests: XCTestCase {
             exp.fulfill()
         }
         let transitionBlock = transition.backwardTransitionBlock(animated: true, completionBlock: completionBlock)
-        transitionBlock(mockNavigationController, viewController)
+        transitionBlock(viewController)
         
         waitForExpectations(timeout: 0.1) { error in
             if let error = error {
@@ -209,7 +209,7 @@ class AppFlowController_TransitionTests: XCTestCase {
         }
         let transitionBlock = transition.backwardTransitionBlock(animated: false, completionBlock: completionBlock)
         let viewController  = MockViewController()
-        transitionBlock(mockNavigationController, viewController)
+        transitionBlock(viewController)
         
         waitForExpectations(timeout: 0.1) { error in
             if let error = error {
@@ -227,7 +227,7 @@ class AppFlowController_TransitionTests: XCTestCase {
         }
         let transitionBlock = transition.backwardTransitionBlock(animated: true, completionBlock: completionBlock)
         let viewController  = MockViewController()
-        transitionBlock(mockNavigationController, viewController)
+        transitionBlock(viewController)
         
         waitForExpectations(timeout: 0.1) { error in
             if let error = error {
@@ -348,7 +348,7 @@ class AppFlowController_TransitionTests: XCTestCase {
             exp.fulfill()
         }
         let transitionBlock = transition.backwardTransitionBlock(animated: true, completionBlock: completionBlock)
-        transitionBlock(mockNavigationController, viewController)
+        transitionBlock(viewController)
         
         waitForExpectations(timeout: 0.1) { error in
             if let error = error {

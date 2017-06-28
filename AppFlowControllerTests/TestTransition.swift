@@ -10,17 +10,18 @@ import AppFlowController
 
 class TestTransition: NSObject, AppFlowControllerTransition {
     
-    func forwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> AppFlowControllerTransitionBlock {
+    func forwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> AppFlowControllerForwardTransition.TransitionBlock {
         return { navigationController, viewController in
             navigationController.viewControllers.append(viewController)
             completionBlock()
         }
     }
     
-    func backwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> AppFlowControllerTransitionBlock {
-        return { navigationController, viewcontroller in
-            if let index = navigationController.viewControllers.index(of: viewcontroller) {
-                navigationController.viewControllers.remove(at: index)
+    func backwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> AppFlowControllerBackwardTransition.TransitionBlock {
+        return { viewcontroller in
+            let navigationController = viewcontroller.navigationController
+            if let index = navigationController?.viewControllers.index(of: viewcontroller) {
+                navigationController?.viewControllers.remove(at: index)
             }
         }
     }

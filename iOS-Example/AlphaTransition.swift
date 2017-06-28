@@ -41,23 +41,24 @@ class AlphaTransition: NSObject, UIViewControllerAnimatedTransitioning, AppFlowC
     
     // MARK: - AppFlowControllerTransition
     
-    func backwardTransitionBlock(animated: Bool, completionBlock: @escaping () -> ()) -> (UINavigationController, UIViewController) -> Void {
+    func forwardTransitionBlock(animated: Bool, completionBlock: @escaping () -> ()) -> AppFlowControllerForwardTransition.TransitionBlock {
         return { navigationController, viewController in
             let previousDelegate = navigationController.delegate
             navigationController.delegate = self
-            let _ = navigationController.popViewController(animated: animated) {
+            navigationController.pushViewController(viewController, animated: animated){
                 navigationController.delegate = previousDelegate
                 completionBlock()
             }
         }
     }
     
-    func forwardTransitionBlock(animated: Bool, completionBlock: @escaping () -> ()) -> (UINavigationController, UIViewController) -> Void {
-        return { navigationController, viewController in
-            let previousDelegate = navigationController.delegate
-            navigationController.delegate = self
-            navigationController.pushViewController(viewController, animated: animated){
-                navigationController.delegate = previousDelegate
+    func backwardTransitionBlock(animated: Bool, completionBlock: @escaping () -> ()) -> AppFlowControllerBackwardTransition.TransitionBlock {
+        return { viewController in
+            let navigationController = viewController.navigationController
+            let previousDelegate     = navigationController?.delegate
+            navigationController?.delegate = self
+            let _ = navigationController?.popViewController(animated: animated) {
+                navigationController?.delegate = previousDelegate
                 completionBlock()
             }
         }

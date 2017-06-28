@@ -46,3 +46,14 @@ class MockNavigationController: UINavigationController {
     }
     
 }
+
+class MockPopNavigationController: UINavigationController {
+    
+    var popViewControllerParams:(Bool)?
+    
+    override func popViewController(animated: Bool) -> UIViewController? {
+        popViewControllerParams = (animated)
+        return nil
+    }
+    
+}

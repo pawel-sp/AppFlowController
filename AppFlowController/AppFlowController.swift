@@ -142,17 +142,12 @@ open class AppFlowController {
         }
     }
     
-    public func goBack(animated:Bool = true) throws {
-        
-        guard let rootNavigationController = rootNavigationController else {
-            throw AppFlowControllerError.missingConfiguration
-        }
+    public func goBack(animated:Bool = true) {
         
         if let visible = visibleStep() {
             
             var parent = visible.parent
             var viewController:UIViewController?
-            let navigationController = rootNavigationController.visibleNavigationController
             
             while viewController == nil {
                 if let identifier = parent?.current.identifier {
@@ -164,7 +159,7 @@ open class AppFlowController {
             }
             
             if let viewController = viewController {
-                visible.current.backwardTransition?.backwardTransitionBlock(animated: animated){}(navigationController, viewController)
+                visible.current.backwardTransition?.backwardTransitionBlock(animated: animated){}(viewController)
             }
         }
     }
@@ -418,11 +413,6 @@ open class AppFlowController {
             let skippedPage    = tracker.isItemSkipped(at: item.identifier)
             let viewController = tracker.viewController(for: item.identifier)
             
-            guard let navigationController = rootNavigationController?.visibleNavigationController else {
-                completionBlock?()
-                return
-            }
-            
             func dismissNext(viewControllerForSkippedPage:UIViewController? = nil) {
                 self.dismiss(
                     pages: pages,
@@ -434,11 +424,11 @@ open class AppFlowController {
                 )
             }
             
-            func dismiss(useTransition:Bool, navigationController:UINavigationController, viewController:UIViewController) {
+            func dismiss(useTransition:Bool, viewController:UIViewController) {
                 if useTransition {
                     item.backwardTransition?.backwardTransitionBlock(animated: animated){
                         dismissNext()
-                    }(navigationController, viewController)
+                    }(viewController)
                 } else {
                     dismissNext()
                 }
@@ -447,9 +437,9 @@ open class AppFlowController {
             if skipParentPage {
                 dismissNext(viewControllerForSkippedPage: viewController ?? viewControllerForSkippedPage)
             } else if let viewController = viewControllerForSkippedPage, skippedPage {
-                dismiss(useTransition: !skipTransition, navigationController: navigationController, viewController: viewController)
+                dismiss(useTransition: !skipTransition, viewController: viewController)
             } else if let viewController = viewController, !skippedPage {
-                dismiss(useTransition: !skipTransition, navigationController: navigationController, viewController: viewController)
+                dismiss(useTransition: !skipTransition, viewController: viewController)
             } else {
                 completionBlock?()
             }

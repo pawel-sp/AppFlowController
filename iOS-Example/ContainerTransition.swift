@@ -13,7 +13,7 @@ class ContainerTransition: NSObject, AppFlowControllerTransition {
     
     // MARK: - AppFlowControllerTransition
     
-    func forwardTransitionBlock(animated: Bool, completionBlock: @escaping () -> ()) -> (UINavigationController, UIViewController) -> Void {
+    func forwardTransitionBlock(animated: Bool, completionBlock: @escaping () -> ()) -> AppFlowControllerForwardTransition.TransitionBlock {
         return { navigationController, viewController in
             if let containerViewController = navigationController.topViewController as? ContainerViewControllerInterface {
                 containerViewController.addChildViewController(viewController)
@@ -23,8 +23,8 @@ class ContainerTransition: NSObject, AppFlowControllerTransition {
         }
     }
     
-    func backwardTransitionBlock(animated: Bool, completionBlock: @escaping () -> ()) -> (UINavigationController, UIViewController) -> Void {
-        return { _, viewController in
+    func backwardTransitionBlock(animated: Bool, completionBlock: @escaping () -> ()) -> AppFlowControllerBackwardTransition.TransitionBlock {
+        return { viewController in
             viewController.view.removeFromSuperview()
             viewController.removeFromParentViewController()
             completionBlock()
@@ -35,7 +35,7 @@ class ContainerTransition: NSObject, AppFlowControllerTransition {
 
 class PushToContainerTransition: PushPopAppFlowControllerTransition {
     
-    override func forwardTransitionBlock(animated: Bool, completionBlock: @escaping () -> ()) -> AppFlowControllerTransitionBlock {
+    override func forwardTransitionBlock(animated: Bool, completionBlock: @escaping () -> ()) -> AppFlowControllerForwardTransition.TransitionBlock {
         return { navigationController, viewController in
             navigationController.pushViewController(viewController, animated: animated)
             viewController.view.layoutSubviews()
