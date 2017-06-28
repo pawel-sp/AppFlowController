@@ -248,26 +248,10 @@ open class AppFlowController {
     // MARK: - Helpers
     
     private func visibleStep() -> PathStep? {
-        let navigationController  = rootNavigationController?.visibleNavigationController
-        if let visibleViewController = navigationController?.visibleViewController {
-            
-            guard let vc = { _ -> UIViewController? in
-                if let tabBarViewController = visibleViewController as? UITabBarController {
-                    return tabBarViewController.viewControllers?[tabBarViewController.selectedIndex]
-                } else {
-                    return visibleViewController
-                }
-            }() else { return nil }
-
-            if let key = tracker.key(for: vc) {
-                return rootPathStep?.search(identifier: key)
-            } else {
-                return nil
-            }
-            
-        } else {
-            return nil
-        }
+        guard let currentViewController = rootNavigationController?.visibleNavigationController.visible else { return nil }
+        guard let key = tracker.key(for: currentViewController) else { return nil }
+        
+        return rootPathStep?.search(identifier: key)
     }
     
     private func parentBelongsToTabBar(for page:AppFlowControllerPage) -> Bool {

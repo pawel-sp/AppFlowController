@@ -88,4 +88,14 @@ extension UIViewController {
         }
     }
     
+    var visible:UIViewController {
+        if let tabBarController = self as? UITabBarController {
+            return tabBarController.viewControllers?[tabBarController.selectedIndex].visible ?? self
+        } else if let navigationController = self as? UINavigationController {
+            return navigationController.visibleViewController?.visible ?? self
+        } else {
+            return self
+        }
+    }
+    
 }

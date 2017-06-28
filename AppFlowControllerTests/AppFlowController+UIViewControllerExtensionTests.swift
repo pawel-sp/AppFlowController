@@ -95,4 +95,32 @@ class AppFlowController_UIViewControllerExtensionTests: XCTestCase {
         }
     }
     
+    // MARK: - visible
+    
+    func testVisible_selfIsViewControler() {
+        let viewController = UIViewController()
+        XCTAssertEqual(viewController.visible, viewController)
+    }
+    
+    func testVisible_selfIsNavigationController() {
+        let viewController       = UIViewController()
+        let navigationController = UINavigationController(rootViewController: viewController)
+        XCTAssertEqual(navigationController.visible, viewController)
+    }
+    
+    func testVisible_selfIsTabBarController() {
+        let viewController   = UIViewController()
+        let tabBarController = UITabBarController()
+        tabBarController.viewControllers = [viewController]
+        XCTAssertEqual(tabBarController.visible, viewController)
+    }
+    
+    func testVisible_selfIsViewControllerInsideTabBarControllerInsideNavigationController() {
+        let viewController = UIViewController()
+        let tabBarController = UITabBarController()
+        tabBarController.viewControllers = [UINavigationController(rootViewController: viewController)]
+        let rootNavigationController = UINavigationController(rootViewController: tabBarController)
+        XCTAssertEqual(rootNavigationController.visible, viewController)
+    }
+    
 }
