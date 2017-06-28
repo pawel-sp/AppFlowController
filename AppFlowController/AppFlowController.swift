@@ -140,14 +140,11 @@ open class AppFlowController {
     }
     
     public func goBack(animated:Bool = true) {
+        guard let visible        = visibleStep() else { return }
+        guard let page           = visible.firstParentPage(where: { tracker.viewController(for: $0.identifier) != nil }) else { return }
+        guard let viewController = tracker.viewController(for: page.identifier) else { return }
         
-        if let visible = visibleStep() {
-            
-            guard let page           = visible.firstParentPage(where: { tracker.viewController(for: $0.identifier) != nil }) else { return }
-            guard let viewController = tracker.viewController(for: page.identifier) else { return }
-            
-            visible.current.backwardTransition?.backwardTransitionBlock(animated: animated){}(viewController)
-        }
+        visible.current.backwardTransition?.backwardTransitionBlock(animated: animated){}(viewController)
     }
     
     public func pop(to page:AppFlowControllerPage, animated:Bool = true) throws {
@@ -164,21 +161,7 @@ open class AppFlowController {
             throw AppFlowControllerError.popToSkippedPath(identifier: foundStep.current.identifier)
         }
         
-        func pop(to viewController:UIViewController, animated:Bool) {
-            if rootNavigationController == rootNavigationController.visibleNavigationController {
-                rootNavigationController.popToViewController(viewController, animated: animated)
-                return
-            }
-            if rootNavigationController.visibleNavigationController.viewControllers.contains(targetViewController) {
-                rootNavigationController.visibleNavigationController.popToViewController(targetViewController, animated: animated)
-            } else {
-                rootNavigationController.visibleViewController?.dismiss(animated: animated) {
-                    pop(to: viewController, animated: animated)
-                }
-            }
-        }
-        
-        pop(to: targetViewController, animated: animated)
+        rootNavigationController.visibleNavigationController.popToViewController(targetViewController, animated: animated)
     }
     
     public func updateCurrentPage(with viewController:UIViewController, for name:String) throws {
@@ -401,9 +384,7 @@ open class AppFlowController {
             
             func dismiss(useTransition:Bool, viewController:UIViewController) {
                 if useTransition {
-                    item.backwardTransition?.backwardTransitionBlock(animated: animated){
-                        dismissNext()
-                    }(viewController)
+                    item.backwardTransition?.backwardTransitionBlock(animated: animated){ dismissNext() }(viewController)
                 } else {
                     dismissNext()
                 }
@@ -418,7 +399,6 @@ open class AppFlowController {
             } else {
                 completionBlock?()
             }
-   
         }
     }
     
