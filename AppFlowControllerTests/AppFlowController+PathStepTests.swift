@@ -137,6 +137,34 @@ class AppFlowController_PathStepTests: XCTestCase {
         XCTAssertEqual(root.allParentPages(from: root.children.first!.children.first!, includeSelf: true), [root.current, page1, page2])
     }
     
+    func testFirstParentPage_noMatches() {
+        let page1 = newPage(name: "1")
+        let page2 = newPage(name: "2")
+        root.add(page: page1).add(page: page2)
+        XCTAssertNil(root.firstParentPage(where: { $0.name == "3" }))
+    }
+    
+    func testFirstParentPage_onlyOneMatch() {
+        let page1 = newPage(name: "1")
+        let page2 = newPage(name: "2")
+        let step1 = root.add(page: page1)
+        let step2 = step1.add(page: page2)
+        
+        XCTAssertEqual(step2.firstParentPage(where: { $0.name == "1" }), page1)
+    }
+    
+    func testFirstParentPage_fewMatches() {
+        let page1 = newPage(name: "1")
+        let page2 = newPage(name: "2")
+        let page3 = newPage(name: "3")
+
+        let step1 = root.add(page: page1)
+        let step2 = step1.add(page: page2)
+        let step3 = step2.add(page: page3)
+        
+        XCTAssertEqual(step3.firstParentPage(where: { _ in true }), page2)
+    }
+    
     func testDistanceToStep_thereIsNoParentWithThatPage() {
         let page1 = newPage(name: "1")
         let page2 = newPage(name: "2")

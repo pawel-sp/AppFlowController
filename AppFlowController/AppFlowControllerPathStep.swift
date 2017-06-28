@@ -68,6 +68,10 @@ class PathStep {
         return pages
     }
     
+    func firstParentPage(where block:(AppFlowControllerPage) -> Bool) -> AppFlowControllerPage? {
+        return allParentPages(from: self, includeSelf: false).reversed().first(where: block)
+    }
+    
     func distanceToStep(with page:AppFlowControllerPage) -> Int? {
         
         guard current.identifier != page.identifier else { return 0 }

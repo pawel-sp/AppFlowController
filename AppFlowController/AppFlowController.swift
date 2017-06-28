@@ -143,21 +143,10 @@ open class AppFlowController {
         
         if let visible = visibleStep() {
             
-            var parent = visible.parent
-            var viewController:UIViewController?
+            guard let page           = visible.firstParentPage(where: { tracker.viewController(for: $0.identifier) != nil }) else { return }
+            guard let viewController = tracker.viewController(for: page.identifier) else { return }
             
-            while viewController == nil {
-                if let identifier = parent?.current.identifier {
-                    viewController = tracker.viewController(for: identifier)
-                } else {
-                    break
-                }
-                parent = parent?.parent
-            }
-            
-            if let viewController = viewController {
-                visible.current.backwardTransition?.backwardTransitionBlock(animated: animated){}(viewController)
-            }
+            visible.current.backwardTransition?.backwardTransitionBlock(animated: animated){}(viewController)
         }
     }
     
