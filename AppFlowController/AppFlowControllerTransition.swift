@@ -26,10 +26,15 @@
 
 import UIKit
 
+// MARK: - Protocols
+
 public protocol AppFlowControllerForwardTransition: NSObjectProtocol {
     
     typealias TransitionBlock = (UINavigationController, UIViewController) -> Void
     
+    func shouldPreloadViewController() -> Bool
+    func preloadViewController(_ viewController:UIViewController, from parentViewController:UIViewController)
+    func configureViewController(from viewController:UIViewController) -> UIViewController
     func forwardTransitionBlock(animated:Bool, completionBlock:@escaping ()->()) -> TransitionBlock
     
 }
@@ -44,6 +49,22 @@ public protocol AppFlowControllerBackwardTransition: NSObjectProtocol {
 
 public protocol AppFlowControllerTransition: AppFlowControllerForwardTransition, AppFlowControllerBackwardTransition {}
 
+extension AppFlowControllerTransition {
+    
+    public func configureViewController(from viewController:UIViewController) -> UIViewController {
+        return viewController
+    }
+    
+    public func shouldPreloadViewController() -> Bool {
+        return false
+    }
+    
+    public func preloadViewController(_ viewController:UIViewController, from parentViewController:UIViewController)  {}
+
+}
+
+// MARK: - Classes
+
 open class PushPopAppFlowControllerTransition: NSObject, AppFlowControllerTransition {
     
     // MARK: - Properties
@@ -51,7 +72,7 @@ open class PushPopAppFlowControllerTransition: NSObject, AppFlowControllerTransi
     public static let `default` = PushPopAppFlowControllerTransition()
     
     // MARK: - AppFlowControllerForwardTransition
-    
+
     open func forwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> AppFlowControllerForwardTransition.TransitionBlock {
         return { navigationController, viewController in
             navigationController.pushViewController(viewController, animated: animated, completion:completionBlock)
@@ -69,33 +90,16 @@ open class PushPopAppFlowControllerTransition: NSObject, AppFlowControllerTransi
 }
 
 open class ModalAppFlowControllerTransition<T:UINavigationController>: NSObject, AppFlowControllerTransition {
- 
-    // MARK: - Properties
-    
-    public let navigationBarClass:UINavigationBar.Type?
-    
-    // MARK: - Init
-    
-    public init(navigationBarClass:UINavigationBar.Type? = nil) {
-        self.navigationBarClass = navigationBarClass
-    }
-    
-    // MARK: - Utilities
-    
-    private func modalNavigationController<T:UINavigationController>(rootViewController: UIViewController) -> T {
-        return UINavigationController.new(with: rootViewController, navigationBarClass: navigationBarClass)
-    }
     
     // MARK: - AppFlowControllerForwardTransition
     
+    open func configureViewController(from viewController:UIViewController) -> UIViewController {
+        return T.init(rootViewController: viewController)
+    }
+    
     open func forwardTransitionBlock(animated: Bool, completionBlock:@escaping ()->()) -> AppFlowControllerForwardTransition.TransitionBlock {
         return { navigationController, viewController in
-            if viewController.navigationController == nil {
-                let modalNavigationController:T = self.modalNavigationController(rootViewController: viewController)
-                navigationController.present(modalNavigationController, animated: animated, completion: completionBlock)
-            } else {
-                navigationController.present(viewController, animated: animated, completion: completionBlock)
-            }
+            navigationController.present(viewController, animated: animated, completion: completionBlock)
         }
     }
     
@@ -117,21 +121,33 @@ open class DefaultModalAppFlowControllerTransition: ModalAppFlowControllerTransi
     
 }
 
-open class TabBarAppFlowControllerTransition: NSObject, AppFlowControllerTransition {
-    
-    // MARK: - Properties
-    
-    public static let `default` = TabBarAppFlowControllerTransition()
+open class TabBarAppFlowControllerTransition<T:UINavigationController>: NSObject, AppFlowControllerTransition {
     
     // MARK: - AppFlowControllerForwardTransition
     
-    // That transition assumes that every tab bar viewcontroller has different class
+    open func shouldPreloadViewController() -> Bool {
+        return true
+    }
+    
+    open func preloadViewController(_ viewController:UIViewController, from parentViewController:UIViewController)  {
+        if let tabBarController = parentViewController as? UITabBarController {
+            var currentViewControllers = tabBarController.viewControllers ?? []
+            currentViewControllers.append(viewController)
+            tabBarController.viewControllers = currentViewControllers
+        }
+    }
+    
+    open func configureViewController(from viewController:UIViewController) -> UIViewController {
+        return T.init(rootViewController: viewController)
+    }
+    
     open func forwardTransitionBlock(animated: Bool, completionBlock:@escaping ()->()) -> AppFlowControllerForwardTransition.TransitionBlock {
         return { navigationController, viewController in
-            if let tabBarController = navigationController.topViewController as? UITabBarController {
-                if let index = tabBarController.viewControllers?.index(of: viewController) {
-                    tabBarController.selectedIndex = index
-                }
+            if
+                let tabBarController = navigationController.parent as? UITabBarController,
+                let index = tabBarController.viewControllers?.index(of: viewController.navigationController ?? viewController)
+            {
+                tabBarController.selectedIndex = index
             }
             completionBlock()
         }
@@ -144,5 +160,13 @@ open class TabBarAppFlowControllerTransition: NSObject, AppFlowControllerTransit
             completionBlock()
         }
     }
+    
+}
+
+open class DefaultTabBarAppFlowControllerTransition: TabBarAppFlowControllerTransition<UINavigationController> {
+    
+    // MARK: - Properties
+    
+    public static let `default` = DefaultTabBarAppFlowControllerTransition()
     
 }

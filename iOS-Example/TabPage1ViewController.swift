@@ -7,5 +7,12 @@
 //
 
 import UIKit
+import AppFlowController
 
-class TabPage1ViewController: BaseViewController {}
+class TabPage1ViewController: BaseViewController {
+
+    @IBAction func subPageAction(_ sender: Any) {
+        try! AppFlowController.shared.show(page: AppPage.subTabPage1)
+    }
+
+}

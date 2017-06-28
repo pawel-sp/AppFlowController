@@ -54,17 +54,7 @@ extension UINavigationController {
     
     open var visibleNavigationController:UINavigationController {
         return visibleViewController?.navigationController ?? self
-    }
-    
-    static func new<T:UINavigationController>(with rootViewController: UIViewController, navigationBarClass: Swift.AnyClass?) -> T {
-        if let navigationBarClass = navigationBarClass {
-            let result = T(navigationBarClass: navigationBarClass, toolbarClass: nil)
-            result.viewControllers = [rootViewController]
-            return result
-        } else {
-            return T(rootViewController: rootViewController)
-        }
-    }    
+    }   
     
 }
 

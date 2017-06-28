@@ -18,4 +18,9 @@ class TabPage2ViewController: BaseViewController {
     @IBAction func goToPage1Action(_ sender: AnyObject) {
         try! AppFlowController.shared.show(page: AppPage.tabPage1)
     }
+    
+    @IBAction func subPageAction(_ sender: Any) {
+        try! AppFlowController.shared.show(page: AppPage.subTabPage2)
+    }
+    
 }

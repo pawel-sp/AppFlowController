@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let flowController  = AppFlowController.shared
         let alpha           = AlphaTransition()
         let modal           = DefaultModalAppFlowControllerTransition.default
-        let tab             = TabBarAppFlowControllerTransition.default
+        let tab             = TabPageTransition()
         let segment         = ContainerTransition()
         let pushToContainer = PushToContainerTransition()
         
@@ -43,8 +43,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         AppPage.items => AppPage.details => AppPage.play,
                         AppPage.tabs =>> [
                             AppPage.contact,
-                            tab => AppPage.tabPage1,
-                            tab => AppPage.tabPage2
+                            tab => AppPage.tabPage1 => AppPage.subTabPage1,
+                            tab => AppPage.tabPage2 => AppPage.subTabPage2
                         ],
                         AppPage.custom => AppPage.play,
                         pushToContainer => AppPage.container =>> [
@@ -153,6 +153,18 @@ class AppPage {
         name: "tabPage2",
         storyboardName: "Main",
         viewControllerType: TabPage2ViewController.self
+    )
+    
+    static let subTabPage1 = AppFlowControllerPage(
+        name: "subTabPage1",
+        storyboardName: "Main",
+        viewControllerType: SubTabPage1ViewController.self
+    )
+    
+    static let subTabPage2 = AppFlowControllerPage(
+        name: "subTabPage2",
+        storyboardName: "Main",
+        viewControllerType: SubTabPage2ViewController.self
     )
     
     static let play = AppFlowControllerPage(

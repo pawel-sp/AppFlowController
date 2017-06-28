@@ -37,7 +37,6 @@ public enum AppFlowControllerError:Error, Equatable {
     case variantNotSupported(identifier:String)
     case missingPathStepTransition(identifier:String)
     case popToSkippedPath(identifier:String)
-    case showingSkippedPage(identifier:String)
     
     public var info:String {
         switch self {
@@ -59,8 +58,6 @@ public enum AppFlowControllerError:Error, Equatable {
                 return "\(identifier) doesn't have forward or/and backward transition"
             case .popToSkippedPath(let identifier):
                 return "You cannot pop to step \(identifier) which is currently skipped"
-            case .showingSkippedPage(let identifier):
-                return "\(identifier) was skipped so you cannot back to that step or use it to show further pages."
         }
     }
     
@@ -85,8 +82,6 @@ public func ==(lhs:AppFlowControllerError, rhs:AppFlowControllerError) -> Bool {
         case (.missingPathStepTransition(let id1), .missingPathStepTransition(let id2)):
             return id1 == id2
         case (.popToSkippedPath(let id1), .popToSkippedPath(let id2)):
-            return id1 == id2
-        case (.showingSkippedPage(let id1), .showingSkippedPage(let id2)):
             return id1 == id2
         default:
             return false

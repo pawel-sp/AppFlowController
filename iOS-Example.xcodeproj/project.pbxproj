@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		A400EAE31EF8339B0024D9A2 /* PlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A400EAE21EF8339B0024D9A2 /* PlayViewController.swift */; };
 		A41D64851EA5F80B0046F53D /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A41D64841EA5F80B0046F53D /* StartViewController.swift */; };
+		A44CA43A1F05229300AC14D0 /* TabPageTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44CA4391F05229300AC14D0 /* TabPageTransition.swift */; };
 		A488093C1DA165E9003CF8F3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A488093B1DA165E9003CF8F3 /* Assets.xcassets */; };
 		A488093F1DA165E9003CF8F3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A488093D1DA165E9003CF8F3 /* LaunchScreen.storyboard */; };
 		A48809471DA16644003CF8F3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48809461DA16644003CF8F3 /* AppDelegate.swift */; };
@@ -35,6 +36,8 @@
 		A4D91B871DA7A25900B10901 /* AppFlowController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A48809631DA16696003CF8F3 /* AppFlowController.framework */; };
 		A4DC3DCF1F00EA3100975AA9 /* CustomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DC3DCE1F00EA3100975AA9 /* CustomViewController.swift */; };
 		A4DC3DE91F01310700975AA9 /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DC3DE81F01310700975AA9 /* ContactViewController.swift */; };
+		A4FFFF4A1F03F682002E5B26 /* SubTabPage1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FFFF491F03F682002E5B26 /* SubTabPage1ViewController.swift */; };
+		A4FFFF4E1F03F68E002E5B26 /* SubTabPage2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FFFF4D1F03F68E002E5B26 /* SubTabPage2ViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +60,7 @@
 /* Begin PBXFileReference section */
 		A400EAE21EF8339B0024D9A2 /* PlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayViewController.swift; sourceTree = "<group>"; };
 		A41D64841EA5F80B0046F53D /* StartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
+		A44CA4391F05229300AC14D0 /* TabPageTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabPageTransition.swift; sourceTree = "<group>"; };
 		A48809311DA165E9003CF8F3 /* iOS-Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS-Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A488093B1DA165E9003CF8F3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A488093E1DA165E9003CF8F3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -85,6 +89,8 @@
 		A4ACF4C41DA16C99009FFEA8 /* AlphaTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlphaTransition.swift; sourceTree = "<group>"; };
 		A4DC3DCE1F00EA3100975AA9 /* CustomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomViewController.swift; sourceTree = "<group>"; };
 		A4DC3DE81F01310700975AA9 /* ContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactViewController.swift; sourceTree = "<group>"; };
+		A4FFFF491F03F682002E5B26 /* SubTabPage1ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubTabPage1ViewController.swift; sourceTree = "<group>"; };
+		A4FFFF4D1F03F68E002E5B26 /* SubTabPage2ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubTabPage2ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +161,8 @@
 				A493C47B1DA3FE6800BB4A08 /* TabBarViewController.swift */,
 				A493C47E1DA3FFC300BB4A08 /* TabPage1ViewController.swift */,
 				A493C4801DA3FFD500BB4A08 /* TabPage2ViewController.swift */,
+				A4FFFF491F03F682002E5B26 /* SubTabPage1ViewController.swift */,
+				A4FFFF4D1F03F68E002E5B26 /* SubTabPage2ViewController.swift */,
 				A41D64841EA5F80B0046F53D /* StartViewController.swift */,
 				A400EAE21EF8339B0024D9A2 /* PlayViewController.swift */,
 				A4DC3DCE1F00EA3100975AA9 /* CustomViewController.swift */,
@@ -180,6 +188,7 @@
 			children = (
 				A4ACF4C41DA16C99009FFEA8 /* AlphaTransition.swift */,
 				A499B8031F0271E800ABD7CC /* ContainerTransition.swift */,
+				A44CA4391F05229300AC14D0 /* TabPageTransition.swift */,
 			);
 			name = "Custom transitions";
 			sourceTree = "<group>";
@@ -289,6 +298,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A493C4831DA4425A00BB4A08 /* BaseTabBarController.swift in Sources */,
+				A4FFFF4E1F03F68E002E5B26 /* SubTabPage2ViewController.swift in Sources */,
 				A488094E1DA1666E003CF8F3 /* BaseTableViewController.swift in Sources */,
 				A499B8061F0272FA00ABD7CC /* Segment1ViewController.swift in Sources */,
 				A499B8081F02732D00ABD7CC /* Segment2ViewController.swift in Sources */,
@@ -297,6 +307,7 @@
 				A488095D1DA16683003CF8F3 /* RegistrationViewController.swift in Sources */,
 				A488094B1DA16662003CF8F3 /* ColorsDataBase.swift in Sources */,
 				A493C47F1DA3FFC300BB4A08 /* TabPage1ViewController.swift in Sources */,
+				A4FFFF4A1F03F682002E5B26 /* SubTabPage1ViewController.swift in Sources */,
 				A4ACF4C51DA16C99009FFEA8 /* AlphaTransition.swift in Sources */,
 				A493C4811DA3FFD500BB4A08 /* TabPage2ViewController.swift in Sources */,
 				A4DC3DE91F01310700975AA9 /* ContactViewController.swift in Sources */,
@@ -305,6 +316,7 @@
 				A41D64851EA5F80B0046F53D /* StartViewController.swift in Sources */,
 				A4DC3DCF1F00EA3100975AA9 /* CustomViewController.swift in Sources */,
 				A499B8041F0271E800ABD7CC /* ContainerTransition.swift in Sources */,
+				A44CA43A1F05229300AC14D0 /* TabPageTransition.swift in Sources */,
 				A488095B1DA16683003CF8F3 /* ItemsTableViewController.swift in Sources */,
 				A48809551DA16677003CF8F3 /* HomeViewController.swift in Sources */,
 				A499B8001F026FD300ABD7CC /* ContainerViewController.swift in Sources */,
