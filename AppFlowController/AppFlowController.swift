@@ -120,6 +120,8 @@ open class AppFlowController {
             let dismissRange:Range<Int> = dismissCounter == 0 ? 0..<0 : (currentPages.count - dismissCounter) ..< currentPages.count
             let displayRange:Range<Int> = 0 ..< newPages.count
          
+            try verify(pages: currentPages, distance: distance)
+            
             dismiss(pages: currentPages, fromIndexRange: dismissRange, animated: animated, skipTransition: skipDismissTransitions) {
                 self.register(parameters:parameters, for: newPages, skippedPages: skipPages)
                 self.tracker.disableSkip(for: keysToClearSkip)
@@ -296,7 +298,7 @@ open class AppFlowController {
         }
         
         let viewControllerExists = tracker.viewController(for: item.identifier) != nil
-        let pageSkipped          = skipPages?.contains(where: { $0.identifier == item.identifier }) == true || tracker.isItemSkipped(at: item.identifier)
+        let pageSkipped          = tracker.isItemSkipped(at: item.identifier)
         let itemIsPreloaded      = item.forwardTransition?.shouldPreloadViewController() == true
         
         if navigationController.viewControllers.count == 0 {
@@ -394,6 +396,20 @@ open class AppFlowController {
         }
         
         return foundStep
+    }
+    
+    private func verify(pages:[AppFlowControllerPage], distance:(up:Int, down:Int)) throws {
+        
+        if distance.up > 0 {
+            let lastIndexToDismiss = pages.count - 1 - distance.up
+            if lastIndexToDismiss >= 0 && lastIndexToDismiss < pages.count - 1 {
+                let item = pages[lastIndexToDismiss]
+                if tracker.isItemSkipped(at: item.identifier) {
+                    throw AppFlowControllerError.showingSkippedPage(identifier: item.identifier)
+                }
+            }
+        }
+        
     }
     
 }

@@ -122,23 +122,4 @@ class AppFlowControllerTests: XCTestCase {
         XCTAssertEqual(rootNavigationController.visibleNavigationController, modalNavigationController)
     }
     
-    // MARK: - new
-    
-    func testNew_returnsCorrectNavigationController_withoutNavigationBarClass() {
-        let viewController = UIViewController()
-        let navigationController:UINavigationController = UINavigationController.new(with: viewController, navigationBarClass: nil)
-        XCTAssertEqual(navigationController.viewControllers, [viewController])
-        XCTAssertTrue(navigationController.navigationBar.isKind(of: UINavigationBar.self))
-    }
-    
-    func testNew_returnsCorrectNavigationController_withNavigationBarClass() {
-        
-        class CustomNavigationBar: UINavigationBar {}
-        
-        let viewController = UIViewController()
-        let navigationController:UINavigationController = UINavigationController.new(with: viewController, navigationBarClass: CustomNavigationBar.self)
-        XCTAssertEqual(navigationController.viewControllers, [viewController])
-        XCTAssertTrue(navigationController.navigationBar.isKind(of: CustomNavigationBar.self))
-    }
-    
 }
