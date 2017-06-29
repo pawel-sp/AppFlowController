@@ -22,8 +22,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let modal           = DefaultModalAppFlowControllerTransition.default
         let tab             = TabPageTransition()
         let out             = OutOfTabsTransition()
-        let segment         = ContainerTransition()
-        let pushToContainer = PushToContainerTransition()
         
         flowController.prepare(for:window!, rootNavigationController:RootNavigationController())
         
@@ -48,9 +46,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             tab => AppPage.tabPage2 => AppPage.subTabPage2
                         ],
                         AppPage.custom => AppPage.play,
-                        pushToContainer => AppPage.container =>> [
-                            segment => AppPage.segment1,
-                            segment => AppPage.segment2
+                        AppPage.container =>> [
+                            ContainerTransition() => AppPage.segment1,
+                            ContainerTransition(loadPage: true) => AppPage.segment2
                         ]
                 ]
             )

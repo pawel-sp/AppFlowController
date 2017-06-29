@@ -37,7 +37,7 @@ class HomeViewController: BaseViewController {
     }
     
     @IBAction func containerAction(_ sender: Any) {
-        try! AppFlowController.shared.show(page: AppPage.segment2)
+        try! AppFlowController.shared.show(page: AppPage.container)
     }
     
 }

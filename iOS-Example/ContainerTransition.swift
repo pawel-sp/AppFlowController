@@ -11,7 +11,34 @@ import AppFlowController
 
 class ContainerTransition: NSObject, AppFlowControllerTransition {
     
+    // MARK: - Properties
+    
+    let loadPage:Bool
+    
+    // MARK: - Init
+    
+    init(loadPage:Bool) {
+        self.loadPage = loadPage
+        super.init()
+    }
+    
+    convenience override init() {
+        self.init(loadPage: false)
+    }
+    
     // MARK: - AppFlowControllerTransition
+    
+    public func shouldPreloadViewController() -> Bool {
+        return loadPage
+    }
+    
+    public func preloadViewController(_ viewController:UIViewController, from parentViewController:UIViewController)  {
+        if let containerViewController = parentViewController as? ContainerViewControllerInterface {
+            containerViewController.addChildViewController(viewController)
+            (containerViewController as? UIViewController)?.view.layoutSubviews()
+            containerViewController.containerView.addSubview(viewController.view)
+        }
+    }
     
     func forwardTransitionBlock(animated: Bool, completionBlock: @escaping () -> ()) -> AppFlowControllerForwardTransition.TransitionBlock {
         return { navigationController, viewController in
@@ -31,17 +58,5 @@ class ContainerTransition: NSObject, AppFlowControllerTransition {
         }
     }
 
-}
-
-class PushToContainerTransition: PushPopAppFlowControllerTransition {
-    
-    override func forwardTransitionBlock(animated: Bool, completionBlock: @escaping () -> ()) -> AppFlowControllerForwardTransition.TransitionBlock {
-        return { navigationController, viewController in
-            navigationController.pushViewController(viewController, animated: animated)
-            viewController.view.layoutSubviews()
-            completionBlock()
-        }
-    }
-    
 }
 
