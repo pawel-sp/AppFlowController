@@ -21,3 +21,13 @@ class TabPageTransition: DefaultTabBarAppFlowControllerTransition {
     }
     
 }
+
+class OutOfTabsTransition: PushPopAppFlowControllerTransition {
+    
+    override func forwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> AppFlowControllerForwardTransition.TransitionBlock {
+        return { navigationController, viewController in
+            navigationController.navigationController?.pushViewController(viewController, animated: animated, completion:completionBlock)
+        }
+    }
+    
+}

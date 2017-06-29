@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let alpha           = AlphaTransition()
         let modal           = DefaultModalAppFlowControllerTransition.default
         let tab             = TabPageTransition()
+        let out             = OutOfTabsTransition()
         let segment         = ContainerTransition()
         let pushToContainer = PushToContainerTransition()
         
@@ -42,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         ],
                         AppPage.items => AppPage.details => AppPage.play,
                         AppPage.tabs =>> [
-                            AppPage.contact,
+                            out => AppPage.contact,
                             tab => AppPage.tabPage1 => AppPage.subTabPage1,
                             tab => AppPage.tabPage2 => AppPage.subTabPage2
                         ],
