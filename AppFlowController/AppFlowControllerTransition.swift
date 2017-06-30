@@ -32,9 +32,28 @@ public protocol AppFlowControllerForwardTransition: NSObjectProtocol {
     
     typealias TransitionBlock = (UINavigationController, UIViewController) -> Void
     
+    /**
+        That method defines if previous view controller should load view controller from that transition. Default = false.
+    */
     func shouldPreloadViewController() -> Bool
-    func preloadViewController(_ viewController:UIViewController, from parentViewController:UIViewController)
+    
+    /**
+        That method invokes only if shouldPreloadViewController() returns true. It invokes right before presenting previous view controller.
+     
+        - Parameter viewController:         Current view controller to present.
+        - Parameter parentViewController:   Previous view controller. For exmaple if previous view controller is kind of UITabBarController you can use it to assign viewControllers.
+    */
+    func preloadViewController(_ viewController:UIViewController, from previousViewController:UIViewController)
+    
+    /**
+        That method invokes right before presenting view controller.
+    */
     func configureViewController(from viewController:UIViewController) -> UIViewController
+    
+    
+    /**
+        That method returns block which gonna be used to show view controller in it's navigation controller.
+    */
     func forwardTransitionBlock(animated:Bool, completionBlock:@escaping ()->()) -> TransitionBlock
     
 }
@@ -43,6 +62,9 @@ public protocol AppFlowControllerBackwardTransition: NSObjectProtocol {
     
     typealias TransitionBlock = (UIViewController) -> Void
     
+    /**
+        That method returns block which gonna be used to dismiss view controller.
+     */
     func backwardTransitionBlock(animated:Bool, completionBlock:@escaping()->()) -> TransitionBlock
     
 }
@@ -59,7 +81,7 @@ extension AppFlowControllerTransition {
         return false
     }
     
-    public func preloadViewController(_ viewController:UIViewController, from parentViewController:UIViewController)  {}
+    public func preloadViewController(_ viewController:UIViewController, from previousViewController:UIViewController)  {}
 
 }
 
@@ -129,8 +151,8 @@ open class TabBarAppFlowControllerTransition<T:UINavigationController>: NSObject
         return true
     }
     
-    open func preloadViewController(_ viewController:UIViewController, from parentViewController:UIViewController)  {
-        if let tabBarController = parentViewController as? UITabBarController {
+    open func preloadViewController(_ viewController:UIViewController, from previousViewController:UIViewController)  {
+        if let tabBarController = previousViewController as? UITabBarController {
             var currentViewControllers = tabBarController.viewControllers ?? []
             currentViewControllers.append(viewController)
             tabBarController.viewControllers = currentViewControllers
