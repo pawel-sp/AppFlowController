@@ -35,7 +35,7 @@ class ContainerTransition: NSObject, AppFlowControllerTransition {
     public func preloadViewController(_ viewController:UIViewController, from parentViewController:UIViewController)  {
         if let containerViewController = parentViewController as? ContainerViewControllerInterface {
             containerViewController.addChildViewController(viewController)
-            (containerViewController as? UIViewController)?.view.layoutSubviews()
+            (containerViewController as? UIViewController)?.view.layoutSubviews() // it's necessary - without it view doesnt exists yet
             containerViewController.containerView.addSubview(viewController.view)
         }
     }
