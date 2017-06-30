@@ -48,6 +48,12 @@ open class AppFlowController {
     
     // MARK: - Setup
     
+    /**
+        You need to use that method before you gonna start use AppFlowController to present pages. 
+     
+        - Parameter window:                     Current app's window.
+        - Parameter rootNavigationController:   AppFlowController requires that root navigation controller is kind of UINavigationController.
+    */
     public func prepare(for window:UIWindow, rootNavigationController:UINavigationController = UINavigationController()) {
         self.rootNavigationController = rootNavigationController
         window.rootViewController = rootNavigationController
@@ -85,6 +91,14 @@ open class AppFlowController {
         }
     }
     
+    /**
+        Before presenting any page you need to register it using whole path.
+     
+        - Parameter path:   Sequences of pages which represent all possible paths inside the app. The best way to register pages is to use => and =>> operators which assign transitions directly to pages.
+        - Throws:           
+            AppFlowControllerError.missingPathStepTransition if forward or backward transition of any page is nil
+            AppFlowControllerError.pathAlreadyRegistered     if that page was registered before (all pages need to have unique name). If you want to use the same page few times in different places it's necessary to set supportVariants property to true. 
+     */
     public func register(path:[[AppFlowControllerPage]]) throws {
         for subpath in path {
             try register(path: subpath)
@@ -93,6 +107,23 @@ open class AppFlowController {
     
     // MARK: - Navigation
 
+    /**
+        Display view controller configured inside the page.
+     
+        - Parameter page:                   Page to present.
+        - Parameter variant:                If page supports variants you need to pass the correct variant (previous page). Default = nil.
+        - Parameter parameters:             For every page you can set single string value as it's parameter. It works also for pages with variants. Default = nil.
+        - Parameter animated:               Determines if presenting page should be animated or not. Default = true.
+        - Parameter skipDismissTransitions: Use that property to skip all dismiss transitions. Use that with conscience since it can break whole view's stack (it's helpfull for example when app has side menu).
+        - Parameter skipPages:              Pages to skip.
+     
+        - Throws:
+            AppFlowControllerError.missingConfiguration       if prepare(UIWindow, UINavigationController) wasn't invoked before.
+            AppFlowControllerError.showingSkippedPage         if page was previously skipped (for example when you're trying go back to page which before was skipped and it's not present inside the navigation controller).
+            AppFlowControllerError.missingVariant             if page's property supportVariants == true you need to pass variant property, otherwise it's not possible to set which page should be presenter.
+            AppFlowControllerError.variantNotSupported        if page's property supportVariants == false you cannot pass variant property, because there is only one variant of that page.
+            AppFlowControllerError.unregisteredPathIdentifier page need to be registered before showing it.
+    */
     open func show(
         page:AppFlowControllerPage,
         variant:AppFlowControllerPage? = nil,
@@ -139,6 +170,11 @@ open class AppFlowController {
         }
     }
     
+    /**
+        Displays previous page.
+     
+        - Parameter animated: Determines if presenting page should be animated or not. Default = true.
+    */
     public func goBack(animated:Bool = true) {
         guard let visible        = visibleStep() else { return }
         guard let page           = visible.firstParentPage(where: { tracker.viewController(for: $0.identifier) != nil }) else { return }
@@ -147,6 +183,12 @@ open class AppFlowController {
         visible.current.backwardTransition?.backwardTransitionBlock(animated: animated){}(viewController)
     }
     
+    /**
+        Pops navigation controller to specified page. It always current view controller's navigation controller. If page isn't not present in current navigation controller nothing would happen.
+     
+        - Parameter page:       Page to pop.
+        - Parameter animated:   Determines if transition should be animated or not.
+    */
     public func pop(to page:AppFlowControllerPage, animated:Bool = true) throws {
         
         guard let rootNavigationController = rootNavigationController else {
@@ -164,6 +206,15 @@ open class AppFlowController {
         rootNavigationController.visible.navigationController?.popToViewController(targetViewController, animated: animated)
     }
     
+    /**
+        If you presented view controller without AppFlowController you need to update current page. Use that method inside the viewDidLoad method of presented view controller to make sure that whole step tree still works.
+     
+        - Parameter viewController: Presented view controller.
+        - Parameter name:           Name of page associated with that view controller. That page need to be registered.
+     
+        - Throws:
+            AppFlowControllerError.unregisteredPathIdentifier if page wasn't registered before.
+    */
     public func updateCurrentPage(with viewController:UIViewController, for name:String) throws {
         if let _ = rootPathStep?.search(identifier: name) {
             self.tracker.register(viewController: viewController, for: name)
@@ -172,6 +223,17 @@ open class AppFlowController {
         }
     }
     
+    /**
+        Returns string representation of whole path to specified page, for example home/start/login.
+     
+        - Parameter page:       Page to receive all path steps.
+        - Parameter variant:    Variant of that page (previous page). Use it only if page supports variants.
+     
+        - Throws:
+             AppFlowControllerError.missingVariant             if page's property supportVariants == true you need to pass variant property, otherwise it's not possible to set which page should be presenter.
+             AppFlowControllerError.variantNotSupported        if page's property supportVariants == false you cannot pass variant property, because there is only one variant of that page.
+             AppFlowControllerError.unregisteredPathIdentifier page need to be registered before showing it.
+    */
     open func pathComponents(for page:AppFlowControllerPage, variant:AppFlowControllerPage? = nil) throws -> String {
         let foundStep   = try pathStep(from: page, variant: variant)
         let pages       = rootPathStep?.allParentPages(from: foundStep) ?? []
@@ -179,6 +241,9 @@ open class AppFlowController {
         return pageStrings.joined(separator: "/")
     }
     
+    /**
+        Returns string representation of whole path to current page, for example home/start/login.
+    */
     open func currentPathComponents() -> String? {
         if let visibleStep = visibleStep() {
             let items       = rootPathStep?.allParentPages(from: visibleStep) ?? []
@@ -189,10 +254,16 @@ open class AppFlowController {
         }
     }
     
+    /**
+        Returns currenlty visible page.
+    */
     open func currentPage() -> AppFlowControllerPage? {
         return visibleStep()?.current
     }
     
+    /**
+        Returns parameter for currently visible page. It's nil if page was presented without any parametes.
+    */
     open func currentPageParameter() -> String? {
         if let currentPageID = currentPage()?.identifier {
             return tracker.parameter(for: currentPageID)
@@ -201,11 +272,25 @@ open class AppFlowController {
         }
     }
     
+    /**
+        Returns parameter for specified page. It's nil if page was presented without any parametes.
+     
+        - Parameter page:     Page to retrieve parameter.
+        - Parameter variant:  Variant of that page (previous page). Use it only if page supports variants.
+     
+        - Throws:
+             AppFlowControllerError.missingVariant             if page's property supportVariants == true you need to pass variant property, otherwise it's not possible to set which page should be presenter.
+             AppFlowControllerError.variantNotSupported        if page's property supportVariants == false you cannot pass variant property, because there is only one variant of that page.
+             AppFlowControllerError.unregisteredPathIdentifier page need to be registered before showing it.
+    */
     open func parameter(for page:AppFlowControllerPage, variant:AppFlowControllerPage? = nil) throws -> String? {
         let step = try pathStep(from: page, variant: variant)
         return tracker.parameter(for: step.current.identifier)
     }
     
+    /**
+        Reset root navigation controller and view's tracker. It removes all view controllers including those presented modally.
+    */
     open func reset(completionBlock:(()->())? = nil) {
         rootNavigationController?.dismissAllPresentedViewControllers() {
             self.rootNavigationController?.viewControllers.removeAll()

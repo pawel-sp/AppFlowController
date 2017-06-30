@@ -14,6 +14,7 @@ class BaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let skip = [
+            StartViewController.self,
             PlayViewController.self,
             ContactViewController.self,
             ContainerViewController.self,
@@ -23,6 +24,13 @@ class BaseViewController: UIViewController {
         
         if !skip.contains(where: { self.isKind(of: $0) }) {
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(BaseViewController.showPlayPage))
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if let path = AppFlowController.shared.currentPathComponents() {
+            print(path)
         }
     }
     

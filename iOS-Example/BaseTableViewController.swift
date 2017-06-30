@@ -7,9 +7,17 @@
 //
 
 import UIKit
+import AppFlowController
 
 class BaseTableViewController: UITableViewController {
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if let path = AppFlowController.shared.currentPathComponents() {
+            print(path)
+        }
+    }
+    
     deinit {
         print("\(type(of:self)) deallocated")
     }
