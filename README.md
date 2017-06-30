@@ -143,7 +143,7 @@ try! AppFlowController.shared.register(path:
 )
 ```
 
-TabBarAppFlowControllerTransition has methods responsible for preloading view controllers before UITabBarController would be presented. Look at at [iOS-Example project](../iOS-Example.xcodeproj) project to check how it works.
+TabBarAppFlowControllerTransition has methods responsible for preloading view controllers before UITabBarController would be presented. Look at at [iOS-Example project](.../tree/master/iOS-Example.xcodeproj) project to check how it works.
 
 ## Child view controllers
 
@@ -167,10 +167,10 @@ class RootNavigationController: UINavigationController {
 AppFlowController.shared.prepare(for:window!, rootNavigationController:RootNavigationController())
 ```
 
-Now you need to create custom transition class which is going to attach correct child view controller in the right moment (quite similar to tab bar transition). Look at ```ContainerTransition``` class inside the [iOS-Example project](../iOS-Example.xcodeproj) project to check how it works.
+Now you need to create custom transition class which is going to attach correct child view controller in the right moment (quite similar to tab bar transition). Look at ```ContainerTransition``` class inside the [iOS-Example project](.../tree/master/iOS-Example.xcodeproj) project to check how it works.
 
 ## Example
-You can run [iOS-Example project](../iOS-Example.xcodeproj) to check all mentioned features and more.
+You can run [iOS-Example project](.../tree/master/iOS-Example.xcodeproj) to check all mentioned features and more.
 
 ## License
 
