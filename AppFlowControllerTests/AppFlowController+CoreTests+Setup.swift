@@ -15,9 +15,9 @@ class AppFlowController_CoreTests: XCTestCase {
     
     class NameViewController: UIViewController {
         
-        let name:String
+        let name: String
         
-        init(name:String) {
+        init(name: String) {
             self.name = name
             super.init(nibName: nil, bundle: nil)
         }
@@ -28,28 +28,27 @@ class AppFlowController_CoreTests: XCTestCase {
         
     }
     
-    func newPage(_ name:String = "page", supportVariants:Bool = false) -> AppFlowControllerPage {
-        return AppFlowControllerPage(
+    func newPage(_ name: String = "page", supportVariants: Bool = false) -> FlowPathComponent {
+        return FlowPathComponent(
             name: name,
             supportVariants: supportVariants,
-            viewControllerBlock: { NameViewController(name: name) },
+            viewControllerInit: { NameViewController(name: name) },
             viewControllerType: NameViewController.self
         )
     }
     
-    // sometimes fake navigation controller is necessary to check vc's stack
-    func prepareFlowController(fakeNC:Bool = false) {
+    func prepareFlowController() {
         let window = UIWindow()
-        let navigationController = fakeNC ? FakeNavigationController() : UINavigationController()
+        let navigationController = FakeNavigationController()
         flowController.prepare(for: window, rootNavigationController: navigationController)
     }
     
     // MARK: - Properties
     
-    var flowController:AppFlowController!
+    var flowController: AppFlowController!
     
-    var currentVCNames:[String] {
-        return (flowController.rootNavigationController?.viewControllers as? [NameViewController])?.map({ $0.name }) ?? []
+    var currentVCNames: [String] {
+        return (flowController.rootNavigationController?.viewControllers as? [NameViewController])?.map{ $0.name } ?? []
     }
     
     // MARK: - Setup
@@ -77,8 +76,8 @@ class AppFlowController_CoreTests: XCTestCase {
     func testRegister_path() {
         let page = newPage()
         do {
-            try flowController.register(path: page)
-            XCTAssertEqual(flowController.rootPathStep, PathStep(page: page))
+            try flowController.register(pathComponent: page)
+            XCTAssertEqual(flowController.rootPathStep, PathStep(pathComponent: page))
         } catch _ {
             XCTFail()
         }
@@ -87,9 +86,9 @@ class AppFlowController_CoreTests: XCTestCase {
     func testRegister_arrayOfPaths() {
         let pages = newPage("1") => newPage("2")
         do {
-            try flowController.register(path: pages)
-            let expectedRoot = PathStep(page: pages[0])
-            expectedRoot.add(page: pages[1])
+            try flowController.register(pathComponents: pages)
+            let expectedRoot = PathStep(pathComponent: pages[0])
+            expectedRoot.add(pathComponent: pages[1])
             XCTAssertEqual(flowController.rootPathStep, expectedRoot)
         } catch _ {
             XCTFail()
@@ -102,10 +101,10 @@ class AppFlowController_CoreTests: XCTestCase {
             newPage("3")
         ]
         do {
-            try flowController.register(path: pages)
-            let expectedRoot = PathStep(page: pages[0][0])
-            expectedRoot.add(page: pages[0][1])
-            expectedRoot.add(page: pages[1][1])
+            try flowController.register(pathComponents: pages)
+            let expectedRoot = PathStep(pathComponent: pages[0][0])
+            expectedRoot.add(pathComponent: pages[0][1])
+            expectedRoot.add(pathComponent: pages[1][1])
             XCTAssertEqual(flowController.rootPathStep, expectedRoot)
         } catch _ {
             XCTFail()
@@ -115,12 +114,12 @@ class AppFlowController_CoreTests: XCTestCase {
     func testRegister_stepAlreadyRegistered() {
         let page = newPage("1")
         do {
-            try flowController.register(path: page)
-            try flowController.register(path: page)
+            try flowController.register(pathComponent: page)
+            try flowController.register(pathComponent: page)
             XCTFail()
         } catch let error {
-            if let afcError = error as? AppFlowControllerError {
-                XCTAssertEqual(afcError, AppFlowControllerError.pathAlreadyRegistered(identifier: "1"))
+            if let afcError = error as? AFCError {
+                XCTAssertEqual(afcError, AFCError.pathAlreadyRegistered(identifier: "1"))
             } else {
                 XCTFail()
             }
@@ -132,17 +131,17 @@ class AppFlowController_CoreTests: XCTestCase {
         let newPage2 = newPage("2")
         var newPage3 = newPage("3")
         newPage3.forwardTransition  = nil
-        newPage3.backwardTransition = PushPopAppFlowControllerTransition.default
+        newPage3.backwardTransition = PushPopFlowTransition.default
         do {
-            try flowController.register(path: [
+            try flowController.register(pathComponents: [
                 newPage1,
                 newPage2,
                 newPage3
             ])
             XCTFail()
         } catch let error {
-            if let afcError = error as? AppFlowControllerError {
-                XCTAssertEqual(afcError, AppFlowControllerError.missingPathStepTransition(identifier: "2"))
+            if let afcError = error as? AFCError {
+                XCTAssertEqual(afcError, AFCError.missingPathStepTransition(identifier: "2"))
             } else {
                 XCTFail()
             }
@@ -153,18 +152,18 @@ class AppFlowController_CoreTests: XCTestCase {
         let newPage1 = newPage("1")
         let newPage2 = newPage("2")
         var newPage3 = newPage("3")
-        newPage3.forwardTransition  = PushPopAppFlowControllerTransition.default
+        newPage3.forwardTransition = PushPopFlowTransition.default
         newPage3.backwardTransition = nil
         do {
-            try flowController.register(path: [
+            try flowController.register(pathComponents: [
                 newPage1,
                 newPage2,
                 newPage3
                 ])
             XCTFail()
         } catch let error {
-            if let afcError = error as? AppFlowControllerError {
-                XCTAssertEqual(afcError, AppFlowControllerError.missingPathStepTransition(identifier: "2"))
+            if let afcError = error as? AFCError {
+                XCTAssertEqual(afcError, AFCError.missingPathStepTransition(identifier: "2"))
             } else {
                 XCTFail()
             }
@@ -175,18 +174,18 @@ class AppFlowController_CoreTests: XCTestCase {
         let newPage1 = newPage("1")
         var newPage2 = newPage("2")
         var newPage3 = newPage("3")
-        newPage2.forwardTransition  = PushPopAppFlowControllerTransition.default
-        newPage2.backwardTransition = PushPopAppFlowControllerTransition.default
-        newPage3.forwardTransition  = PushPopAppFlowControllerTransition.default
-        newPage3.backwardTransition = PushPopAppFlowControllerTransition.default
+        newPage2.forwardTransition  = PushPopFlowTransition.default
+        newPage2.backwardTransition = PushPopFlowTransition.default
+        newPage3.forwardTransition  = PushPopFlowTransition.default
+        newPage3.backwardTransition = PushPopFlowTransition.default
         do {
-            try flowController.register(path: [
+            try flowController.register(pathComponents: [
                 newPage1,
                 newPage2,
                 newPage3
             ])
-            let expectedRoot = PathStep(page: newPage1)
-            expectedRoot.add(page: newPage2).add(page: newPage3)
+            let expectedRoot = PathStep(pathComponent: newPage1)
+            expectedRoot.add(pathComponent: newPage2).add(pathComponent: newPage3)
             XCTAssertEqual(flowController.rootPathStep, expectedRoot)
         } catch _ {
             XCTFail()
@@ -203,26 +202,26 @@ class AppFlowController_CoreTests: XCTestCase {
             page3 => page1
         ]
         do {
-            try flowController.register(path: pages)
-            let expectedRoot = PathStep(page: rootPage)
+            try flowController.register(pathComponents: pages)
+            let expectedRoot = PathStep(pathComponent: rootPage)
             var repeatedPage1_1 = page1
             var repeatedPage1_2 = page1
             
             repeatedPage1_1.variantName = "2"
             repeatedPage1_2.variantName = "3"
             
-            repeatedPage1_1.forwardTransition  = PushPopAppFlowControllerTransition.default
-            repeatedPage1_1.backwardTransition = PushPopAppFlowControllerTransition.default
-            repeatedPage1_2.forwardTransition  = PushPopAppFlowControllerTransition.default
-            repeatedPage1_2.backwardTransition = PushPopAppFlowControllerTransition.default
+            repeatedPage1_1.forwardTransition  = PushPopFlowTransition.default
+            repeatedPage1_1.backwardTransition = PushPopFlowTransition.default
+            repeatedPage1_2.forwardTransition  = PushPopFlowTransition.default
+            repeatedPage1_2.backwardTransition = PushPopFlowTransition.default
             
-            page2.forwardTransition  = PushPopAppFlowControllerTransition.default
-            page2.backwardTransition = PushPopAppFlowControllerTransition.default
-            page3.forwardTransition  = PushPopAppFlowControllerTransition.default
-            page3.backwardTransition = PushPopAppFlowControllerTransition.default
+            page2.forwardTransition  = PushPopFlowTransition.default
+            page2.backwardTransition = PushPopFlowTransition.default
+            page3.forwardTransition  = PushPopFlowTransition.default
+            page3.backwardTransition = PushPopFlowTransition.default
             
-            expectedRoot.add(page: page2).add(page: repeatedPage1_1)
-            expectedRoot.add(page: page3).add(page: repeatedPage1_2)
+            expectedRoot.add(pathComponent: page2).add(pathComponent: repeatedPage1_1)
+            expectedRoot.add(pathComponent: page3).add(pathComponent: repeatedPage1_2)
             
             XCTAssertEqual(flowController.rootPathStep, expectedRoot)
         } catch _ {

@@ -31,21 +31,21 @@ class AppFlowController_TransitionTests: XCTestCase {
         viewController  = UIViewController()
     }
     
-    // MARK: - PushPopAppFlowControllerTransition
+    // MARK: - PushPopFlowTransition
     
     func testPushAndPopTransition_defaultAlwaysReturnsTheSameObject() {
-        let default1 = PushPopAppFlowControllerTransition.default
-        let default2 = PushPopAppFlowControllerTransition.default
-        XCTAssertEqual(default1, default2)
+        let default1 = PushPopFlowTransition.default
+        let default2 = PushPopFlowTransition.default
+        XCTAssertTrue(default1 === default2)
     }
     
     func testPushAndPopTransition_forwardTransitionUsesPush_withoutAnimation() {
-        let transition = PushPopAppFlowControllerTransition.default
+        let transition = PushPopFlowTransition.default
         let exp        = expectation(description: "Block need to be invoked after pushing view controller")
-        let completionBlock = {
+        let completion = {
             exp.fulfill()
         }
-        let transitionBlock = transition.forwardTransitionBlock(animated: false, completionBlock: completionBlock)
+        let transitionBlock = transition.performForwardTransition(animated: false, completion: completion)
         transitionBlock(mockNavigationController, viewController)
         
         waitForExpectations(timeout: 0.1) { error in
@@ -58,12 +58,12 @@ class AppFlowController_TransitionTests: XCTestCase {
     }
     
     func testPushAndPopTransition_forwardTransitionUsesPush_animated() {
-        let transition = PushPopAppFlowControllerTransition.default
+        let transition = PushPopFlowTransition.default
         let exp        = expectation(description: "Block need to be invoked after pushing view controller")
-        let completionBlock = {
+        let completion = {
             exp.fulfill()
         }
-        let transitionBlock = transition.forwardTransitionBlock(animated: true, completionBlock: completionBlock)
+        let transitionBlock = transition.performForwardTransition(animated: true, completion: completion)
         transitionBlock(mockNavigationController, viewController)
         
         waitForExpectations(timeout: 0.1) { error in
@@ -76,12 +76,12 @@ class AppFlowController_TransitionTests: XCTestCase {
     }
     
     func testPushAndPopTransition_backwardTransitionUsesPop_withoutAnimation() {
-        let transition = PushPopAppFlowControllerTransition.default
+        let transition = PushPopFlowTransition.default
         let exp        = expectation(description: "Block need to be invoked after poping view controller")
-        let completionBlock = {
+        let completion = {
             exp.fulfill()
         }
-        let transitionBlock = transition.backwardTransitionBlock(animated: false, completionBlock: completionBlock)
+        let transitionBlock = transition.performBackwardTransition(animated: false, completion: completion)
         
         mockPopNavigationController.viewControllers = [viewController]
         
@@ -96,12 +96,12 @@ class AppFlowController_TransitionTests: XCTestCase {
     }
     
     func testPushAndPopTransition_backwardTransitionUsesPop_animated() {
-        let transition = PushPopAppFlowControllerTransition.default
+        let transition = PushPopFlowTransition.default
         let exp        = expectation(description: "Block need to be invoked after poping view controller")
-        let completionBlock = {
+        let completion = {
             exp.fulfill()
         }
-        let transitionBlock = transition.backwardTransitionBlock(animated: true, completionBlock: completionBlock)
+        let transitionBlock = transition.performBackwardTransition(animated: true, completion: completion)
         
         mockPopNavigationController.viewControllers = [viewController]
         
@@ -115,15 +115,15 @@ class AppFlowController_TransitionTests: XCTestCase {
         XCTAssertTrue(mockPopNavigationController.popViewControllerParams ?? false)
     }
     
-    // MARK: - ModalAppFlowControllerTransition
+    // MARK: - ModalFlowTransition
     
     func testModalTransition_forwardTransitionPresentsViewController_navigationControllerIsNil_withoutAnimation() {
-        let transition = ModalAppFlowControllerTransition()
+        let transition = ModalFlowTransition()
         let exp        = expectation(description: "Block need to be invoked after poping view controller")
-        let completionBlock = {
+        let completion = {
             exp.fulfill()
         }
-        let transitionBlock = transition.forwardTransitionBlock(animated: false, completionBlock: completionBlock)
+        let transitionBlock = transition.performForwardTransition(animated: false, completion: completion)
         transitionBlock(mockNavigationController, viewController)
         
         waitForExpectations(timeout: 0.1) { error in
@@ -136,12 +136,12 @@ class AppFlowController_TransitionTests: XCTestCase {
     }
     
     func testModalTransition_forwardTransitionPresentsViewController_navigationControllerIsNil_animated() {
-        let transition = ModalAppFlowControllerTransition()
+        let transition = ModalFlowTransition()
         let exp        = expectation(description: "Block need to be invoked after poping view controller")
-        let completionBlock = {
+        let completion = {
             exp.fulfill()
         }
-        let transitionBlock = transition.forwardTransitionBlock(animated: true, completionBlock: completionBlock)
+        let transitionBlock = transition.performForwardTransition(animated: true, completion: completion)
         transitionBlock(mockNavigationController, viewController)
         
         waitForExpectations(timeout: 0.1) { error in
@@ -154,12 +154,12 @@ class AppFlowController_TransitionTests: XCTestCase {
     }
     
     func testModalTransition_forwardTransitionPresentsViewController_navigationControllerIsNotNil_withoutAnimation() {
-        let transition = ModalAppFlowControllerTransition()
+        let transition = ModalFlowTransition()
         let exp        = expectation(description: "Block need to be invoked after poping view controller")
-        let completionBlock = {
+        let completion = {
             exp.fulfill()
         }
-        let transitionBlock = transition.forwardTransitionBlock(animated: false, completionBlock: completionBlock)
+        let transitionBlock = transition.performForwardTransition(animated: false, completion: completion)
         let _ = UINavigationController(rootViewController: viewController)
         transitionBlock(mockNavigationController, viewController)
         
@@ -175,12 +175,12 @@ class AppFlowController_TransitionTests: XCTestCase {
     }
     
     func testModalTransition_forwardTransitionPresentsViewController_navigationControllerIsNotNil_animated() {
-        let transition = ModalAppFlowControllerTransition()
+        let transition = ModalFlowTransition()
         let exp        = expectation(description: "Block need to be invoked after poping view controller")
-        let completionBlock = {
+        let completion = {
             exp.fulfill()
         }
-        let transitionBlock = transition.forwardTransitionBlock(animated: true, completionBlock: completionBlock)
+        let transitionBlock = transition.performForwardTransition(animated: true, completion: completion)
         let _ = UINavigationController(rootViewController: viewController)
         transitionBlock(mockNavigationController, viewController)
         
@@ -196,12 +196,12 @@ class AppFlowController_TransitionTests: XCTestCase {
     }
     
     func testModalTransition_backwardTransitionDismissViewController_withoutAnimation() {
-        let transition = ModalAppFlowControllerTransition()
+        let transition = ModalFlowTransition()
         let exp        = expectation(description: "Block need to be invoked after poping view controller")
-        let completionBlock = {
+        let completion = {
             exp.fulfill()
         }
-        let transitionBlock = transition.backwardTransitionBlock(animated: false, completionBlock: completionBlock)
+        let transitionBlock = transition.performBackwardTransition(animated: false, completion: completion)
         let viewController  = MockViewController()
         transitionBlock(viewController)
         
@@ -214,12 +214,12 @@ class AppFlowController_TransitionTests: XCTestCase {
     }
     
     func testModalTransition_backwardTransitionDismissViewController_animated() {
-        let transition = ModalAppFlowControllerTransition()
+        let transition = ModalFlowTransition()
         let exp        = expectation(description: "Block need to be invoked after poping view controller")
-        let completionBlock = {
+        let completion = {
             exp.fulfill()
         }
-        let transitionBlock = transition.backwardTransitionBlock(animated: true, completionBlock: completionBlock)
+        let transitionBlock = transition.performBackwardTransition(animated: true, completion: completion)
         let viewController  = MockViewController()
         transitionBlock(viewController)
         
@@ -231,29 +231,29 @@ class AppFlowController_TransitionTests: XCTestCase {
         XCTAssertTrue(viewController.dismissParams ?? false)
     }
     
-    // MARK: - DefaultModalAppFlowControllerTransition
+    // MARK: - DefaultModalFlowTransition
     
     func testDefaultModalTransition_defaultAlwaysReturnsTheSameObject() {
-        let default1 = DefaultModalAppFlowControllerTransition.default
-        let default2 = DefaultModalAppFlowControllerTransition.default
-        XCTAssertEqual(default1, default2)
+        let default1 = DefaultModalFlowTransition.default
+        let default2 = DefaultModalFlowTransition.default
+        XCTAssertTrue(default1 === default2)
     }
     
     // MARK: - TabBarAppFlowControllerTransition
     
     func testTabBarTransition_defaultAlwaysReturnsTheSameObject() {
-        let default1 = DefaultTabBarAppFlowControllerTransition.default
-        let default2 = DefaultTabBarAppFlowControllerTransition.default
-        XCTAssertEqual(default1, default2)
+        let default1 = DefaultTabBarFlowTransition.default
+        let default2 = DefaultTabBarFlowTransition.default
+        XCTAssertTrue(default1 === default2)
     }
     
     func testTabBarTransition_forwardTransitionChangesSelectedIndexForExistingViewController() {
-        let transition = DefaultTabBarAppFlowControllerTransition.default
+        let transition = DefaultTabBarFlowTransition.default
         let exp        = expectation(description: "Block need to be invoked after displaying view controller")
-        let completionBlock = {
+        let completion = {
             exp.fulfill()
         }
-        let transitionBlock      = transition.forwardTransitionBlock(animated: true, completionBlock: completionBlock)
+        let transitionBlock      = transition.performForwardTransition(animated: true, completion: completion)
         let tab1ViewController   = UIViewController()
         let tab2ViewController   = CustomViewController()
         let tabBarController     = UITabBarController()
@@ -275,12 +275,12 @@ class AppFlowController_TransitionTests: XCTestCase {
     }
     
     func testTabBarTransition_forwardTransitionWontChangeIndexIfViewControllerDoesntExists() {
-        let transition = DefaultTabBarAppFlowControllerTransition.default
+        let transition = DefaultTabBarFlowTransition.default
         let exp        = expectation(description: "Block need to be invoked after displaying view controller")
-        let completionBlock = {
+        let completion = {
             exp.fulfill()
         }
-        let transitionBlock      = transition.forwardTransitionBlock(animated: true, completionBlock: completionBlock)
+        let transitionBlock      = transition.performForwardTransition(animated: true, completion: completion)
         let tab1ViewController   = UIViewController()
         let tab2ViewController   = CustomViewController()
         let wrongViewController  = AnotherViewController()
@@ -303,12 +303,12 @@ class AppFlowController_TransitionTests: XCTestCase {
     }
     
     func testTabBarTransition_forwardTransitionWontChangeIndexIfTopViewControllerIsNotTabBarController() {
-        let transition = DefaultTabBarAppFlowControllerTransition.default
+        let transition = DefaultTabBarFlowTransition.default
         let exp        = expectation(description: "Block need to be invoked after displaying view controller")
-        let completionBlock = {
+        let completion = {
             exp.fulfill()
         }
-        let transitionBlock      = transition.forwardTransitionBlock(animated: true, completionBlock: completionBlock)
+        let transitionBlock      = transition.performForwardTransition(animated: true, completion: completion)
         let navigationController = StubNavigationController()
         let tab1ViewController   = UIViewController()
         let tab2ViewController   = CustomViewController()
@@ -332,12 +332,12 @@ class AppFlowController_TransitionTests: XCTestCase {
     }
     
     func testTabBarTransition_backwardTransitionInvokesCompletion() {
-        let transition = DefaultTabBarAppFlowControllerTransition.default
+        let transition = DefaultTabBarFlowTransition.default
         let exp        = expectation(description: "Block need to be invoked after displaying view controller")
-        let completionBlock = {
+        let completion = {
             exp.fulfill()
         }
-        let transitionBlock = transition.backwardTransitionBlock(animated: true, completionBlock: completionBlock)
+        let transitionBlock = transition.performBackwardTransition(animated: true, completion: completion)
         transitionBlock(viewController)
         
         waitForExpectations(timeout: 0.1) { error in

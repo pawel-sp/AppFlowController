@@ -13,7 +13,7 @@ class AppFlowControllerTests: XCTestCase {
 
     // MARK: - Properties
     
-    var navigationController:MockNavigationController!
+    var navigationController: MockNavigationController!
     
     // MARK: - Setup
     

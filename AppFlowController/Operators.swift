@@ -1,5 +1,5 @@
 //
-//  AppFlowControllerOperators.swift
+//  Operators.swift
 //  AppFlowController
 //
 //  Created by Paweł Sporysz on 29.09.2016.
@@ -25,41 +25,41 @@
 //  SOFTWARE.
 //
 
-infix operator =>:AdditionPrecedence
-infix operator =>>:AdditionPrecedence
+infix operator =>: AdditionPrecedence
+infix operator =>>: AdditionPrecedence
 
 // MARK: - =>
 
-public func => (lhs:AppFlowControllerPage, rhs:AppFlowControllerTransition) -> (page:AppFlowControllerPage, transition:AppFlowControllerTransition) {
+public func => (lhs: FlowPathComponent, rhs: FlowTransition) -> (pathComponent: FlowPathComponent, transition: FlowTransition) {
     return (lhs, rhs)
 }
 
-public func => (lhs:AppFlowControllerTransition, rhs:AppFlowControllerPage) -> AppFlowControllerPage {
+public func => (lhs: FlowTransition, rhs: FlowPathComponent) -> FlowPathComponent {
     var rhs = rhs
-    rhs.forwardTransition  = lhs
+    rhs.forwardTransition = lhs
     rhs.backwardTransition = lhs
     return rhs
 }
 
-public func => (lhs:AppFlowControllerPage, rhs:AppFlowControllerPage) -> [AppFlowControllerPage] {
+public func => (lhs: FlowPathComponent, rhs: FlowPathComponent) -> [FlowPathComponent] {
     return [lhs] => rhs
 }
 
-public func => (lhs:[AppFlowControllerPage], rhs:AppFlowControllerPage) -> [AppFlowControllerPage] {
+public func => (lhs: [FlowPathComponent], rhs: FlowPathComponent) -> [FlowPathComponent] {
     return lhs => [rhs]
 }
 
-public func => (lhs:AppFlowControllerPage, rhs:[AppFlowControllerPage]) -> [AppFlowControllerPage] {
+public func => (lhs: FlowPathComponent, rhs: [FlowPathComponent]) -> [FlowPathComponent] {
     return [lhs] => rhs
 }
 
-public func => (lhs:[AppFlowControllerPage], rhs:[AppFlowControllerPage]) -> [AppFlowControllerPage] {
+public func => (lhs: [FlowPathComponent], rhs: [FlowPathComponent]) -> [FlowPathComponent] {
     if var first = rhs.first {
         if first.forwardTransition == nil {
-            first.forwardTransition = PushPopAppFlowControllerTransition.default
+            first.forwardTransition = PushPopFlowTransition.default
         }
         if first.backwardTransition == nil {
-            first.backwardTransition = PushPopAppFlowControllerTransition.default
+            first.backwardTransition = PushPopFlowTransition.default
         }
         return lhs + ([first] + rhs.dropFirst())
     } else {
@@ -67,15 +67,15 @@ public func => (lhs:[AppFlowControllerPage], rhs:[AppFlowControllerPage]) -> [Ap
     }
 }
 
-public func => (lhs:(page:AppFlowControllerPage, transition:AppFlowControllerTransition), rhs:AppFlowControllerPage) -> [AppFlowControllerPage] {
-    return ([lhs.page], lhs.transition) => rhs
+public func => (lhs: (pathComponent: FlowPathComponent, transition: FlowTransition), rhs: FlowPathComponent) -> [FlowPathComponent] {
+    return ([lhs.pathComponent], lhs.transition) => rhs
 }
 
-public func => (lhs:[AppFlowControllerPage], rhs:AppFlowControllerTransition) -> (pages:[AppFlowControllerPage], transition:AppFlowControllerTransition) {
+public func => (lhs: [FlowPathComponent], rhs: FlowTransition) -> (pathComponents: [FlowPathComponent], transition: FlowTransition) {
     return (lhs, rhs)
 }
 
-public func => (lhs:AppFlowControllerTransition, rhs:[AppFlowControllerPage]) -> [AppFlowControllerPage] {
+public func => (lhs: FlowTransition, rhs: [FlowPathComponent]) -> [FlowPathComponent] {
     if var first = rhs.first {
         first.forwardTransition = lhs
         first.backwardTransition = lhs
@@ -85,25 +85,25 @@ public func => (lhs:AppFlowControllerTransition, rhs:[AppFlowControllerPage]) ->
     }
 }
 
-public func => (lhs:(pages:[AppFlowControllerPage], transition:AppFlowControllerTransition), rhs:AppFlowControllerPage) -> [AppFlowControllerPage] {
+public func => (lhs: (pathComponents: [FlowPathComponent], transition: FlowTransition), rhs: FlowPathComponent) -> [FlowPathComponent] {
     var rhs = rhs
     rhs.backwardTransition = lhs.transition
     rhs.forwardTransition  = lhs.transition
-    return lhs.pages + [rhs]
+    return lhs.pathComponents + [rhs]
 }
 
 // MARK: - =>>
 
-public func =>> (lhs:AppFlowControllerPage, rhs:[Any]) -> [[AppFlowControllerPage]] {
+public func =>> (lhs: FlowPathComponent, rhs: [Any]) -> [[FlowPathComponent]] {
     return [lhs] =>> rhs
 }
 
-public func =>> (lhs:[AppFlowControllerPage], rhs:[Any]) -> [[AppFlowControllerPage]] {
-    var result:[[AppFlowControllerPage]] = []
+public func =>> (lhs: [FlowPathComponent], rhs: [Any]) -> [[FlowPathComponent]] {
+    var result: [[FlowPathComponent]] = []
     for element in rhs {
-        if let item = element as? AppFlowControllerPage {
+        if let item = element as? FlowPathComponent {
             result.append(lhs => item)
-        } else if let items = element as? [AppFlowControllerPage] {
+        } else if let items = element as? [FlowPathComponent] {
             result.append(lhs => items)
         } else if let anyItems = element as? [Any] {
             for every in lhs =>> anyItems {

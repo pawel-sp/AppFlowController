@@ -13,7 +13,7 @@ class PlayViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let parameter = AppFlowController.shared.currentPageParameter() {
+        if let parameter = AppFlowController.shared.currentPathParameter() {
             print(parameter)
         }
     }

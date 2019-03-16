@@ -16,7 +16,7 @@ class SubTabPage1ViewController: BaseViewController {
     }
     
     @IBAction func subTabPage2Action(_ sender: Any) {
-        try! AppFlowController.shared.show(page: AppPage.subTabPage2)
+        try! AppFlowController.shared.show(AppPathComponent.subTabPage2)
     }
 
 }

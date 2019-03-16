@@ -1,5 +1,5 @@
 //
-//  AppFlowControllerTracker.swift
+//  Tracker.swift
 //  AppFlowController
 //
 //  Created by Paweł Sporysz on 11.10.2016.
@@ -35,23 +35,23 @@ class Tracker {
         
         // MARK: - Properties
         
-        weak var viewController:UIViewController?
-        var parameter:String?
-        var skipped:Bool
+        weak var viewController: UIViewController?
+        var parameter: String?
+        var skipped: Bool
         
         // MARK: - Init
         
-        init(viewController:UIViewController?, parameter:String?, skipped:Bool = false) {
+        init(viewController: UIViewController?, parameter: String?, skipped: Bool = false) {
             self.viewController = viewController
-            self.parameter      = parameter
-            self.skipped        = skipped
+            self.parameter = parameter
+            self.skipped = skipped
         }
         
     }
     
     // MARK: - Properties
     
-    private var items:[String:Item] = [:]
+    private var items: [String: Item] = [:]
     
     // MARK: - Init
     
@@ -59,16 +59,16 @@ class Tracker {
     
     // MARK: - Utilities
     
-    func register(viewController:UIViewController?, for key:String, skipped:Bool = false) {
+    func register(viewController: UIViewController?, for key: String, skipped: Bool = false) {
         if let found = items[key] {
             found.viewController = viewController
-            found.skipped        = skipped
+            found.skipped = skipped
         } else {
             items[key] = Item(viewController: viewController, parameter: nil, skipped: skipped)
         }
     }
     
-    func register(parameter:String?, for key:String) {
+    func register(parameter: String?, for key: String) {
         if let found = items[key] {
             found.parameter = parameter
         } else {
@@ -76,32 +76,27 @@ class Tracker {
         }
     }
     
-    func viewController(for key:String) -> UIViewController? {
+    func viewController(for key: String) -> UIViewController? {
         return items[key]?.viewController
     }
     
-    func key(for viewController:UIViewController) -> String? {
-        let filtered = items.filter({ $0.value.viewController === viewController })
-        return filtered.first?.key
+    func key(for viewController: UIViewController) -> String? {
+        return items.first(where: { $0.value.viewController === viewController })?.key
     }
     
-    func parameter(for key:String) -> String? {
-        if let item = items[key] {
-            return item.viewController == nil ? nil : item.parameter
-        } else {
-            return nil
-        }
+    func parameter(for key: String) -> String? {
+        return items[key].map { $0.viewController == nil ? nil : $0.parameter } ?? nil
     }
     
-    func isItemSkipped(at key:String) -> Bool {
-        return items.filter({ $0.key == key }).first?.value.skipped ?? false 
+    func isItemSkipped(at key: String) -> Bool {
+        return items.first(where: { $0.key == key })?.value.skipped ?? false
     }
     
-    func disableSkip(for key:String) {
-        items.filter({ $0.key == key }).first?.value.skipped = false
+    func disableSkip(for key: String) {
+        items.first(where: { $0.key == key })?.value.skipped = false
     }
     
-    func disableSkip(for keys:[String]) {
+    func disableSkip(for keys: [String]) {
         for key in keys {
             disableSkip(for: key)
         }

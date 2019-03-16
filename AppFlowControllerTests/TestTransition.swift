@@ -8,16 +8,15 @@
 
 import AppFlowController
 
-class TestTransition: NSObject, AppFlowControllerTransition {
-    
-    func forwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> AppFlowControllerForwardTransition.TransitionBlock {
+class TestTransition: FlowTransition {
+    func performForwardTransition(animated: Bool, completion: @escaping ()->()) -> FlowTransition.ForwardTransitionAction {
         return { navigationController, viewController in
             navigationController.viewControllers.append(viewController)
-            completionBlock()
+            completion()
         }
     }
     
-    func backwardTransitionBlock(animated: Bool, completionBlock:@escaping()->()) -> AppFlowControllerBackwardTransition.TransitionBlock {
+    func performBackwardTransition(animated: Bool, completion: @escaping ()->()) -> FlowTransition.BackwardTransitionAction {
         return { viewcontroller in
             let navigationController = viewcontroller.navigationController
             if let index = navigationController?.viewControllers.index(of: viewcontroller) {
@@ -25,5 +24,4 @@ class TestTransition: NSObject, AppFlowControllerTransition {
             }
         }
     }
-    
 }

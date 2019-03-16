@@ -9,11 +9,9 @@
 import UIKit
 
 class StubNavigationController: UINavigationController {
-
-    var topViewControllerResult:UIViewController?
+    var topViewControllerResult: UIViewController?
     
     override var topViewController: UIViewController? {
         return topViewControllerResult
     }
-
 }

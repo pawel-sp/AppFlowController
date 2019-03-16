@@ -13,11 +13,11 @@ class CustomViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        try! AppFlowController.shared.updateCurrentPage(with: self, for: AppPage.custom.name)
+        try! AppFlowController.shared.updateCurrentPath(with: self, for: AppPathComponent.custom.name)
     }
     
     @IBAction func loginAction(_ sender:Any) {
-        try! AppFlowController.shared.show(page: AppPage.login)
+        try! AppFlowController.shared.show(AppPathComponent.login)
     }
     
 }

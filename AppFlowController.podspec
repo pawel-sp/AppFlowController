@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name         = "AppFlowController"
-  s.version      = "0.3"
-  s.summary      = "VIPERMoAppFlowControllerdules"
+  s.version      = "1.2"
+  s.summary      = "AppFlowController"
   s.homepage     = "https://bitbucket.org/pawel-sp/appflowcontroller/"
   s.license      = "MIT"
   s.author       = { "Paweł Sporysz" => "pawel.s@untitledkingdom.co" }

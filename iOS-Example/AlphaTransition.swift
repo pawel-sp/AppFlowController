@@ -9,7 +9,7 @@
 import UIKit
 import AppFlowController
 
-class AlphaTransition: NSObject, UIViewControllerAnimatedTransitioning, AppFlowControllerTransition, UINavigationControllerDelegate {
+class AlphaTransition: NSObject, UIViewControllerAnimatedTransitioning, FlowTransition, UINavigationControllerDelegate {
 
     // MARK: - UIViewControllerAnimatedTransitioning
     
@@ -18,10 +18,10 @@ class AlphaTransition: NSObject, UIViewControllerAnimatedTransitioning, AppFlowC
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        guard let fromVC   = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from) else { return }
-        guard let toVC     = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) else { return }
-        let containerView  = transitionContext.containerView
-        guard let toView   = toVC.view else { return }
+        guard let fromVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from) else { return }
+        guard let toVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) else { return }
+        let containerView = transitionContext.containerView
+        guard let toView = toVC.view else { return }
         guard let fromView = fromVC.view else { return }
         let animationDuration = transitionDuration(using: transitionContext)
         
@@ -39,27 +39,27 @@ class AlphaTransition: NSObject, UIViewControllerAnimatedTransitioning, AppFlowC
         }
     }
     
-    // MARK: - AppFlowControllerTransition
+    // MARK: - FlowTransition
     
-    func forwardTransitionBlock(animated: Bool, completionBlock: @escaping () -> ()) -> AppFlowControllerForwardTransition.TransitionBlock {
+    func performForwardTransition(animated: Bool, completion: @escaping () -> ()) -> ForwardTransition.ForwardTransitionAction {
         return { navigationController, viewController in
             let previousDelegate = navigationController.delegate
             navigationController.delegate = self
             navigationController.pushViewController(viewController, animated: animated){
                 navigationController.delegate = previousDelegate
-                completionBlock()
+                completion()
             }
         }
     }
     
-    func backwardTransitionBlock(animated: Bool, completionBlock: @escaping () -> ()) -> AppFlowControllerBackwardTransition.TransitionBlock {
+    func performBackwardTransition(animated: Bool, completion: @escaping () -> ()) -> BackwardTransition.BackwardTransitionAction {
         return { viewController in
             let navigationController = viewController.navigationController
-            let previousDelegate     = navigationController?.delegate
+            let previousDelegate = navigationController?.delegate
             navigationController?.delegate = self
             let _ = navigationController?.popViewController(animated: animated) {
                 navigationController?.delegate = previousDelegate
-                completionBlock()
+                completion()
             }
         }
     }

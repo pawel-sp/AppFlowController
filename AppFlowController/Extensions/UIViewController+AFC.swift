@@ -1,8 +1,8 @@
 //
-//  AppFlowController.h
+//  UIViewController+AFC.swift
 //  AppFlowController
 //
-//  Created by Paweł Sporysz on 02.10.2016.
+//  Created by Paweł Sporysz on 30.09.2016.
 //  Copyright (c) 2017 Paweł Sporysz
 //  https://github.com/pawel-sp/AppFlowController
 //
@@ -25,12 +25,34 @@
 //  SOFTWARE.
 //
 
-#import <UIKit/UIKit.h>
+import UIKit
 
-//! Project version number for AppFlowController.
-FOUNDATION_EXPORT double AppFlowControllerVersionNumber;
-
-//! Project version string for AppFlowController.
-FOUNDATION_EXPORT const unsigned char AppFlowControllerVersionString[];
-
-// In this header, you should import all the public headers of your framework using statements like #import <AppFlowController/PublicHeader.h>
+extension UIViewController {
+    open var topPresentedViewController: UIViewController? {
+        var presentedVC = presentedViewController
+        while presentedVC?.presentedViewController != nil {
+            presentedVC = presentedVC?.presentedViewController
+        }
+        return presentedVC
+    }
+    
+    @objc open func dismissAllPresentedViewControllers(completion: (()->())?) {
+        if let vc = topPresentedViewController {
+            vc.dismiss(animated: false) { [weak self] in
+                self?.dismissAllPresentedViewControllers(completion: completion)
+            }
+        } else {
+            completion?()
+        }
+    }
+    
+    var visible: UIViewController {
+        if let tabBarController = self as? UITabBarController {
+            return tabBarController.viewControllers?[tabBarController.selectedIndex].visible ?? self
+        } else if let navigationController = self as? UINavigationController {
+            return navigationController.visibleViewController?.visible ?? self
+        } else {
+            return self
+        }
+    }
+}

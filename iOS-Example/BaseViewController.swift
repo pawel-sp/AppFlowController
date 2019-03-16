@@ -29,20 +29,20 @@ class BaseViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if let path = AppFlowController.shared.currentPathComponents() {
+        if let path = AppFlowController.shared.currentPathDescription {
             print(path)
         }
     }
     
     func showPlayPage() {
-        if let current = AppFlowController.shared.currentPage() {
+        if let current = AppFlowController.shared.currentPathComponent {
             try! AppFlowController.shared.show(
-                page: AppPage.play,
+                AppPathComponent.play,
                 variant: current,
                 parameters: [
-                    AppFlowControllerParameter(
-                        page: AppPage.play,
-                        variant: AppPage.home,
+                    TransitionParameter(
+                        pathComponent: AppPathComponent.play,
+                        variant: AppPathComponent.home,
                         value: "from_home"
                     )
                 ]

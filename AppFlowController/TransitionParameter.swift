@@ -1,5 +1,5 @@
 //
-//  AppFlowControllerParameter.swift
+//  TransitionParameter.swift
 //  AppFlowController
 //
 //  Created by Paweł Sporysz on 23.06.2017.
@@ -27,36 +27,36 @@
 
 import Foundation
 
-public struct AppFlowControllerParameter {
+public struct TransitionParameter {
     
     // MARK: - Properties
     
-    public let page:AppFlowControllerPage
-    public let variant:AppFlowControllerPage?
-    public let value:String
+    public let pathComponent: FlowPathComponent
+    public let variant: FlowPathComponent?
+    public let value: String
     
     /**
-        Identifier of page. For not nil variant it has variant name prefix.
+        Identifier of path. For not nil variant it has variant name prefix.
     */
-    public var identifier:String {
-        var page = self.page
-        page.variantName = variant?.identifier
-        return page.identifier
+    public var identifier: String {
+        var pathComponent = self.pathComponent
+        pathComponent.variantName = variant?.identifier
+        return pathComponent.identifier
     }
     
     // MARK: - Init
     
     /**
-        Creates new instance of AppFlowControllerParameter.
+        Creates new instance of TransitionParameter.
      
-        - Parameter page:    Page associated with parameter
+        - Parameter path:    Path associated with parameter
         - Parameter variant: Parent page according to registration path. Use it only if page supports variants.
         - Parameter value:   Value of parameter.
     */
-    public init(page:AppFlowControllerPage, variant:AppFlowControllerPage? = nil, value:String) {
-        self.page    = page
+    public init(pathComponent: FlowPathComponent, variant: FlowPathComponent? = nil, value: String) {
+        self.pathComponent = pathComponent
         self.variant = variant
-        self.value   = value
+        self.value = value
     }
     
 }

@@ -1,5 +1,5 @@
 //
-//  AppFlowControllerExtensions.swift
+//  UINavigationController+AFC.swift
 //  AppFlowController
 //
 //  Created by Paweł Sporysz on 30.09.2016.
@@ -28,8 +28,7 @@
 import UIKit
 
 extension UINavigationController {
-    
-    open func pushViewController(_ viewController: UIViewController, animated: Bool, completion: (() -> ())?) {
+    @objc open func pushViewController(_ viewController: UIViewController, animated: Bool, completion: (() -> ())?) {
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)
         pushViewController(viewController, animated: animated)
@@ -37,7 +36,7 @@ extension UINavigationController {
     }
     
     @discardableResult
-    open func popViewController(animated: Bool, completion: (() -> ())?) -> UIViewController? {
+    @objc open func popViewController(animated: Bool, completion: (() -> ())?) -> UIViewController? {
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)
         let vc = popViewController(animated: animated)
@@ -45,48 +44,14 @@ extension UINavigationController {
         return vc
     }
     
-    open func setViewControllers(_ viewControllers: [UIViewController], animated: Bool, completion: (() -> ())?) {
+    @objc open func setViewControllers(_ viewControllers: [UIViewController], animated: Bool, completion: (() -> ())?) {
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)
         setViewControllers(viewControllers, animated: animated)
         CATransaction.commit()
     }
     
-    
-    open var visibleNavigationController:UINavigationController {
+    open var visibleNavigationController: UINavigationController {
         return visibleViewController?.navigationController ?? self
-    }   
-    
-}
-
-extension UIViewController {
-    
-    open var topPresentedViewController: UIViewController? {
-        var presentedVC = presentedViewController
-        while presentedVC?.presentedViewController != nil {
-            presentedVC = presentedVC?.presentedViewController
-        }
-        return presentedVC
     }
-    
-    open func dismissAllPresentedViewControllers(completionBlock:(()->())?) {
-        if let vc = topPresentedViewController {
-            vc.dismiss(animated: false) { [weak self] in
-                self?.dismissAllPresentedViewControllers(completionBlock: completionBlock)
-            }
-        } else {
-            completionBlock?()
-        }
-    }
-    
-    var visible:UIViewController {
-        if let tabBarController = self as? UITabBarController {
-            return tabBarController.viewControllers?[tabBarController.selectedIndex].visible ?? self
-        } else if let navigationController = self as? UINavigationController {
-            return navigationController.visibleViewController?.visible ?? self
-        } else {
-            return self
-        }
-    }
-    
 }

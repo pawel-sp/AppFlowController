@@ -14,26 +14,27 @@
 		A400EB401EF921480024D9A2 /* MockNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A400EB3F1EF921480024D9A2 /* MockNavigationController.swift */; };
 		A400EB451EF95DF40024D9A2 /* AppFlowController+OperatorsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A400EB441EF95DF40024D9A2 /* AppFlowController+OperatorsTests.swift */; };
 		A400EB4A1EFA50D00024D9A2 /* AppFlowController+PageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A400EB491EFA50D00024D9A2 /* AppFlowController+PageTests.swift */; };
-		A447D3CE1DAD3F6E000BE4B9 /* AppFlowControllerTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A447D3CD1DAD3F6E000BE4B9 /* AppFlowControllerTracker.swift */; };
+		A447D3CE1DAD3F6E000BE4B9 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A447D3CD1DAD3F6E000BE4B9 /* Tracker.swift */; };
 		A48809181DA16580003CF8F3 /* AppFlowController.h in Headers */ = {isa = PBXBuildFile; fileRef = A48809161DA16580003CF8F3 /* AppFlowController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A48809231DA165B6003CF8F3 /* AppFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A488091E1DA165B6003CF8F3 /* AppFlowController.swift */; };
-		A48809241DA165B6003CF8F3 /* AppFlowControllerPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A488091F1DA165B6003CF8F3 /* AppFlowControllerPage.swift */; };
-		A48809251DA165B6003CF8F3 /* AppFlowControllerTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48809201DA165B6003CF8F3 /* AppFlowControllerTransition.swift */; };
-		A48809261DA165B6003CF8F3 /* AppFlowControllerOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48809211DA165B6003CF8F3 /* AppFlowControllerOperators.swift */; };
-		A48809271DA165B6003CF8F3 /* AppFlowControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48809221DA165B6003CF8F3 /* AppFlowControllerExtensions.swift */; };
-		A493C4B41DA44D8100BB4A08 /* AppFlowControllerPathStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = A493C4B31DA44D8100BB4A08 /* AppFlowControllerPathStep.swift */; };
-		A493C4B61DA44F6300BB4A08 /* AppFlowControllerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A493C4B51DA44F6300BB4A08 /* AppFlowControllerError.swift */; };
+		A48809241DA165B6003CF8F3 /* FlowPathComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A488091F1DA165B6003CF8F3 /* FlowPathComponent.swift */; };
+		A48809251DA165B6003CF8F3 /* FlowTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48809201DA165B6003CF8F3 /* FlowTransition.swift */; };
+		A48809261DA165B6003CF8F3 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48809211DA165B6003CF8F3 /* Operators.swift */; };
+		A493C4B41DA44D8100BB4A08 /* PathStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = A493C4B31DA44D8100BB4A08 /* PathStep.swift */; };
+		A493C4B61DA44F6300BB4A08 /* AFCError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A493C4B51DA44F6300BB4A08 /* AFCError.swift */; };
 		A49CFA241EFA76B40045AB93 /* AppFlowController+TransitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA231EFA76B40045AB93 /* AppFlowController+TransitionTests.swift */; };
 		A49CFA261EFA90A90045AB93 /* MockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA251EFA90A90045AB93 /* MockViewController.swift */; };
 		A49CFA291EFA98BD0045AB93 /* StubNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA281EFA98BD0045AB93 /* StubNavigationController.swift */; };
 		A49CFA2E1EFBE99C0045AB93 /* AppFlowController+TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA2D1EFBE99C0045AB93 /* AppFlowController+TrackerTests.swift */; };
 		A49CFA301EFBF7CF0045AB93 /* AppFlowController+PathStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA2F1EFBF7CF0045AB93 /* AppFlowController+PathStepTests.swift */; };
 		A49CFA331EFC16F60045AB93 /* AppFlowController+CoreTests+Setup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA321EFC16F60045AB93 /* AppFlowController+CoreTests+Setup.swift */; };
-		A49CFA3C1EFD42650045AB93 /* AppFlowControllerParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA3B1EFD42650045AB93 /* AppFlowControllerParameter.swift */; };
+		A49CFA3C1EFD42650045AB93 /* TransitionParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA3B1EFD42650045AB93 /* TransitionParameter.swift */; };
 		A49CFA3E1EFD47EA0045AB93 /* AppFlowController+ParameterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA3D1EFD47EA0045AB93 /* AppFlowController+ParameterTests.swift */; };
 		A49CFA431EFD6FFB0045AB93 /* TestTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA421EFD6FFB0045AB93 /* TestTransition.swift */; };
 		A49CFA451EFD71D30045AB93 /* FakeNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA441EFD71D30045AB93 /* FakeNavigationController.swift */; };
 		A49CFA481EFD786F0045AB93 /* AppFlowController+CoreTests+Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CFA471EFD786F0045AB93 /* AppFlowController+CoreTests+Show.swift */; };
+		A4BEF7B4223DC0EB00BEF980 /* UINavigationController+AFC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4BEF7B3223DC0EB00BEF980 /* UINavigationController+AFC.swift */; };
+		A4BEF7B6223DC11500BEF980 /* UIViewController+AFC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4BEF7B5223DC11500BEF980 /* UIViewController+AFC.swift */; };
 		A4DC3DC51EFE738700975AA9 /* AppFlowController+CoreTests+GoBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DC3DC41EFE738700975AA9 /* AppFlowController+CoreTests+GoBack.swift */; };
 		A4DC3DCB1EFE786400975AA9 /* AppFlowController+CoreTests+Pop.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DC3DCA1EFE786400975AA9 /* AppFlowController+CoreTests+Pop.swift */; };
 		A4DC3DD31F00EE0500975AA9 /* AppFlowController+CoreTests+UpdateCurrentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DC3DD21F00EE0500975AA9 /* AppFlowController+CoreTests+UpdateCurrentPage.swift */; };
@@ -63,28 +64,29 @@
 		A400EB3F1EF921480024D9A2 /* MockNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockNavigationController.swift; sourceTree = "<group>"; };
 		A400EB441EF95DF40024D9A2 /* AppFlowController+OperatorsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+OperatorsTests.swift"; sourceTree = "<group>"; };
 		A400EB491EFA50D00024D9A2 /* AppFlowController+PageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+PageTests.swift"; sourceTree = "<group>"; };
-		A447D3CD1DAD3F6E000BE4B9 /* AppFlowControllerTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowControllerTracker.swift; sourceTree = "<group>"; };
+		A447D3CD1DAD3F6E000BE4B9 /* Tracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		A48809131DA16580003CF8F3 /* AppFlowController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppFlowController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A48809161DA16580003CF8F3 /* AppFlowController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppFlowController.h; sourceTree = "<group>"; };
 		A48809171DA16580003CF8F3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A488091E1DA165B6003CF8F3 /* AppFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowController.swift; sourceTree = "<group>"; };
-		A488091F1DA165B6003CF8F3 /* AppFlowControllerPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowControllerPage.swift; sourceTree = "<group>"; };
-		A48809201DA165B6003CF8F3 /* AppFlowControllerTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowControllerTransition.swift; sourceTree = "<group>"; };
-		A48809211DA165B6003CF8F3 /* AppFlowControllerOperators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowControllerOperators.swift; sourceTree = "<group>"; };
-		A48809221DA165B6003CF8F3 /* AppFlowControllerExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowControllerExtensions.swift; sourceTree = "<group>"; };
-		A493C4B31DA44D8100BB4A08 /* AppFlowControllerPathStep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowControllerPathStep.swift; sourceTree = "<group>"; };
-		A493C4B51DA44F6300BB4A08 /* AppFlowControllerError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowControllerError.swift; sourceTree = "<group>"; };
+		A488091F1DA165B6003CF8F3 /* FlowPathComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowPathComponent.swift; sourceTree = "<group>"; };
+		A48809201DA165B6003CF8F3 /* FlowTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowTransition.swift; sourceTree = "<group>"; };
+		A48809211DA165B6003CF8F3 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
+		A493C4B31DA44D8100BB4A08 /* PathStep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PathStep.swift; sourceTree = "<group>"; };
+		A493C4B51DA44F6300BB4A08 /* AFCError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AFCError.swift; sourceTree = "<group>"; };
 		A49CFA231EFA76B40045AB93 /* AppFlowController+TransitionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+TransitionTests.swift"; sourceTree = "<group>"; };
 		A49CFA251EFA90A90045AB93 /* MockViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockViewController.swift; sourceTree = "<group>"; };
 		A49CFA281EFA98BD0045AB93 /* StubNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StubNavigationController.swift; sourceTree = "<group>"; };
 		A49CFA2D1EFBE99C0045AB93 /* AppFlowController+TrackerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+TrackerTests.swift"; sourceTree = "<group>"; };
 		A49CFA2F1EFBF7CF0045AB93 /* AppFlowController+PathStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+PathStepTests.swift"; sourceTree = "<group>"; };
 		A49CFA321EFC16F60045AB93 /* AppFlowController+CoreTests+Setup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+CoreTests+Setup.swift"; sourceTree = "<group>"; };
-		A49CFA3B1EFD42650045AB93 /* AppFlowControllerParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlowControllerParameter.swift; sourceTree = "<group>"; };
+		A49CFA3B1EFD42650045AB93 /* TransitionParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionParameter.swift; sourceTree = "<group>"; };
 		A49CFA3D1EFD47EA0045AB93 /* AppFlowController+ParameterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+ParameterTests.swift"; sourceTree = "<group>"; };
 		A49CFA421EFD6FFB0045AB93 /* TestTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestTransition.swift; sourceTree = "<group>"; };
 		A49CFA441EFD71D30045AB93 /* FakeNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FakeNavigationController.swift; sourceTree = "<group>"; };
 		A49CFA471EFD786F0045AB93 /* AppFlowController+CoreTests+Show.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+CoreTests+Show.swift"; sourceTree = "<group>"; };
+		A4BEF7B3223DC0EB00BEF980 /* UINavigationController+AFC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+AFC.swift"; sourceTree = "<group>"; };
+		A4BEF7B5223DC11500BEF980 /* UIViewController+AFC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+AFC.swift"; sourceTree = "<group>"; };
 		A4DC3DC41EFE738700975AA9 /* AppFlowController+CoreTests+GoBack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+CoreTests+GoBack.swift"; sourceTree = "<group>"; };
 		A4DC3DCA1EFE786400975AA9 /* AppFlowController+CoreTests+Pop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+CoreTests+Pop.swift"; sourceTree = "<group>"; };
 		A4DC3DD21F00EE0500975AA9 /* AppFlowController+CoreTests+UpdateCurrentPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppFlowController+CoreTests+UpdateCurrentPage.swift"; sourceTree = "<group>"; };
@@ -183,19 +185,36 @@
 		A48809151DA16580003CF8F3 /* AppFlowController */ = {
 			isa = PBXGroup;
 			children = (
-				A488091E1DA165B6003CF8F3 /* AppFlowController.swift */,
-				A49CFA3B1EFD42650045AB93 /* AppFlowControllerParameter.swift */,
-				A447D3CD1DAD3F6E000BE4B9 /* AppFlowControllerTracker.swift */,
-				A493C4B31DA44D8100BB4A08 /* AppFlowControllerPathStep.swift */,
-				A493C4B51DA44F6300BB4A08 /* AppFlowControllerError.swift */,
-				A488091F1DA165B6003CF8F3 /* AppFlowControllerPage.swift */,
-				A48809201DA165B6003CF8F3 /* AppFlowControllerTransition.swift */,
-				A48809211DA165B6003CF8F3 /* AppFlowControllerOperators.swift */,
-				A48809221DA165B6003CF8F3 /* AppFlowControllerExtensions.swift */,
 				A48809161DA16580003CF8F3 /* AppFlowController.h */,
+				A4BEF7B1223DC01600BEF980 /* Utils */,
+				A4BEF7B2223DC0CD00BEF980 /* Extensions */,
+				A488091E1DA165B6003CF8F3 /* AppFlowController.swift */,
+				A49CFA3B1EFD42650045AB93 /* TransitionParameter.swift */,
+				A493C4B51DA44F6300BB4A08 /* AFCError.swift */,
+				A488091F1DA165B6003CF8F3 /* FlowPathComponent.swift */,
+				A48809201DA165B6003CF8F3 /* FlowTransition.swift */,
+				A48809211DA165B6003CF8F3 /* Operators.swift */,
 				A48809171DA16580003CF8F3 /* Info.plist */,
 			);
 			path = AppFlowController;
+			sourceTree = "<group>";
+		};
+		A4BEF7B1223DC01600BEF980 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A447D3CD1DAD3F6E000BE4B9 /* Tracker.swift */,
+				A493C4B31DA44D8100BB4A08 /* PathStep.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		A4BEF7B2223DC0CD00BEF980 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A4BEF7B3223DC0EB00BEF980 /* UINavigationController+AFC.swift */,
+				A4BEF7B5223DC11500BEF980 /* UIViewController+AFC.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -255,7 +274,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Paweł Sporysz";
 				TargetAttributes = {
 					A400EB261EF8FEE20024D9A2 = {
@@ -340,15 +359,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A48809251DA165B6003CF8F3 /* AppFlowControllerTransition.swift in Sources */,
-				A48809241DA165B6003CF8F3 /* AppFlowControllerPage.swift in Sources */,
-				A447D3CE1DAD3F6E000BE4B9 /* AppFlowControllerTracker.swift in Sources */,
-				A493C4B61DA44F6300BB4A08 /* AppFlowControllerError.swift in Sources */,
-				A493C4B41DA44D8100BB4A08 /* AppFlowControllerPathStep.swift in Sources */,
-				A48809271DA165B6003CF8F3 /* AppFlowControllerExtensions.swift in Sources */,
-				A48809261DA165B6003CF8F3 /* AppFlowControllerOperators.swift in Sources */,
+				A48809251DA165B6003CF8F3 /* FlowTransition.swift in Sources */,
+				A48809241DA165B6003CF8F3 /* FlowPathComponent.swift in Sources */,
+				A447D3CE1DAD3F6E000BE4B9 /* Tracker.swift in Sources */,
+				A493C4B61DA44F6300BB4A08 /* AFCError.swift in Sources */,
+				A493C4B41DA44D8100BB4A08 /* PathStep.swift in Sources */,
+				A4BEF7B4223DC0EB00BEF980 /* UINavigationController+AFC.swift in Sources */,
+				A48809261DA165B6003CF8F3 /* Operators.swift in Sources */,
+				A4BEF7B6223DC11500BEF980 /* UIViewController+AFC.swift in Sources */,
 				A48809231DA165B6003CF8F3 /* AppFlowController.swift in Sources */,
-				A49CFA3C1EFD42650045AB93 /* AppFlowControllerParameter.swift in Sources */,
+				A49CFA3C1EFD42650045AB93 /* TransitionParameter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -372,7 +392,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pawelsporysz.AppFlowControllerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -385,7 +405,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pawelsporysz.AppFlowControllerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -398,15 +418,23 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
@@ -452,15 +480,23 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
@@ -507,7 +543,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -527,7 +563,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.pawelsporysz.AppFlowController;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};

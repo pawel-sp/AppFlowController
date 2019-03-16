@@ -19,16 +19,17 @@ class ItemsTableViewController: BaseTableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CellID", for: indexPath)
-        cell.backgroundColor      = data[indexPath.row].uicolor
+        cell.backgroundColor = data[indexPath.row].uicolor
         cell.textLabel?.textColor = UIColor.white
-        cell.textLabel?.text      = String(describing: data[indexPath.row].uicolor)
+        cell.textLabel?.text = String(describing: data[indexPath.row].uicolor)
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         try! AppFlowController.shared.show(
-            page: AppPage.details, parameters:[
-                AppFlowControllerParameter(page: AppPage.details, value: "\(data[indexPath.row])")
+            AppPathComponent.details,
+            parameters:[
+                TransitionParameter(pathComponent: AppPathComponent.details, value: "\(data[indexPath.row])")
             ]
         )
     }

@@ -17,7 +17,7 @@ class TabBarViewController: BaseTabBarController {
     }
     
     func showContact() {
-        try! AppFlowController.shared.show(page: AppPage.contact, skipDismissTransitions: true)
+        try! AppFlowController.shared.show(AppPathComponent.contact, skipDismissTransitions: true)
     }
     
 }

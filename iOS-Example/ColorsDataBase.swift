@@ -9,7 +9,6 @@
 import UIKit
 
 enum Color: String {
-    
     case red   = "red"
     case blue  = "blue"
     case green = "green"
@@ -29,5 +28,4 @@ enum Color: String {
     static func colorFromString(_ string:String) -> Color? {
         return Color(rawValue: string)
     }
-    
 }

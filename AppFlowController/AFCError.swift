@@ -1,5 +1,5 @@
 //
-//  AppFlowControllerError.swift
+//  AFCError.swift
 //  AppFlowController
 //
 //  Created by Paweł Sporysz on 04.10.2016.
@@ -27,20 +27,19 @@
 
 import UIKit
 
-public enum AppFlowControllerError:Error, Equatable {
-    
-    case pathAlreadyRegistered(identifier:String)
+public enum AFCError: Error, Equatable {
+    case pathAlreadyRegistered(identifier: String)
     case internalError
-    case unregisteredPathIdentifier(identifier:String)
+    case unregisteredPathIdentifier(identifier: String)
     case missingConfiguration
-    case unregisteredViewControllerType(viewControllerType:UIViewController.Type)
-    case missingVariant(identifier:String)
-    case variantNotSupported(identifier:String)
-    case missingPathStepTransition(identifier:String)
-    case popToSkippedPath(identifier:String)
-    case showingSkippedPage(identifier:String)
+    case unregisteredViewControllerType(viewControllerType: UIViewController.Type)
+    case missingVariant(identifier: String)
+    case variantNotSupported(identifier: String)
+    case missingPathStepTransition(identifier: String)
+    case popToSkippedPath(identifier: String)
+    case showingSkippedPath(identifier: String)
     
-    public var info:String {
+    public var info: String {
         switch self {
             case .pathAlreadyRegistered(let identifier):
                 return "\(identifier) is already registered, if you want to register the same UIViewController for presenting it in a different way you need to create separate AppFlowControllerItem case with the same UIViewController or use supportVariants property in AppFlowControllerItem"
@@ -60,14 +59,13 @@ public enum AppFlowControllerError:Error, Equatable {
                 return "\(identifier) doesn't have forward or/and backward transition"
             case .popToSkippedPath(let identifier):
                 return "You cannot pop to step \(identifier) which is currently skipped"
-            case .showingSkippedPage(let identifier):
+            case .showingSkippedPath(let identifier):
                 return "\(identifier) was skipped so you cannot back to that step or use it to show further pages."
         }
     }
-    
 }
 
-public func ==(lhs:AppFlowControllerError, rhs:AppFlowControllerError) -> Bool {
+public func ==(lhs: AFCError, rhs: AFCError) -> Bool {
     switch (lhs, rhs) {
         case (.pathAlreadyRegistered(let id1), .pathAlreadyRegistered(let id2)):
             return id1 == id2
@@ -87,7 +85,7 @@ public func ==(lhs:AppFlowControllerError, rhs:AppFlowControllerError) -> Bool {
             return id1 == id2
         case (.popToSkippedPath(let id1), .popToSkippedPath(let id2)):
             return id1 == id2
-        case (.showingSkippedPage(let id1), .showingSkippedPage(let id2)):
+        case (.showingSkippedPath(let id1), .showingSkippedPath(let id2)):
             return id1 == id2
         default:
             return false

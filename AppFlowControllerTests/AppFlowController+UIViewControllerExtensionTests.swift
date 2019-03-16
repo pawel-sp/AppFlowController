@@ -39,9 +39,8 @@ class AppFlowController_UIViewControllerExtensionTests: XCTestCase {
     
     func testDismissAllPresentedViewControllers_invokesImmediatellyBlockIfThereAreNoViewControllers() {
         let navigationController = UINavigationController()
-        let exp   = expectation(description: "Block need to be invoked after dismissing all presented view controllers")
-        let block = { exp.fulfill() }
-        navigationController.dismissAllPresentedViewControllers(completionBlock: block)
+        let exp = expectation(description: "Block need to be invoked after dismissing all presented view controllers")
+        navigationController.dismissAllPresentedViewControllers(completion: exp.fulfill)
         waitForExpectations(timeout: 0) { error in
             if let error = error {
                 XCTFail(error.localizedDescription)
@@ -81,9 +80,8 @@ class AppFlowController_UIViewControllerExtensionTests: XCTestCase {
         
         viewController3.presentedViewControllerResult = viewController2
         
-        let exp   = expectation(description: "Block need to be invoked after dismissing all presented view controllers")
-        let block = { exp.fulfill() }
-        viewController3.dismissAllPresentedViewControllers(completionBlock: block)
+        let exp = expectation(description: "Block need to be invoked after dismissing all presented view controllers")
+        viewController3.dismissAllPresentedViewControllers(completion: exp.fulfill)
         waitForExpectations(timeout: 0) { error in
             if let error = error {
                 XCTFail(error.localizedDescription)

@@ -9,12 +9,10 @@
 import UIKit
 
 class MockViewController: UIViewController {
-
-    var dismissParams:(Bool)?
+    var dismissParams: (Bool)?
     
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
         dismissParams = (flag)
         completion?()
     }
-
 }

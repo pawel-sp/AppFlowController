@@ -13,19 +13,19 @@ class AppFlowController_PathStepTests: XCTestCase {
     
     // MARK: - Helpers
     
-    func newPage(name:String = "page", variant:String? = nil) -> AppFlowControllerPage {
-        var result = AppFlowControllerPage(name: name, viewControllerBlock: { UIViewController() }, viewControllerType: UIViewController.self)
+    func newPage(name:String = "page", variant:String? = nil) -> FlowPathComponent {
+        var result = FlowPathComponent(name: name, viewControllerInit: { UIViewController() }, viewControllerType: UIViewController.self)
         result.variantName = variant
         return result
     }
     
     func newRootStep() -> PathStep {
-        return PathStep(page: newPage(name: "root"))
+        return PathStep(pathComponent: newPage(name: "root"))
     }
     
     // MARK: - Properties
     
-    var root:PathStep!
+    var root: PathStep!
     
     // MARK: - Setup
     
@@ -37,42 +37,42 @@ class AppFlowController_PathStepTests: XCTestCase {
     
     func testInit_assingsCorrectlyPage() {
         let page = newPage()
-        let step = PathStep(page: page)
-        XCTAssertEqual(step.current, page)
+        let step = PathStep(pathComponent: page)
+        XCTAssertEqual(step.pathComponent, page)
     }
     
     func testAdd_childrenIsEmpty() {
         let page = newPage()
-        root.add(page: page)
+        root.add(pathComponent: page)
         XCTAssertEqual(root.children.count, 1)
-        XCTAssertEqual(root.children[0].current, page)
+        XCTAssertEqual(root.children[0].pathComponent, page)
         XCTAssertEqual(root.children[0].parent, root)
         XCTAssertEqual(root.children[0].children, [])
     }
     
     func testSearchPage_idenditierDoesntExist() {
-        XCTAssertNil(root.search(page: newPage()))
+        XCTAssertNil(root.search(pathComponent: newPage()))
     }
     
     func testSearchPage_identifierExists() {
         let page = newPage()
-        root.add(page: page)
-        XCTAssertEqual(root.search(page: page)?.current, page)
-        XCTAssertEqual(root.search(page: page)?.parent, root)
-        XCTAssertEqual(root.search(page: page)!.children, [])
+        root.add(pathComponent: page)
+        XCTAssertEqual(root.search(pathComponent: page)?.pathComponent, page)
+        XCTAssertEqual(root.search(pathComponent: page)?.parent, root)
+        XCTAssertEqual(root.search(pathComponent: page)!.children, [])
     }
     
     func testSearchPage_idExistsButWithVariant() {
         let page = newPage(name: "page", variant: "variant")
         let page_withoutVariant = newPage(name: "page", variant: nil)
         
-        root.add(page: page)
+        root.add(pathComponent: page)
         
-        XCTAssertEqual(root.search(page: page)?.current, page)
-        XCTAssertEqual(root.search(page: page)?.parent, root)
-        XCTAssertEqual(root.search(page: page)!.children, [])
+        XCTAssertEqual(root.search(pathComponent: page)?.pathComponent, page)
+        XCTAssertEqual(root.search(pathComponent: page)?.parent, root)
+        XCTAssertEqual(root.search(pathComponent: page)!.children, [])
         
-        XCTAssertNil(root.search(page: page_withoutVariant))
+        XCTAssertNil(root.search(pathComponent: page_withoutVariant))
     }
     
     func testSearchID_idDoesntExist() {
@@ -81,8 +81,8 @@ class AppFlowController_PathStepTests: XCTestCase {
     
     func testSearchID_idAlreadyExists() {
         let page = newPage(name: "page_to_find")
-        root.add(page: page)
-        XCTAssertEqual(root.search(identifier: "page_to_find")?.current, page)
+        root.add(pathComponent: page)
+        XCTAssertEqual(root.search(identifier: "page_to_find")?.pathComponent, page)
         XCTAssertEqual(root.search(identifier: "page_to_find")?.parent, root)
         XCTAssertEqual(root.search(identifier: "page_to_find")!.children, [])
     }
@@ -90,9 +90,9 @@ class AppFlowController_PathStepTests: XCTestCase {
     func testSearchID_idExistsButWithVariant() {
         let page = newPage(name: "page_to_find", variant: "variant")
         
-        root.add(page: page)
+        root.add(pathComponent: page)
         
-        XCTAssertEqual(root.search(identifier: "variant_page_to_find")?.current, page)
+        XCTAssertEqual(root.search(identifier: "variant_page_to_find")?.pathComponent, page)
         XCTAssertEqual(root.search(identifier: "variant_page_to_find")?.parent, root)
         XCTAssertEqual(root.search(identifier: "variant_page_to_find")!.children, [])
         
@@ -100,57 +100,57 @@ class AppFlowController_PathStepTests: XCTestCase {
     }
     
     func testAllParentPages_stepHasNoParents_includeSelfIsFalse() {
-        let step = PathStep(page: newPage())
-        XCTAssertEqual(root.allParentPages(from: step, includeSelf: false), [])
+        let step = PathStep(pathComponent: newPage())
+        XCTAssertEqual(root.allParentPathComponents(from: step, includeSelf: false), [])
     }
     
     func testAllParentPages_stepHasNoParents_includeSelfIsTrue() {
-        let step = PathStep(page: newPage())
-        XCTAssertEqual(root.allParentPages(from: step, includeSelf: true), [step.current])
+        let step = PathStep(pathComponent: newPage())
+        XCTAssertEqual(root.allParentPathComponents(from: step, includeSelf: true), [step.pathComponent])
     }
     
     func testAllParentPages_stepHasOnlyOneParent_includeSelfIsFalse() {
         let page = newPage()
-        root.add(page: page)
-        XCTAssertEqual(root.allParentPages(from: root.children.first!, includeSelf: false), [root.current])
+        root.add(pathComponent: page)
+        XCTAssertEqual(root.allParentPathComponents(from: root.children.first!, includeSelf: false), [root.pathComponent])
     }
     
     func testAllParentPages_stepHasOnlyOneParent_includeSelfIsTrue() {
         let page = newPage()
-        root.add(page: page)
-        XCTAssertEqual(root.allParentPages(from: root.children.first!, includeSelf: true), [root.current, page])
+        root.add(pathComponent: page)
+        XCTAssertEqual(root.allParentPathComponents(from: root.children.first!, includeSelf: true), [root.pathComponent, page])
     }
     
     func testAllParentPages_stepHasFewParents_includeSelfIsFalse() {
         let page1 = newPage()
         let page2 = newPage()
-        root.add(page: page1)
-        root.children.first!.add(page: page2)
-        XCTAssertEqual(root.allParentPages(from: root.children.first!.children.first!, includeSelf: false), [root.current, page1])
+        root.add(pathComponent: page1)
+        root.children.first!.add(pathComponent: page2)
+        XCTAssertEqual(root.allParentPathComponents(from: root.children.first!.children.first!, includeSelf: false), [root.pathComponent, page1])
     }
     
     func testAllParentPages_stepHasFewParents_includeSelfIsTrue() {
         let page1 = newPage(name: "1")
         let page2 = newPage(name: "2")
-        root.add(page: page1)
-        root.children.first!.add(page: page2)
-        XCTAssertEqual(root.allParentPages(from: root.children.first!.children.first!, includeSelf: true), [root.current, page1, page2])
+        root.add(pathComponent: page1)
+        root.children.first!.add(pathComponent: page2)
+        XCTAssertEqual(root.allParentPathComponents(from: root.children.first!.children.first!, includeSelf: true), [root.pathComponent, page1, page2])
     }
     
     func testFirstParentPage_noMatches() {
         let page1 = newPage(name: "1")
         let page2 = newPage(name: "2")
-        root.add(page: page1).add(page: page2)
-        XCTAssertNil(root.firstParentPage(where: { $0.name == "3" }))
+        root.add(pathComponent: page1).add(pathComponent: page2)
+        XCTAssertNil(root.firstParentPathComponent(where: { $0.name == "3" }))
     }
     
     func testFirstParentPage_onlyOneMatch() {
         let page1 = newPage(name: "1")
         let page2 = newPage(name: "2")
-        let step1 = root.add(page: page1)
-        let step2 = step1.add(page: page2)
+        let step1 = root.add(pathComponent: page1)
+        let step2 = step1.add(pathComponent: page2)
         
-        XCTAssertEqual(step2.firstParentPage(where: { $0.name == "1" }), page1)
+        XCTAssertEqual(step2.firstParentPathComponent(where: { $0.name == "1" }), page1)
     }
     
     func testFirstParentPage_fewMatches() {
@@ -158,44 +158,44 @@ class AppFlowController_PathStepTests: XCTestCase {
         let page2 = newPage(name: "2")
         let page3 = newPage(name: "3")
 
-        let step1 = root.add(page: page1)
-        let step2 = step1.add(page: page2)
-        let step3 = step2.add(page: page3)
+        let step1 = root.add(pathComponent: page1)
+        let step2 = step1.add(pathComponent: page2)
+        let step3 = step2.add(pathComponent: page3)
         
-        XCTAssertEqual(step3.firstParentPage(where: { _ in true }), page2)
+        XCTAssertEqual(step3.firstParentPathComponent(where: { _ in true }), page2)
     }
     
     func testDistanceToStep_thereIsNoParentWithThatPage() {
         let page1 = newPage(name: "1")
         let page2 = newPage(name: "2")
-        root.add(page: page1)
-        let page = root.children.first!.add(page: page2)
+        root.add(pathComponent: page1)
+        let page = root.children.first!.add(pathComponent: page2)
         XCTAssertNil(page.distanceToStep(with: newPage(name: "3")))
     }
  
     func testDistanceToStep_thereIsParentWithThatPage() {
         let page1 = newPage(name: "1")
         let page2 = newPage(name: "2")
-        root.add(page: page1)
-        let page = root.children.first!.add(page: page2)
+        root.add(pathComponent: page1)
+        let page = root.children.first!.add(pathComponent: page2)
         XCTAssertEqual(page.distanceToStep(with: page2), 0)
         XCTAssertEqual(page.distanceToStep(with: page1), 1)
-        XCTAssertEqual(page.distanceToStep(with: root.current), 2)
+        XCTAssertEqual(page.distanceToStep(with: root.pathComponent), 2)
     }
     
     func testDistanceToStep_thereIsChildrenWithThatPage() {
         let page1 = newPage(name: "1")
         let page2 = newPage(name: "2")
-        root.add(page: page1)
-        root.children.first!.add(page: page2)
+        root.add(pathComponent: page1)
+        root.children.first!.add(pathComponent: page2)
         XCTAssertEqual(root.children.first!.distanceToStep(with: page1), 0)
-        XCTAssertEqual(root.children.first!.distanceToStep(with: root.current), 1)
+        XCTAssertEqual(root.children.first!.distanceToStep(with: root.pathComponent), 1)
         XCTAssertNil(root.children.first!.distanceToStep(with: page2))
     }
     
     func testDistanceBetween_stepsAreTheSame() {
         let page = newPage()
-        let step = root.add(page: page)
+        let step = root.add(pathComponent: page)
         
         XCTAssertEqual(PathStep.distanceBetween(step: step, and: step).up, 0)
         XCTAssertEqual(PathStep.distanceBetween(step: step, and: step).down, 0)
@@ -207,8 +207,8 @@ class AppFlowController_PathStepTests: XCTestCase {
     func testDistanceBetween_step2IsTwoLevelLowerThenStep1() {
         let page1 = newPage(name: "1")
         let page2 = newPage(name: "2")
-        let step1 = root.add(page: page1)
-        let step2 = step1.add(page: page2)
+        let step1 = root.add(pathComponent: page1)
+        let step2 = step1.add(pathComponent: page2)
         
         XCTAssertEqual(PathStep.distanceBetween(step: root, and: step1).up, 0)
         XCTAssertEqual(PathStep.distanceBetween(step: root, and: step1).down, 1)
@@ -239,10 +239,10 @@ class AppFlowController_PathStepTests: XCTestCase {
         let page2 = newPage(name: "2")
         let page3 = newPage(name: "3")
         let page4 = newPage(name: "4")
-        let step1 = root.add(page: page1)
-        let step2 = root.add(page: page2)
-        let step3 = step1.add(page: page3)
-        let step4 = step1.add(page: page4)
+        let step1 = root.add(pathComponent: page1)
+        let step2 = root.add(pathComponent: page2)
+        let step3 = step1.add(pathComponent: page3)
+        let step4 = step1.add(pathComponent: page4)
         
         XCTAssertEqual(PathStep.distanceBetween(step: step3, and: step2).up, 2)
         XCTAssertEqual(PathStep.distanceBetween(step: step3, and: step2).down, 1)

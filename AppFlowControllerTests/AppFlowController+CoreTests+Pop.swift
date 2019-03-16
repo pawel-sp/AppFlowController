@@ -16,8 +16,8 @@ extension AppFlowController_CoreTests {
             try flowController.pop(to: newPage("1"))
             XCTFail()
         } catch let error {
-            if let afcError = error as? AppFlowControllerError {
-                XCTAssertEqual(afcError, AppFlowControllerError.missingConfiguration)
+            if let afcError = error as? AFCError {
+                XCTAssertEqual(afcError, AFCError.missingConfiguration)
             } else {
                 XCTFail()
             }
@@ -28,12 +28,12 @@ extension AppFlowController_CoreTests {
         prepareFlowController()
         let pages = newPage("1") => newPage("2")
         do {
-            try flowController.register(path: pages)
+            try flowController.register(pathComponents: pages)
             try flowController.pop(to: newPage("3"))
             XCTFail()
         } catch let error {
-            if let afcError = error as? AppFlowControllerError {
-                XCTAssertEqual(afcError, AppFlowControllerError.unregisteredPathIdentifier(identifier: "3"))
+            if let afcError = error as? AFCError {
+                XCTAssertEqual(afcError, AFCError.unregisteredPathIdentifier(identifier: "3"))
             } else {
                 XCTFail()
             }
@@ -41,14 +41,14 @@ extension AppFlowController_CoreTests {
     }
     
     func testPop_poppingToSkippedPage() {
-        prepareFlowController(fakeNC: true)
+        prepareFlowController()
         let pages = newPage("1") => newPage("2") => newPage("3") => newPage("4")
         do {
-            try flowController.register(path: pages)
+            try flowController.register(pathComponents: pages)
             try flowController.show(
-                page: pages[3],
+                pages[3],
                 animated: false,
-                skipPages:[
+                skipPathComponents:[
                     pages[2]
                 ]
             )
@@ -56,8 +56,8 @@ extension AppFlowController_CoreTests {
             XCTFail()
             
         } catch let error {
-            if let afcError = error as? AppFlowControllerError {
-                XCTAssertEqual(afcError, AppFlowControllerError.popToSkippedPath(identifier: "3"))
+            if let afcError = error as? AFCError {
+                XCTAssertEqual(afcError, AFCError.popToSkippedPath(identifier: "3"))
             } else {
                 XCTFail()
             }
@@ -65,12 +65,12 @@ extension AppFlowController_CoreTests {
     }
     
     func testPop_poppingToStepWithCustomBackwardTransition() {
-        prepareFlowController(fakeNC: true)
+        prepareFlowController()
         let transition = TestTransition()
         let pages      = newPage("1") => transition => newPage("2") => transition => newPage("3")
         do {
-            try flowController.register(path: pages)
-            try flowController.show(page: pages[2], animated: false)
+            try flowController.register(pathComponents: pages)
+            try flowController.show(pages[2], animated: false)
             
             XCTAssertEqual(currentVCNames, ["1", "2", "3"])
             
@@ -84,11 +84,11 @@ extension AppFlowController_CoreTests {
     }
     
     func testPop() {
-        prepareFlowController(fakeNC: true)
+        prepareFlowController()
         let pages      = newPage("1") => newPage("2") => newPage("3")
         do {
-            try flowController.register(path: pages)
-            try flowController.show(page: pages[2], animated: false)
+            try flowController.register(pathComponents: pages)
+            try flowController.show(pages[2], animated: false)
             
             XCTAssertEqual(currentVCNames, ["1", "2", "3"])
             

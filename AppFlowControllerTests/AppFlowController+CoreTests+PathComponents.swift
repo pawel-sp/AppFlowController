@@ -16,13 +16,13 @@ extension AppFlowController_CoreTests {
     func testPathComponents_pathInNotRegistered() {
         prepareFlowController()
         let pages = newPage("1") => newPage("2")
-        try! flowController.register(path: pages)
+        try! flowController.register(pathComponents: pages)
         do {
             _ = try flowController.pathComponents(for: newPage("3"))
             XCTFail()
         } catch let error {
-            if let afcError = error as? AppFlowControllerError {
-                XCTAssertEqual(afcError, AppFlowControllerError.unregisteredPathIdentifier(identifier: "3"))
+            if let afcError = error as? AFCError {
+                XCTAssertEqual(afcError, AFCError.unregisteredPathIdentifier(identifier: "3"))
             } else {
                 XCTFail()
             }
@@ -36,7 +36,7 @@ extension AppFlowController_CoreTests {
                 newPage("2"),
                 newPage("3")
             ]
-        try! flowController.register(path: pages)
+        try! flowController.register(pathComponents: pages)
         do {
             let paths = try flowController.pathComponents(for: pages[0][1])
             XCTAssertEqual(paths, "1/2")
@@ -48,7 +48,7 @@ extension AppFlowController_CoreTests {
     func testPathComponents_pathIsRoot() {
         prepareFlowController()
         let pages = newPage("1") => newPage("2")
-        try! flowController.register(path: pages)
+        try! flowController.register(pathComponents: pages)
         do {
             let paths = try flowController.pathComponents(for: pages[0])
             XCTAssertEqual(paths, "1")
@@ -65,13 +65,13 @@ extension AppFlowController_CoreTests {
                 newPage("2") => page,
                 newPage("3") => page
             ]
-        try! flowController.register(path: pages)
+        try! flowController.register(pathComponents: pages)
         do {
             _ = try flowController.pathComponents(for: page)
             XCTFail()
         } catch let error {
-            if let afcError = error as? AppFlowControllerError {
-                XCTAssertEqual(afcError, AppFlowControllerError.missingVariant(identifier: "4"))
+            if let afcError = error as? AFCError {
+                XCTAssertEqual(afcError, AFCError.missingVariant(identifier: "4"))
             } else {
                 XCTFail()
             }
@@ -81,13 +81,13 @@ extension AppFlowController_CoreTests {
     func testPathComponents_variants_pageDoesntSupportVariant() {
         prepareFlowController()
         let pages = newPage("1") => newPage("2") => newPage("3")
-        try! flowController.register(path: pages)
+        try! flowController.register(pathComponents: pages)
         do {
             _ = try flowController.pathComponents(for: pages[1], variant: pages[0])
             XCTFail()
         } catch let error {
-            if let afcError = error as? AppFlowControllerError {
-                XCTAssertEqual(afcError, AppFlowControllerError.variantNotSupported(identifier: "2"))
+            if let afcError = error as? AFCError {
+                XCTAssertEqual(afcError, AFCError.variantNotSupported(identifier: "2"))
             } else {
                 XCTFail()
             }
@@ -102,13 +102,13 @@ extension AppFlowController_CoreTests {
                 newPage("2") => page,
                 newPage("3") => page
         ]
-        try! flowController.register(path: pages)
+        try! flowController.register(pathComponents: pages)
         do {
             _ = try flowController.pathComponents(for: page, variant: pages[0][0])
             XCTFail()
         } catch let error {
-            if let afcError = error as? AppFlowControllerError {
-                XCTAssertEqual(afcError, AppFlowControllerError.unregisteredPathIdentifier(identifier: "1_4"))
+            if let afcError = error as? AFCError {
+                XCTAssertEqual(afcError, AFCError.unregisteredPathIdentifier(identifier: "1_4"))
             } else {
                 XCTFail()
             }
@@ -123,7 +123,7 @@ extension AppFlowController_CoreTests {
                 newPage("2") => page,
                 newPage("3") => page
         ]
-        try! flowController.register(path: pages)
+        try! flowController.register(pathComponents: pages)
         do {
             let paths1 = try flowController.pathComponents(for: page, variant: pages[0][1])
             let paths2 = try flowController.pathComponents(for: page, variant: pages[1][1])
@@ -138,10 +138,10 @@ extension AppFlowController_CoreTests {
     
     func testCurrentPathComponents_thereIsNoVisibleStep() {
         prepareFlowController()
-        let pages = newPage("1")
+        let page = newPage("1")
         do {
-            try flowController.register(path: pages)
-            XCTAssertNil(flowController.currentPathComponents())
+            try flowController.register(pathComponent: page)
+            XCTAssertNil(flowController.currentPathDescription)
         } catch _ {
             XCTFail()
         }
@@ -151,9 +151,9 @@ extension AppFlowController_CoreTests {
         prepareFlowController()
         let pages = newPage("1") => newPage("2")
         do {
-            try flowController.register(path: pages)
-            try flowController.show(page: pages[1])
-            XCTAssertEqual(flowController.currentPathComponents(), "1/2")
+            try flowController.register(pathComponents: pages)
+            try flowController.show(pages[1])
+            XCTAssertEqual(flowController.currentPathDescription, "1/2")
         } catch _ {
             XCTFail()
         }
@@ -168,9 +168,9 @@ extension AppFlowController_CoreTests {
                 newPage("3") => page
         ]
         do {
-            try flowController.register(path: pages)
-            try flowController.show(page: page, variant: pages[0][1])
-            XCTAssertEqual(flowController.currentPathComponents(), "1/2/2_4")
+            try flowController.register(pathComponents: pages)
+            try flowController.show(page, variant: pages[0][1])
+            XCTAssertEqual(flowController.currentPathDescription, "1/2/2_4")
         } catch _ {
             XCTFail()
         }

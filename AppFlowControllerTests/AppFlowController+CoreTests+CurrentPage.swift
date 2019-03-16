@@ -12,20 +12,20 @@ import XCTest
 extension AppFlowController_CoreTests {
     
     func testCurrentPage_missingPrepareMethodInvokation() {
-        XCTAssertNil(flowController.currentPage())
+        XCTAssertNil(flowController.currentPathComponent)
     }
     
     func testCurrentPage_rootNavigationControllerIsEmpty() {
         prepareFlowController()
-        XCTAssertNil(flowController.currentPage())
+        XCTAssertNil(flowController.currentPathComponent)
     }
     
     func testCurrentPage_thereIsNoShownPage() {
         prepareFlowController()
         let pages = newPage("1") => newPage("2")
         do {
-            try flowController.register(path: pages)
-            XCTAssertNil(flowController.currentPage())
+            try flowController.register(pathComponents: pages)
+            XCTAssertNil(flowController.currentPathComponent)
         } catch _ {
             XCTFail()
         }
@@ -35,9 +35,9 @@ extension AppFlowController_CoreTests {
         prepareFlowController()
         let pages = newPage("1") => newPage("2")
         do {
-            try flowController.register(path: pages)
+            try flowController.register(pathComponents: pages)
             flowController.rootNavigationController?.viewControllers = [UIViewController()]
-            XCTAssertNil(flowController.currentPage())
+            XCTAssertNil(flowController.currentPathComponent)
         } catch _ {
             XCTFail()
         }
@@ -47,9 +47,9 @@ extension AppFlowController_CoreTests {
         prepareFlowController()
         let pages = newPage("1") => newPage("2")
         do {
-            try flowController.register(path: pages)
-            try flowController.show(page: pages[1])
-            XCTAssertEqual(flowController.currentPage(), pages[1])
+            try flowController.register(pathComponents: pages)
+            try flowController.show(pages[1])
+            XCTAssertEqual(flowController.currentPathComponent, pages[1])
         } catch _ {
             XCTFail()
         }
@@ -62,11 +62,11 @@ extension AppFlowController_CoreTests {
             newPage("3") => newPage("4", supportVariants: true)
         ]
         do {
-            try flowController.register(path: pages)
-            try flowController.show(page: pages[0][2], variant: pages[0][1], animated: false)
+            try flowController.register(pathComponents: pages)
+            try flowController.show(pages[0][2], variant: pages[0][1], animated: false)
             var expectedPage = pages[0][2]
             expectedPage.variantName = "2"
-            XCTAssertEqual(flowController.currentPage(), expectedPage)
+            XCTAssertEqual(flowController.currentPathComponent, expectedPage)
         } catch _ {
             XCTFail()
         }

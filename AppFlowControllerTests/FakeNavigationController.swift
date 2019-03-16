@@ -9,7 +9,6 @@
 import UIKit
 
 class FakeNavigationController: UINavigationController {
-
     override func pushViewController(_ viewController: UIViewController, animated: Bool, completion: (() -> ())?) {
         viewControllers.append(viewController)
         completion?()
@@ -25,5 +24,4 @@ class FakeNavigationController: UINavigationController {
         self.viewControllers = viewControllers
         completion?()
     }
-    
 }

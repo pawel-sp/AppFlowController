@@ -13,16 +13,16 @@ class AppFlowController_OperatorsTests: XCTestCase {
     
     // MARK: - Helpers
     
-    func newPage() -> AppFlowControllerPage {
-        return AppFlowControllerPage(
+    func newPage() -> FlowPathComponent {
+        return FlowPathComponent(
             name: "",
-            viewControllerBlock: { UIViewController() },
+            viewControllerInit: { UIViewController() },
             viewControllerType: UIViewController.self
         )
     }
     
-    func newTransition() -> AppFlowControllerTransition {
-        return PushPopAppFlowControllerTransition()
+    func newTransition() -> FlowTransition {
+        return PushPopFlowTransition()
     }
     
     // MARK: - Tests
@@ -36,8 +36,8 @@ class AppFlowController_OperatorsTests: XCTestCase {
         let item       = newPage()
         let transition = newTransition()
         let result     = item => transition
-        XCTAssertEqual(item, result.page)
-        XCTAssertTrue(transition.isEqual(result.transition))
+        XCTAssertEqual(item, result.pathComponent)
+        XCTAssertTrue(transition === result.transition)
     }
 
     // MARK: - => (AppFlowControllerTransition, AppFlowControllerItem) -> AppFlowControllerItem
@@ -46,8 +46,8 @@ class AppFlowController_OperatorsTests: XCTestCase {
         let item       = newPage()
         let transition = newTransition()
         let result     = transition => item
-        XCTAssertTrue(result.forwardTransition?.isEqual(transition) ?? false)
-        XCTAssertTrue(result.backwardTransition?.isEqual(transition) ?? false)
+        XCTAssertTrue(result.forwardTransition === transition)
+        XCTAssertTrue(result.backwardTransition === transition)
     }
 
     // MARK: - => (AppFlowControllerItem, AppFlowControllerItem) -> [AppFlowControllerItem]
@@ -58,8 +58,8 @@ class AppFlowController_OperatorsTests: XCTestCase {
         item2.forwardTransition  = nil
         item2.backwardTransition = nil
         let result = item1 => item2
-        XCTAssertTrue(result[1].forwardTransition?.isEqual(PushPopAppFlowControllerTransition.default) ?? false)
-        XCTAssertTrue(result[1].backwardTransition?.isEqual(PushPopAppFlowControllerTransition.default) ?? false)
+        XCTAssertTrue(result[1].forwardTransition === PushPopFlowTransition.default)
+        XCTAssertTrue(result[1].backwardTransition === PushPopFlowTransition.default)
     }
 
     func testArrow3_currentTransitionsAreNotNil() {
@@ -70,8 +70,8 @@ class AppFlowController_OperatorsTests: XCTestCase {
         item2.forwardTransition  = item2ForwardTransition
         item2.backwardTransition = item2BackwardTransition
         let result = item1 => item2
-        XCTAssertTrue(result[1].forwardTransition?.isEqual(item2ForwardTransition) ?? false)
-        XCTAssertTrue(result[1].backwardTransition?.isEqual(item2BackwardTransition) ?? false)
+        XCTAssertTrue(result[1].forwardTransition === item2ForwardTransition)
+        XCTAssertTrue(result[1].backwardTransition === item2BackwardTransition)
     }
     
     // MARK: - => ((AppFlowControllerPage, AppFlowControllerTransition), AppFlowControllerPage) -> [AppFlowControllerPage]
@@ -83,8 +83,8 @@ class AppFlowController_OperatorsTests: XCTestCase {
         let result            = itemAndTransition => item
         XCTAssertNil(result[0].forwardTransition)
         XCTAssertNil(result[0].backwardTransition)
-        XCTAssertTrue(result[1].forwardTransition?.isEqual(transition) ?? false)
-        XCTAssertTrue(result[1].backwardTransition?.isEqual(transition) ?? false)
+        XCTAssertTrue(result[1].forwardTransition === transition)
+        XCTAssertTrue(result[1].backwardTransition === transition)
     }
     
     // MARK: - => ([AppFlowControllerPage], AppFlowControllerTransition) -> ([AppFlowControllerPage], AppFlowControllerTransition)
@@ -93,15 +93,15 @@ class AppFlowController_OperatorsTests: XCTestCase {
         let pages      = [newPage()]
         let transition = newTransition()
         let result     = pages => transition
-        XCTAssertEqual(result.pages, pages)
-        XCTAssertTrue(result.transition.isEqual(transition))
+        XCTAssertEqual(result.pathComponents, pages)
+        XCTAssertTrue(result.transition === transition)
     }
     
     // MARK: - => (AppFlowControllerTransition, [AppFlowControllerPage]) -> [AppFlowControllerPage]
     
     func testArrow6_emptyPages() {
         let transition = newTransition()
-        let pages:[AppFlowControllerPage] = []
+        let pages: [FlowPathComponent] = []
         let result = transition => pages
         XCTAssertEqual(result, pages)
     }
@@ -112,7 +112,7 @@ class AppFlowController_OperatorsTests: XCTestCase {
             newPage(),
             newPage()
         ]
-        let result     = transition => pages
+        let result = transition => pages
         var expectedPage1 = newPage()
         expectedPage1.forwardTransition  = transition
         expectedPage1.backwardTransition = transition
@@ -126,19 +126,19 @@ class AppFlowController_OperatorsTests: XCTestCase {
     // MARK: - => ([AppFlowControllerPage], AppFlowControllerPage) -> [AppFlowControllerPage]
     
     func testArrow7_transitionIsNil() {
-        let pages  = [newPage()]
-        var page   = newPage()
+        let pages = [newPage()]
+        var page = newPage()
         let result = pages => page
-        page.forwardTransition  = PushPopAppFlowControllerTransition.default
-        page.backwardTransition = PushPopAppFlowControllerTransition.default
+        page.forwardTransition = PushPopFlowTransition.default
+        page.backwardTransition = PushPopFlowTransition.default
         let expectedPages = pages + [page]
         XCTAssertEqual(result, expectedPages)
     }
     
     func testArrow7_transitionIsNotNil() {
-        let pages  = [newPage()]
-        var page   = newPage()
-        page.forwardTransition  = newTransition()
+        let pages = [newPage()]
+        var page = newPage()
+        page.forwardTransition = newTransition()
         page.backwardTransition = newTransition()
         let result = pages => page
         XCTAssertEqual(result, pages + [page])
@@ -148,7 +148,7 @@ class AppFlowController_OperatorsTests: XCTestCase {
     
     func testArrow8_rightPagesArrayIsEmpty() {
         let leftPages = [newPage()]
-        let rightPages:[AppFlowControllerPage] = []
+        let rightPages: [FlowPathComponent] = []
         let result = leftPages => rightPages
         XCTAssertEqual(result, leftPages + rightPages)
     }
@@ -159,8 +159,8 @@ class AppFlowController_OperatorsTests: XCTestCase {
         let leftPages  = [leftPage]
         let rightPages = [rightPage]
         let result     = leftPages => rightPages
-        rightPage.forwardTransition  = PushPopAppFlowControllerTransition.default
-        rightPage.backwardTransition = PushPopAppFlowControllerTransition.default
+        rightPage.forwardTransition  = PushPopFlowTransition.default
+        rightPage.backwardTransition = PushPopFlowTransition.default
         XCTAssertEqual(result, leftPages + [rightPage])
     }
     
@@ -179,7 +179,7 @@ class AppFlowController_OperatorsTests: XCTestCase {
     
     func testArrow9_rightPagesIsEmpty() {
         let leftPage   = newPage()
-        let rightPages:[AppFlowControllerPage] = []
+        let rightPages: [FlowPathComponent] = []
         let result     = leftPage => rightPages
         XCTAssertEqual(result, [leftPage] + rightPages)
     }
@@ -189,8 +189,8 @@ class AppFlowController_OperatorsTests: XCTestCase {
         var rightPage  = newPage()
         let rightPages = [rightPage]
         let result     = leftPage => rightPages
-        rightPage.forwardTransition  = PushPopAppFlowControllerTransition.default
-        rightPage.backwardTransition = PushPopAppFlowControllerTransition.default
+        rightPage.forwardTransition  = PushPopFlowTransition.default
+        rightPage.backwardTransition = PushPopFlowTransition.default
         let expectedPages = [leftPage] + [rightPage]
         XCTAssertEqual(result, expectedPages)
     }
@@ -229,8 +229,8 @@ class AppFlowController_OperatorsTests: XCTestCase {
         
         let result     = leftPage =>> rightPages
         
-        rightPage2.forwardTransition  = PushPopAppFlowControllerTransition.default
-        rightPage2.backwardTransition = PushPopAppFlowControllerTransition.default
+        rightPage2.forwardTransition  = PushPopFlowTransition.default
+        rightPage2.backwardTransition = PushPopFlowTransition.default
         let expectedResult = [
             [
                 leftPage,
@@ -266,10 +266,10 @@ class AppFlowController_OperatorsTests: XCTestCase {
         ]
         
         let result = leftPage =>> rightPages
-        rightPage1.forwardTransition  = PushPopAppFlowControllerTransition.default
-        rightPage1.backwardTransition = PushPopAppFlowControllerTransition.default
-        rightPage3.forwardTransition  = PushPopAppFlowControllerTransition.default
-        rightPage3.backwardTransition = PushPopAppFlowControllerTransition.default
+        rightPage1.forwardTransition  = PushPopFlowTransition.default
+        rightPage1.backwardTransition = PushPopFlowTransition.default
+        rightPage3.forwardTransition  = PushPopFlowTransition.default
+        rightPage3.backwardTransition = PushPopFlowTransition.default
         let expectedResult = [
             [
                 leftPage,
@@ -310,10 +310,10 @@ class AppFlowController_OperatorsTests: XCTestCase {
         ]
         
         let result = leftPage =>> rightPages
-        rightPage1.forwardTransition  = PushPopAppFlowControllerTransition.default
-        rightPage1.backwardTransition = PushPopAppFlowControllerTransition.default
-        rightPage3.forwardTransition  = PushPopAppFlowControllerTransition.default
-        rightPage3.backwardTransition = PushPopAppFlowControllerTransition.default
+        rightPage1.forwardTransition  = PushPopFlowTransition.default
+        rightPage1.backwardTransition = PushPopFlowTransition.default
+        rightPage3.forwardTransition  = PushPopFlowTransition.default
+        rightPage3.backwardTransition = PushPopFlowTransition.default
         
         let expectedResult = [
             [
@@ -348,8 +348,8 @@ class AppFlowController_OperatorsTests: XCTestCase {
         
         let result     = [leftPage] =>> rightPages
         
-        rightPage2.forwardTransition  = PushPopAppFlowControllerTransition.default
-        rightPage2.backwardTransition = PushPopAppFlowControllerTransition.default
+        rightPage2.forwardTransition  = PushPopFlowTransition.default
+        rightPage2.backwardTransition = PushPopFlowTransition.default
         let expectedResult = [
             [
                 leftPage,
@@ -385,10 +385,10 @@ class AppFlowController_OperatorsTests: XCTestCase {
         ]
         
         let result = [leftPage] =>> rightPages
-        rightPage1.forwardTransition  = PushPopAppFlowControllerTransition.default
-        rightPage1.backwardTransition = PushPopAppFlowControllerTransition.default
-        rightPage3.forwardTransition  = PushPopAppFlowControllerTransition.default
-        rightPage3.backwardTransition = PushPopAppFlowControllerTransition.default
+        rightPage1.forwardTransition  = PushPopFlowTransition.default
+        rightPage1.backwardTransition = PushPopFlowTransition.default
+        rightPage3.forwardTransition  = PushPopFlowTransition.default
+        rightPage3.backwardTransition = PushPopFlowTransition.default
         let expectedResult = [
             [
                 leftPage,
@@ -429,10 +429,10 @@ class AppFlowController_OperatorsTests: XCTestCase {
         ]
         
         let result = [leftPage] =>> rightPages
-        rightPage1.forwardTransition  = PushPopAppFlowControllerTransition.default
-        rightPage1.backwardTransition = PushPopAppFlowControllerTransition.default
-        rightPage3.forwardTransition  = PushPopAppFlowControllerTransition.default
-        rightPage3.backwardTransition = PushPopAppFlowControllerTransition.default
+        rightPage1.forwardTransition  = PushPopFlowTransition.default
+        rightPage1.backwardTransition = PushPopFlowTransition.default
+        rightPage3.forwardTransition  = PushPopFlowTransition.default
+        rightPage3.backwardTransition = PushPopFlowTransition.default
         
         let expectedResult = [
             [

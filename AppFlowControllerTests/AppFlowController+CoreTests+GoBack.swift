@@ -18,11 +18,11 @@ extension AppFlowController_CoreTests {
     }
     
     func testGoBack_visibleStep_onePageBackward() {
-        prepareFlowController(fakeNC: true)
+        prepareFlowController()
         let pages = newPage("1") => newPage("2")
         do {
-            try flowController.register(path: pages)
-            try flowController.show(page: pages[1], animated: false)
+            try flowController.register(pathComponents: pages)
+            try flowController.show(pages[1], animated: false)
             flowController.goBack(animated:false)
             
             XCTAssertEqual(currentVCNames, ["1"])
@@ -32,16 +32,14 @@ extension AppFlowController_CoreTests {
     }
     
     func testGoBack_visibleStep_twoPagesBackward_oneIsSkipped() {
-        prepareFlowController(fakeNC: true)
+        prepareFlowController()
         let pages = newPage("1") => newPage("2") => newPage("3") => newPage("4")
         do {
-            try flowController.register(path: pages)
+            try flowController.register(pathComponents: pages)
             try flowController.show(
-                page: pages[3],
+                pages[3],
                 animated: false,
-                skipPages: [
-                    pages[2]
-                ]
+                skipPathComponents: [pages[2]]
             )
             
             flowController.goBack(animated:false)
@@ -53,11 +51,11 @@ extension AppFlowController_CoreTests {
     }
     
     func testGoBack_visibleStep_goingBackFromRootStep() {
-        prepareFlowController(fakeNC: true)
+        prepareFlowController()
         let pages = newPage("1") => newPage("2")
         do {
-            try flowController.register(path: pages)
-            try flowController.show(page: pages[0], animated: false)
+            try flowController.register(pathComponents: pages)
+            try flowController.show(pages[0], animated: false)
             
             flowController.goBack(animated:false)
             

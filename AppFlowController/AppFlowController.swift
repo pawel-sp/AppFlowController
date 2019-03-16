@@ -32,14 +32,14 @@ open class AppFlowController {
     // MARK: - Properties
     
     public static let shared = AppFlowController()
-    public var rootNavigationController:UINavigationController?
+    public var rootNavigationController: UINavigationController?
     
-    private(set) var rootPathStep:PathStep?
-    let tracker:Tracker
+    private(set) var rootPathStep: PathStep?
+    let tracker: Tracker
     
     // MARK: - Init
     
-    init(trackerClass:Tracker.Type) {
+    init(trackerClass: Tracker.Type) {
         tracker = trackerClass.init()
     }
     
@@ -55,37 +55,37 @@ open class AppFlowController {
         - Parameter window:                     Current app's window.
         - Parameter rootNavigationController:   AppFlowController requires that root navigation controller is kind of UINavigationController.
     */
-    public func prepare(for window:UIWindow, rootNavigationController:UINavigationController = UINavigationController()) {
+    public func prepare(for window: UIWindow, rootNavigationController: UINavigationController = UINavigationController()) {
         self.rootNavigationController = rootNavigationController
         window.rootViewController = rootNavigationController
     }
     
-    public func register(path:AppFlowControllerPage) throws {
-        try register(path:[path])
+    public func register(pathComponent: FlowPathComponent) throws {
+        try register(pathComponents: [pathComponent])
     }
 
-    public func register(path:[AppFlowControllerPage]) throws {
-        if let lastPath = path.last, !lastPath.supportVariants, rootPathStep?.search(page: lastPath) != nil {
-            throw AppFlowControllerError.pathAlreadyRegistered(identifier: lastPath.identifier)
+    public func register(pathComponents: [FlowPathComponent]) throws {
+        if let lastPathComponent = pathComponents.last, !lastPathComponent.supportVariants, rootPathStep?.search(pathComponent: lastPathComponent) != nil {
+            throw AFCError.pathAlreadyRegistered(identifier: lastPathComponent.identifier)
         }
         
-        var previousStep:PathStep?
+        var previousStep: PathStep?
         
-        for var element in path {
-            if let found = rootPathStep?.search(page: element) {
+        for var element in pathComponents {
+            if let found = rootPathStep?.search(pathComponent: element) {
                 previousStep = found
                 continue
             } else {
                 if let previous = previousStep {
                     if element.supportVariants {
-                        element.variantName = previous.current.identifier
+                        element.variantName = previous.pathComponent.identifier
                     }
                     if element.forwardTransition == nil || element.backwardTransition == nil {
-                        throw AppFlowControllerError.missingPathStepTransition(identifier: element.identifier)
+                        throw AFCError.missingPathStepTransition(identifier: element.identifier)
                     }
-                    previousStep = previous.add(page: element)
+                    previousStep = previous.add(pathComponent: element)
                 } else {
-                    rootPathStep = PathStep(page: element)
+                    rootPathStep = PathStep(pathComponent: element)
                     previousStep = rootPathStep
                 }
             }
@@ -93,25 +93,25 @@ open class AppFlowController {
     }
     
     /**
-        Before presenting any page you need to register it using whole path.
+        Before presenting any page you need to register it using path components.
      
-        - Parameter path:   Sequences of pages which represent all possible paths inside the app. The best way to register pages is to use => and =>> operators which assign transitions directly to pages.
+        - Parameter pathComponents:   Sequences of pages which represent all possible paths inside the app. The best way to register pages is to use => and =>> operators which assign transitions directly to pages.
         - Throws:           
-            AppFlowControllerError.missingPathStepTransition if forward or backward transition of any page is nil
-            AppFlowControllerError.pathAlreadyRegistered     if that page was registered before (all pages need to have unique name). If you want to use the same page few times in different places it's necessary to set supportVariants property to true. 
+            AFCError.missingPathStepTransition if forward or backward transition of any page is nil
+            AFCError.pathAlreadyRegistered     if that page was registered before (all pages need to have unique name). If you want to use the same page few times in different places it's necessary to set supportVariants property to true.
      */
-    public func register(path:[[AppFlowControllerPage]]) throws {
-        for subpath in path {
-            try register(path: subpath)
+    public func register(pathComponents: [[FlowPathComponent]]) throws {
+        for subPathComponents in pathComponents {
+            try register(pathComponents: subPathComponents)
         }
     }
     
     // MARK: - Navigation
 
     /**
-        Display view controller configured inside the page.
+        Display view controller configured inside the path.
      
-        - Parameter page:                   Page to present.
+        - Parameter pathComponent:          Page to present.
         - Parameter variant:                If page supports variants you need to pass the correct variant (previous page). Default = nil.
         - Parameter parameters:             For every page you can set single string value as it's parameter. It works also for pages with variants. Default = nil.
         - Parameter animated:               Determines if presenting page should be animated or not. Default = true.
@@ -119,55 +119,48 @@ open class AppFlowController {
         - Parameter skipPages:              Pages to skip.
      
         - Throws:
-            AppFlowControllerError.missingConfiguration       if prepare(UIWindow, UINavigationController) wasn't invoked before.
-            AppFlowControllerError.showingSkippedPage         if page was previously skipped (for example when you're trying go back to page which before was skipped and it's not present inside the navigation controller).
-            AppFlowControllerError.missingVariant             if page's property supportVariants == true you need to pass variant property, otherwise it's not possible to set which page should be presenter.
-            AppFlowControllerError.variantNotSupported        if page's property supportVariants == false you cannot pass variant property, because there is only one variant of that page.
-            AppFlowControllerError.unregisteredPathIdentifier page need to be registered before showing it.
+            AFCError.missingConfiguration       if prepare(UIWindow, UINavigationController) wasn't invoked before.
+            AFCError.showingSkippedPage         if page was previously skipped (for example when you're trying go back to page which before was skipped and it's not present inside the navigation controller).
+            AFCError.missingVariant             if page's property supportVariants == true you need to pass variant property, otherwise it's not possible to set which page should be presenter.
+            AFCError.variantNotSupported        if page's property supportVariants == false you cannot pass variant property, because there is only one variant of that page.
+            AFCError.unregisteredPathIdentifier page need to be registered before showing it.
     */
     open func show(
-        page:AppFlowControllerPage,
-        variant:AppFlowControllerPage? = nil,
-        parameters:[AppFlowControllerParameter]? = nil,
-        animated:Bool = true,
-        skipDismissTransitions:Bool = false,
-        skipPages:[AppFlowControllerPage]? = nil
-    ) throws {
+        _ pathComponent: FlowPathComponent,
+        variant: FlowPathComponent? = nil,
+        parameters: [TransitionParameter]? = nil,
+        animated: Bool = true,
+        skipDismissTransitions: Bool = false,
+        skipPathComponents: [FlowPathComponent]? = nil) throws {
         
         guard let rootNavigationController = rootNavigationController else {
-            throw AppFlowControllerError.missingConfiguration
+            throw AFCError.missingConfiguration
         }
-        
-        let foundStep        = try pathStep(from: page, variant: variant)
-        let newPages         = rootPathStep?.allParentPages(from: foundStep) ?? []
-        let currentStep      = visibleStep()
-        let currentPages     = currentStep == nil ? [] : (rootPathStep?.allParentPages(from: currentStep!) ?? [])
-        let keysToClearSkip  = newPages.filter({ !currentPages.contains($0) }).map({ $0.identifier })
+        let foundStep = try pathStep(from: pathComponent, variant: variant)
+        let newPathComponents = rootPathStep?.allParentPathComponents(from: foundStep) ?? []
+        let currentStep = visibleStep
+        let currentPathComponents = currentStep == nil ? [] : (rootPathStep?.allParentPathComponents(from: currentStep!) ?? [])
+        let keysToClearSkip = newPathComponents.filter({ !currentPathComponents.contains($0) }).map({ $0.identifier })
         
         if let currentStep = currentStep {
-            
-            let distance                = PathStep.distanceBetween(step: currentStep, and: foundStep)
-            let dismissCounter          = distance.up
-            let _                       = distance.down
-            let dismissRange:Range<Int> = dismissCounter == 0 ? 0..<0 : (currentPages.count - dismissCounter) ..< currentPages.count
-            let displayRange:Range<Int> = 0 ..< newPages.count
+            let distance = PathStep.distanceBetween(step: currentStep, and: foundStep)
+            let dismissCounter = distance.up
+            let _ = distance.down
+            let dismissRange: Range<Int> = dismissCounter == 0 ? 0..<0 : (currentPathComponents.count - dismissCounter) ..< currentPathComponents.count
+            let displayRange: Range<Int> = 0 ..< newPathComponents.count
          
-            try verify(pages: currentPages, distance: distance)
-            
-            dismiss(pages: currentPages, fromIndexRange: dismissRange, animated: animated, skipTransition: skipDismissTransitions) {
-                self.register(parameters:parameters, for: newPages, skippedPages: skipPages)
+            try verify(pathComponents: currentPathComponents, distance: distance)
+            dismiss(pathComponents: currentPathComponents, fromIndexRange: dismissRange, animated: animated, skipTransition: skipDismissTransitions) {
+                self.register(parameters: parameters, for: newPathComponents, skippedPathComponents: skipPathComponents)
                 self.tracker.disableSkip(for: keysToClearSkip)
-                self.display(pages: newPages, fromIndexRange: displayRange, animated: animated, skipPages: skipPages, completionBlock: nil)
+                self.display(pathComponents: newPathComponents, fromIndexRange: displayRange, animated: animated, skipPathComponents: skipPathComponents, completion: nil)
             }
-            
         } else {
-            
             rootNavigationController.viewControllers.removeAll()
             tracker.reset()
-            register(parameters:parameters, for: newPages, skippedPages: skipPages)
+            register(parameters: parameters, for: newPathComponents, skippedPathComponents: skipPathComponents)
             tracker.disableSkip(for: keysToClearSkip)
-            display(pages: newPages, fromIndexRange: 0..<newPages.count, animated: animated, skipPages: skipPages, completionBlock: nil)
-            
+            display(pathComponents: newPathComponents, fromIndexRange: 0..<newPathComponents.count, animated: animated, skipPathComponents: skipPathComponents, completion: nil)
         }
     }
     
@@ -176,79 +169,74 @@ open class AppFlowController {
      
         - Parameter animated: Determines if presenting page should be animated or not. Default = true.
     */
-    public func goBack(animated:Bool = true) {
-        guard let visible        = visibleStep() else { return }
-        guard let page           = visible.firstParentPage(where: { tracker.viewController(for: $0.identifier) != nil }) else { return }
-        guard let viewController = tracker.viewController(for: page.identifier) else { return }
-        
-        visible.current.backwardTransition?.backwardTransitionBlock(animated: animated){}(viewController)
+    public func goBack(animated: Bool = true) {
+        guard let visible = visibleStep else { return }
+        guard let pathComponent = visible.firstParentPathComponent(where: { tracker.viewController(for: $0.identifier) != nil }) else { return }
+        guard let viewController = tracker.viewController(for: pathComponent.identifier) else { return }
+        visible.pathComponent.backwardTransition?.performBackwardTransition(animated: animated){}(viewController)
     }
     
     /**
-        Pops navigation controller to specified page. It always current view controller's navigation controller. If page isn't not present in current navigation controller nothing would happen.
+        Pops navigation controller to specified path. It always current view controller's navigation controller. If page isn't not present in current navigation controller nothing would happen.
      
-        - Parameter page:       Page to pop.
-        - Parameter animated:   Determines if transition should be animated or not.
+        - Parameter pathComponent: Path component to pop.
+        - Parameter animated:      Determines if transition should be animated or not.
     */
-    public func pop(to page:AppFlowControllerPage, animated:Bool = true) throws {
-        
+    public func pop(to pathComponent: FlowPathComponent, animated: Bool = true) throws {
         guard let rootNavigationController = rootNavigationController else {
-            throw AppFlowControllerError.missingConfiguration
+            throw AFCError.missingConfiguration
         }
-        
-        guard let foundStep = rootPathStep?.search(page: page) else {
-            throw AppFlowControllerError.unregisteredPathIdentifier(identifier: page.identifier)
+        guard let foundStep = rootPathStep?.search(pathComponent: pathComponent) else {
+            throw AFCError.unregisteredPathIdentifier(identifier: pathComponent.identifier)
         }
-        
-        guard let targetViewController = tracker.viewController(for: foundStep.current.identifier) else {
-            throw AppFlowControllerError.popToSkippedPath(identifier: foundStep.current.identifier)
+        guard let targetViewController = tracker.viewController(for: foundStep.pathComponent.identifier) else {
+            throw AFCError.popToSkippedPath(identifier: foundStep.pathComponent.identifier)
         }
-        
         rootNavigationController.visible.navigationController?.popToViewController(targetViewController, animated: animated)
     }
     
     /**
-        If you presented view controller without AppFlowController you need to update current page. Use that method inside the viewDidLoad method of presented view controller to make sure that whole step tree still works.
+        If you presented view controller without AppFlowController you need to update current path. Use that method inside the viewDidLoad method of presented view controller to make sure that whole step tree still works.
      
         - Parameter viewController: Presented view controller.
-        - Parameter name:           Name of page associated with that view controller. That page need to be registered.
+        - Parameter name:           Name of path associated with that view controller. That page need to be registered.
      
         - Throws:
-            AppFlowControllerError.unregisteredPathIdentifier if page wasn't registered before.
+            AFCError.unregisteredPathIdentifier if page wasn't registered before.
     */
-    public func updateCurrentPage(with viewController:UIViewController, for name:String) throws {
+    public func updateCurrentPath(with viewController: UIViewController, for name:String) throws {
         if let _ = rootPathStep?.search(identifier: name) {
             self.tracker.register(viewController: viewController, for: name)
         } else {
-            throw AppFlowControllerError.unregisteredPathIdentifier(identifier: name)
+            throw AFCError.unregisteredPathIdentifier(identifier: name)
         }
     }
     
     /**
         Returns string representation of whole path to specified page, for example home/start/login.
      
-        - Parameter page:       Page to receive all path steps.
-        - Parameter variant:    Variant of that page (previous page). Use it only if page supports variants.
+        - Parameter pathComponent: Path component to receive all path steps.
+        - Parameter variant:       Variant of that page (previous path component). Use it only if page supports variants.
      
         - Throws:
-             AppFlowControllerError.missingVariant             if page's property supportVariants == true you need to pass variant property, otherwise it's not possible to set which page should be presenter.
-             AppFlowControllerError.variantNotSupported        if page's property supportVariants == false you cannot pass variant property, because there is only one variant of that page.
-             AppFlowControllerError.unregisteredPathIdentifier page need to be registered before showing it.
+             AFCError.missingVariant             if page's property supportVariants == true you need to pass variant property, otherwise it's not possible to set which page should be presenter.
+             AFCError.variantNotSupported        if page's property supportVariants == false you cannot pass variant property, because there is only one variant of that page.
+             AFCError.unregisteredPathIdentifier page need to be registered before showing it.
     */
-    open func pathComponents(for page:AppFlowControllerPage, variant:AppFlowControllerPage? = nil) throws -> String {
-        let foundStep   = try pathStep(from: page, variant: variant)
-        let pages       = rootPathStep?.allParentPages(from: foundStep) ?? []
-        let pageStrings = pages.map({ $0.identifier })
-        return pageStrings.joined(separator: "/")
+    open func pathComponents(for pathComponent: FlowPathComponent, variant: FlowPathComponent? = nil) throws -> String {
+        let foundStep = try pathStep(from: pathComponent, variant: variant)
+        let pathComponents = rootPathStep?.allParentPathComponents(from: foundStep) ?? []
+        let pathComponentStrings = pathComponents.map{ $0.identifier }
+        return pathComponentStrings.joined(separator: "/")
     }
     
     /**
-        Returns string representation of whole path to current page, for example home/start/login.
+        Returns string representation of whole path to current path, for example home/start/login.
     */
-    open func currentPathComponents() -> String? {
-        if let visibleStep = visibleStep() {
-            let items       = rootPathStep?.allParentPages(from: visibleStep) ?? []
-            let itemStrings = items.map({ $0.identifier })
+    open var currentPathDescription: String? {
+        if let visibleStep = visibleStep {
+            let items = rootPathStep?.allParentPathComponents(from: visibleStep) ?? []
+            let itemStrings = items.map{ $0.identifier }
             return itemStrings.joined(separator: "/")
         } else {
             return nil
@@ -256,100 +244,93 @@ open class AppFlowController {
     }
     
     /**
-        Returns currenlty visible page.
+        Returns currenlty visible path.
     */
-    open func currentPage() -> AppFlowControllerPage? {
-        return visibleStep()?.current
+    open var currentPathComponent: FlowPathComponent? {
+        return visibleStep?.pathComponent
     }
     
     /**
-        Returns parameter for currently visible page. It's nil if page was presented without any parametes.
+        Returns parameter for currently visible path. It's nil if path was presented without any parametes.
     */
-    open func currentPageParameter() -> String? {
-        if let currentPageID = currentPage()?.identifier {
-            return tracker.parameter(for: currentPageID)
+    open var currentPathParameter: String? {
+        if let currentPathID = currentPathComponent?.identifier {
+            return tracker.parameter(for: currentPathID)
         } else {
             return nil
         }
     }
     
     /**
-        Returns parameter for specified page. It's nil if page was presented without any parametes.
+        Returns parameter for specified path. It's nil if page was presented without any parametes.
      
-        - Parameter page:     Page to retrieve parameter.
-        - Parameter variant:  Variant of that page (previous page). Use it only if page supports variants.
+        - Parameter pathComponent: Path component to retrieve parameter.
+        - Parameter variant:       Variant of that path (previous path). Use it only if page supports variants.
      
         - Throws:
-             AppFlowControllerError.missingVariant             if page's property supportVariants == true you need to pass variant property, otherwise it's not possible to set which page should be presenter.
-             AppFlowControllerError.variantNotSupported        if page's property supportVariants == false you cannot pass variant property, because there is only one variant of that page.
-             AppFlowControllerError.unregisteredPathIdentifier page need to be registered before showing it.
+             AFCError.missingVariant             if pathe's property supportVariants == true you need to pass variant property, otherwise it's not possible to set which page should be presenter.
+             AFCError.variantNotSupported        if path's property supportVariants == false you cannot pass variant property, because there is only one variant of that page.
+             AFCError.unregisteredPathIdentifier page need to be registered before showing it.
     */
-    open func parameter(for page:AppFlowControllerPage, variant:AppFlowControllerPage? = nil) throws -> String? {
-        let step = try pathStep(from: page, variant: variant)
-        return tracker.parameter(for: step.current.identifier)
+    open func parameter(for pathComponent: FlowPathComponent, variant: FlowPathComponent? = nil) throws -> String? {
+        let step = try pathStep(from: pathComponent, variant: variant)
+        return tracker.parameter(for: step.pathComponent.identifier)
     }
     
     /**
         Reset root navigation controller and view's tracker. It removes all view controllers including those presented modally.
     */
-    open func reset(completionBlock:(()->())? = nil) {
+    open func reset(completion: (()->())? = nil) {
         rootNavigationController?.dismissAllPresentedViewControllers() {
             self.rootNavigationController?.viewControllers.removeAll()
             self.tracker.reset()
-            completionBlock?()
+            completion?()
         }
     }
     
     // MARK: - Helpers
     
-    private func visibleStep() -> PathStep? {
+    private var visibleStep: PathStep? {
         guard let currentViewController = rootNavigationController?.visibleNavigationController.visible else { return nil }
         guard let key = tracker.key(for: currentViewController) else { return nil }
-        
         return rootPathStep?.search(identifier: key)
     }
     
-    private func viewControllers(from pages:[AppFlowControllerPage], skipPages:[AppFlowControllerPage]? = nil) -> [UIViewController] {
-        var viewControllers:[UIViewController] = []
-        
-        for page in pages {
-            
-            if page.forwardTransition?.shouldPreloadViewController() == true, let viewController = tracker.viewController(for: page.identifier) {
+    private func viewControllers(from pathComponents: [FlowPathComponent], skipPathComponents: [FlowPathComponent]? = nil) -> [UIViewController] {
+        var viewControllers: [UIViewController] = []
+        for pathComponent in pathComponents {
+            if pathComponent.forwardTransition?.shouldPreloadViewController() == true, let viewController = tracker.viewController(for: pathComponent.identifier) {
                 viewControllers.append(viewController)
                 continue
             }
-            
-            if skipPages?.contains(where: { $0.identifier == page.identifier }) == true {
-                tracker.register(viewController: nil, for: page.identifier, skipped: true)
+            if skipPathComponents?.contains(where: { $0.identifier == pathComponent.identifier }) == true {
+                tracker.register(viewController: nil, for: pathComponent.identifier, skipped: true)
                 continue
             }
-
-            let viewController = page.viewControllerBlock()
-            tracker.register(viewController: viewController, for: page.identifier)
+            let viewController = pathComponent.viewControllerInit()
+            tracker.register(viewController: viewController, for: pathComponent.identifier)
             
-            
-            if let step = rootPathStep?.search(page: page) {
-                let preload = step.children.filter({ $0.current.forwardTransition?.shouldPreloadViewController() == true })
+            if let step = rootPathStep?.search(pathComponent: pathComponent) {
+                let preload = step.children.filter({ $0.pathComponent.forwardTransition?.shouldPreloadViewController() == true })
                 for item in preload {
-                    if let childViewController = self.viewControllers(from: [item.current], skipPages: skipPages).first {
-                        item.current.forwardTransition?.preloadViewController(childViewController, from: viewController)
+                    if let childViewController = self.viewControllers(from: [item.pathComponent], skipPathComponents: skipPathComponents).first {
+                        item.pathComponent.forwardTransition?.preloadViewController(childViewController, from: viewController)
                     }
                 }
             }
             
-            viewControllers.append(page.forwardTransition?.configureViewController(from: viewController) ?? viewController)
+            viewControllers.append(pathComponent.forwardTransition?.configureViewController(from: viewController) ?? viewController)
         }
-        
         return viewControllers
     }
     
-    private func register(parameters:[AppFlowControllerParameter]?, for pages:[AppFlowControllerPage], skippedPages:[AppFlowControllerPage]?) {
+    private func register(parameters: [TransitionParameter]?, for pathComponents: [FlowPathComponent], skippedPathComponents: [FlowPathComponent]?) {
         if let parameters = parameters {
             for parameter in parameters {
-                if pages.filter({ $0.identifier == parameter.identifier }).count == 0 {
+                if pathComponents.filter({ $0.identifier == parameter.identifier }).count == 0 {
                     continue
                 }
-                if (skippedPages?.filter({ $0.identifier == parameter.identifier }).count ?? 0) > 0 {
+                if (skippedPathComponents?.filter({ $0.identifier == parameter.identifier }).count ?? 0) > 0 {
                     continue
                 }
                 self.tracker.register(parameter: parameter.value, for: parameter.identifier)
@@ -357,145 +338,126 @@ open class AppFlowController {
         }
     }
     
-    private func display(pages:[AppFlowControllerPage], fromIndexRange indexRange:Range<Int>, animated:Bool, skipPages:[AppFlowControllerPage]? = nil, completionBlock:(() -> ())?) {
-        
-        let index      = indexRange.lowerBound
-        let item       = pages[index]
+    private func display(pathComponents: [FlowPathComponent], fromIndexRange indexRange: Range<Int>, animated: Bool, skipPathComponents: [FlowPathComponent]? = nil, completion: (() -> ())?) {
+        let index = indexRange.lowerBound
+        let item = pathComponents[index]
         let identifier = item.identifier
         
         guard let navigationController = rootNavigationController?.visible.navigationController ?? rootNavigationController else {
-            completionBlock?()
+            completion?()
             return
         }
         
-        func displayNextItem(range:Range<Int>,  animated:Bool, offset:Int = 0) {
+        func displayNextItem(range: Range<Int>, animated: Bool, offset: Int = 0) {
             let newRange:Range<Int> = (range.lowerBound + 1 + offset) ..< range.upperBound
             if newRange.count == 0 {
-                completionBlock?()
+                completion?()
             } else {
                 self.display(
-                    pages: pages,
+                    pathComponents: pathComponents,
                     fromIndexRange: newRange,
                     animated: animated,
-                    skipPages: skipPages,
-                    completionBlock: completionBlock
+                    skipPathComponents: skipPathComponents,
+                    completion: completion
                 )
             }
         }
         
         let viewControllerExists = tracker.viewController(for: item.identifier) != nil
-        let pageSkipped          = tracker.isItemSkipped(at: item.identifier)
-        let itemIsPreloaded      = item.forwardTransition?.shouldPreloadViewController() == true
+        let pathSkipped = tracker.isItemSkipped(at: item.identifier)
+        let itemIsPreloaded = item.forwardTransition?.shouldPreloadViewController() == true
         
         if navigationController.viewControllers.count == 0 {
-            
-            let pagesToPush           = [item] + pages[1..<pages.count].prefix(while: { $0.forwardTransition is PushPopAppFlowControllerTransition })
-            let viewControllersToPush = self.viewControllers(from: pagesToPush, skipPages: skipPages)
-            let skippedPages          = pagesToPush.count - viewControllersToPush.count
+            let pathComponentsToPush = [item] + pathComponents[1..<pathComponents.count].prefix(while: { $0.forwardTransition is PushPopFlowTransition })
+            let viewControllersToPush = self.viewControllers(from: pathComponentsToPush, skipPathComponents: skipPathComponents)
+            let skippedPathComponents = pathComponentsToPush.count - viewControllersToPush.count
             
             navigationController.setViewControllers(viewControllersToPush, animated: false) {
-                displayNextItem(range: indexRange, animated: false, offset:max(0, viewControllersToPush.count - 1 + skippedPages))
+                displayNextItem(range: indexRange, animated: false, offset: max(0, viewControllersToPush.count - 1 + skippedPathComponents))
             }
-            
-        } else if (!viewControllerExists || itemIsPreloaded) && !pageSkipped {
-            
-            let viewControllers = self.viewControllers(from: [item], skipPages: skipPages)
-            
+        } else if (!viewControllerExists || itemIsPreloaded) && !pathSkipped {
+            let viewControllers = self.viewControllers(from: [item], skipPathComponents: skipPathComponents)
             if let viewController = viewControllers.first {
-                item.forwardTransition?.forwardTransitionBlock(animated: animated){
+                item.forwardTransition?.performForwardTransition(animated: animated){
                     displayNextItem(range: indexRange, animated: animated)
                 }(navigationController, viewController)
             } else {
                 displayNextItem(range: indexRange, animated: animated)
             }
-    
         } else {
-            
             displayNextItem(range: indexRange, animated: animated)
-            
         }
     }
     
-    private func dismiss(pages:[AppFlowControllerPage], fromIndexRange indexRange:Range<Int>, animated:Bool, skipTransition:Bool = false, viewControllerForSkippedPage:UIViewController? = nil, completionBlock:(() -> ())?) {
+    private func dismiss(pathComponents: [FlowPathComponent], fromIndexRange indexRange: Range<Int>, animated: Bool, skipTransition: Bool = false, viewControllerForSkippedPath: UIViewController? = nil, completion:(() -> ())?) {
         if indexRange.count == 0 {
-            
-            completionBlock?()
-            
+            completion?()
         } else {
-            
-            let index          = indexRange.upperBound - 1
-            let item           = pages[index]
-            let parentPage     = rootPathStep?.search(page: item)?.parent?.current
-            let skipParentPage = parentPage == nil ? false : tracker.isItemSkipped(at: parentPage!.identifier)
-            let skippedPage    = tracker.isItemSkipped(at: item.identifier)
+            let index = indexRange.upperBound - 1
+            let item = pathComponents[index]
+            let parentPathComponent = rootPathStep?.search(pathComponent: item)?.parent?.pathComponent
+            let skipParentPathComponent = parentPathComponent == nil ? false : tracker.isItemSkipped(at: parentPathComponent!.identifier)
+            let skippedPathComponent = tracker.isItemSkipped(at: item.identifier)
             let viewController = tracker.viewController(for: item.identifier)
             
-            func dismissNext(viewControllerForSkippedPage:UIViewController? = nil) {
+            func dismissNext(viewControllerForSkippedPath: UIViewController? = nil) {
                 self.dismiss(
-                    pages: pages,
+                    pathComponents: pathComponents,
                     fromIndexRange: indexRange.lowerBound..<indexRange.upperBound - 1,
                     animated: animated,
                     skipTransition: skipTransition,
-                    viewControllerForSkippedPage: viewControllerForSkippedPage,
-                    completionBlock: completionBlock
+                    viewControllerForSkippedPath: viewControllerForSkippedPath,
+                    completion: completion
                 )
             }
             
-            func dismiss(useTransition:Bool, viewController:UIViewController) {
+            func dismiss(useTransition: Bool, viewController: UIViewController) {
                 if useTransition {
-                    item.backwardTransition?.backwardTransitionBlock(animated: animated){ dismissNext() }(viewController)
+                    item.backwardTransition?.performBackwardTransition(animated: animated){ dismissNext() }(viewController)
                 } else {
                     dismissNext()
                 }
             }
             
-            if skipParentPage {
-                dismissNext(viewControllerForSkippedPage: viewController ?? viewControllerForSkippedPage)
-            } else if let viewController = viewControllerForSkippedPage, skippedPage {
+            if skipParentPathComponent {
+                dismissNext(viewControllerForSkippedPath: viewController ?? viewControllerForSkippedPath)
+            } else if let viewController = viewControllerForSkippedPath, skippedPathComponent {
                 dismiss(useTransition: !skipTransition, viewController: viewController)
-            } else if let viewController = viewController, !skippedPage {
+            } else if let viewController = viewController, !skippedPathComponent {
                 dismiss(useTransition: !skipTransition, viewController: viewController)
             } else {
-                completionBlock?()
+                completion?()
             }
         }
     }
     
-    private func pathStep(from page:AppFlowControllerPage, variant:AppFlowControllerPage? = nil) throws -> PathStep {
-        
-        var page = page
-        
-        if page.supportVariants && variant == nil {
-            throw AppFlowControllerError.missingVariant(identifier: page.identifier)
+    private func pathStep(from pathComponent: FlowPathComponent, variant: FlowPathComponent? = nil) throws -> PathStep {
+        var pathComponent = pathComponent
+        if pathComponent.supportVariants && variant == nil {
+            throw AFCError.missingVariant(identifier: pathComponent.identifier)
         }
-        
-        if !page.supportVariants && variant != nil {
-            throw AppFlowControllerError.variantNotSupported(identifier: page.identifier)
+        if !pathComponent.supportVariants && variant != nil {
+            throw AFCError.variantNotSupported(identifier: pathComponent.identifier)
         }
-        
-        if page.supportVariants && variant != nil {
-            page.variantName = variant?.identifier
+        if pathComponent.supportVariants && variant != nil {
+            pathComponent.variantName = variant?.identifier
         }
-        
-        guard let foundStep = rootPathStep?.search(page: page) else {
-            throw AppFlowControllerError.unregisteredPathIdentifier(identifier: page.identifier)
+        guard let foundStep = rootPathStep?.search(pathComponent: pathComponent) else {
+            throw AFCError.unregisteredPathIdentifier(identifier: pathComponent.identifier)
         }
-        
         return foundStep
     }
     
-    private func verify(pages:[AppFlowControllerPage], distance:(up:Int, down:Int)) throws {
-        
+    private func verify(pathComponents: [FlowPathComponent], distance: (up: Int, down: Int)) throws {
         if distance.up > 0 {
-            let lastIndexToDismiss = pages.count - 1 - distance.up
-            if lastIndexToDismiss >= 0 && lastIndexToDismiss < pages.count - 1 {
-                let item = pages[lastIndexToDismiss]
+            let lastIndexToDismiss = pathComponents.count - 1 - distance.up
+            if lastIndexToDismiss >= 0 && lastIndexToDismiss < pathComponents.count - 1 {
+                let item = pathComponents[lastIndexToDismiss]
                 if tracker.isItemSkipped(at: item.identifier) {
-                    throw AppFlowControllerError.showingSkippedPage(identifier: item.identifier)
+                    throw AFCError.showingSkippedPath(identifier: item.identifier)
                 }
             }
         }
-        
     }
     
 }

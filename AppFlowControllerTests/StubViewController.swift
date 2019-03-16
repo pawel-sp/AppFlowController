@@ -9,11 +9,9 @@
 import UIKit
 
 class StubViewController: UIViewController {
-    
-    var presentedViewControllerResult:UIViewController?
+    var presentedViewControllerResult: UIViewController?
     
     override var presentedViewController: UIViewController? {
         return presentedViewControllerResult ?? super.presentedViewController
     }
-    
 }

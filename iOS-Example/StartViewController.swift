@@ -12,7 +12,7 @@ import AppFlowController
 class StartViewController: BaseViewController {
     
     @IBAction func start(_ sender: Any) {
-        try! AppFlowController.shared.show(page: AppPage.home)
+        try! AppFlowController.shared.show(AppPathComponent.home)
     }
 
 }

@@ -12,15 +12,15 @@ import AppFlowController
 class TabPage2ViewController: BaseViewController {
 
     @IBAction func backToHomeAction(_ sender: AnyObject) {
-        try! AppFlowController.shared.show(page: AppPage.home)
+        try! AppFlowController.shared.show(AppPathComponent.home)
     }
 
     @IBAction func goToPage1Action(_ sender: AnyObject) {
-        try! AppFlowController.shared.show(page: AppPage.tabPage1)
+        try! AppFlowController.shared.show(AppPathComponent.tabPage1)
     }
     
     @IBAction func subPageAction(_ sender: Any) {
-        try! AppFlowController.shared.show(page: AppPage.subTabPage2)
+        try! AppFlowController.shared.show(AppPathComponent.subTabPage2)
     }
     
 }

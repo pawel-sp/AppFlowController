@@ -11,14 +11,14 @@ import XCTest
 
 extension AppFlowController_CoreTests {
 
-    // MARK: - currentPageParameter
+    // MARK: - currentPathParameter
     
     func testParameterForCurrentPage_thereIsNoCurrentPage() {
         prepareFlowController()
         let pages = newPage("1") => newPage("2")
         do {
-            try flowController.register(path: pages)
-            XCTAssertNil(flowController.currentPageParameter())
+            try flowController.register(pathComponents: pages)
+            XCTAssertNil(flowController.currentPathParameter)
         } catch _ {
             XCTFail()
         }
@@ -28,9 +28,9 @@ extension AppFlowController_CoreTests {
         prepareFlowController()
         let pages = newPage("1") => newPage("2")
         do {
-            try flowController.register(path: pages)
-            try flowController.show(page: pages[1])
-            XCTAssertNil(flowController.currentPageParameter())
+            try flowController.register(pathComponents: pages)
+            try flowController.show(pages[1])
+            XCTAssertNil(flowController.currentPathParameter)
         } catch _ {
             XCTFail()
         }
@@ -40,14 +40,14 @@ extension AppFlowController_CoreTests {
         prepareFlowController()
         let pages = newPage("1") => newPage("2")
         do {
-            try flowController.register(path: pages)
+            try flowController.register(pathComponents: pages)
             try flowController.show(
-                page: pages[1],
+                pages[1],
                 parameters: [
-                    AppFlowControllerParameter(page: pages[1], value: "par1")
+                    TransitionParameter(pathComponent: pages[1], value: "par1")
                 ]
             )
-            XCTAssertEqual(flowController.currentPageParameter(), "par1")
+            XCTAssertEqual(flowController.currentPathParameter, "par1")
         } catch _ {
             XCTFail()
         }
@@ -60,16 +60,16 @@ extension AppFlowController_CoreTests {
             newPage("3") => newPage("4", supportVariants: true)
         ]
         do {
-            try flowController.register(path: pages)
+            try flowController.register(pathComponents: pages)
             try flowController.show(
-                page: pages[0][2],
+                pages[0][2],
                 variant: pages[0][1],
                 parameters: [
-                    AppFlowControllerParameter(page: pages[0][2], variant: pages[0][1], value: "par")
+                    TransitionParameter(pathComponent: pages[0][2], variant: pages[0][1], value: "par")
                 ],
                 animated: false
             )
-            XCTAssertEqual(flowController.currentPageParameter(), "par")
+            XCTAssertEqual(flowController.currentPathParameter, "par")
         } catch _ {
             XCTFail()
         }
@@ -84,20 +84,20 @@ extension AppFlowController_CoreTests {
             newPage("3") => newPage("4", supportVariants: true)
         ]
         do {
-            try flowController.register(path: pages)
+            try flowController.register(pathComponents: pages)
             try flowController.show(
-                page: pages[0][2],
+                pages[0][2],
                 variant: pages[0][1],
                 parameters: [
-                    AppFlowControllerParameter(page: pages[0][2], variant: pages[0][1], value: "par")
+                    TransitionParameter(pathComponent: pages[0][2], variant: pages[0][1], value: "par")
                 ],
                 animated: false
             )
             _ = try flowController.parameter(for: pages[0][2])
             XCTFail()
         } catch let error {
-            if let afcError = error as? AppFlowControllerError {
-                XCTAssertEqual(afcError, AppFlowControllerError.missingVariant(identifier: "4"))
+            if let afcError = error as? AFCError {
+                XCTAssertEqual(afcError, AFCError.missingVariant(identifier: "4"))
             } else {
                 XCTFail()
             }
@@ -108,13 +108,13 @@ extension AppFlowController_CoreTests {
         prepareFlowController()
         let pages = newPage("1") => newPage("2")
         do {
-            try flowController.register(path: pages)
-            try flowController.show(page: pages[0])
+            try flowController.register(pathComponents: pages)
+            try flowController.show(pages[0])
             _ = try flowController.parameter(for: pages[1], variant: pages[0])
             XCTFail()
         } catch let error {
-            if let afcError = error as? AppFlowControllerError {
-                XCTAssertEqual(afcError, AppFlowControllerError.variantNotSupported(identifier: "2"))
+            if let afcError = error as? AFCError {
+                XCTAssertEqual(afcError, AFCError.variantNotSupported(identifier: "2"))
             } else {
                 XCTFail()
             }
@@ -125,13 +125,13 @@ extension AppFlowController_CoreTests {
         prepareFlowController()
         let pages = newPage("1") => newPage("2")
         do {
-            try flowController.register(path: pages)
-            try flowController.show(page: pages[0])
+            try flowController.register(pathComponents: pages)
+            try flowController.show(pages[0])
             _ = try flowController.parameter(for: newPage("3"))
             XCTFail()
         } catch let error {
-            if let afcError = error as? AppFlowControllerError {
-                XCTAssertEqual(afcError, AppFlowControllerError.unregisteredPathIdentifier(identifier: "3"))
+            if let afcError = error as? AFCError {
+                XCTAssertEqual(afcError, AFCError.unregisteredPathIdentifier(identifier: "3"))
             } else {
                 XCTFail()
             }
@@ -145,20 +145,20 @@ extension AppFlowController_CoreTests {
             newPage("3") => newPage("4", supportVariants: true)
         ]
         do {
-            try flowController.register(path: pages)
+            try flowController.register(pathComponents: pages)
             try flowController.show(
-                page: pages[0][2],
+                pages[0][2],
                 variant: pages[0][1],
                 parameters: [
-                    AppFlowControllerParameter(page: pages[0][2], variant: pages[0][1], value: "par")
+                    TransitionParameter(pathComponent: pages[0][2], variant: pages[0][1], value: "par")
                 ],
                 animated: false
             )
             _ = try flowController.parameter(for: pages[0][2], variant: pages[0][0])
             XCTFail()
         } catch let error {
-            if let afcError = error as? AppFlowControllerError {
-                XCTAssertEqual(afcError, AppFlowControllerError.unregisteredPathIdentifier(identifier: "1_4"))
+            if let afcError = error as? AFCError {
+                XCTAssertEqual(afcError, AFCError.unregisteredPathIdentifier(identifier: "1_4"))
             } else {
                 XCTFail()
             }
@@ -169,11 +169,11 @@ extension AppFlowController_CoreTests {
         prepareFlowController()
         let pages = newPage("1") => newPage("2")
         do {
-            try flowController.register(path: pages)
+            try flowController.register(pathComponents: pages)
             try flowController.show(
-                page: pages[1],
+                pages[1],
                 parameters:[
-                    AppFlowControllerParameter(page: pages[1], value: "par")
+                    TransitionParameter(pathComponent: pages[1], value: "par")
                 ],
                 animated: false
             )
@@ -193,12 +193,12 @@ extension AppFlowController_CoreTests {
             newPage("3") => newPage("4", supportVariants: true)
         ]
         do {
-            try flowController.register(path: pages)
+            try flowController.register(pathComponents: pages)
             try flowController.show(
-                page: pages[0][2],
+                pages[0][2],
                 variant: pages[0][1],
                 parameters: [
-                    AppFlowControllerParameter(page: pages[0][2], variant: pages[0][1], value: "par")
+                    TransitionParameter(pathComponent: pages[0][2], variant: pages[0][1], value: "par")
                 ],
                 animated: false
             )

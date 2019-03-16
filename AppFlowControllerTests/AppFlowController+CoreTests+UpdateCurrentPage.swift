@@ -15,12 +15,12 @@ extension AppFlowController_CoreTests {
         prepareFlowController()
         let pages = newPage("1") => newPage("2")
         do {
-            try flowController.register(path: pages)
-            try flowController.updateCurrentPage(with: UIViewController(), for: "3")
+            try flowController.register(pathComponents: pages)
+            try flowController.updateCurrentPath(with: UIViewController(), for: "3")
             XCTFail()
         } catch let error {
-            if let afcError = error as? AppFlowControllerError {
-                XCTAssertEqual(afcError, AppFlowControllerError.unregisteredPathIdentifier(identifier: "3"))
+            if let afcError = error as? AFCError {
+                XCTAssertEqual(afcError, AFCError.unregisteredPathIdentifier(identifier: "3"))
             } else {
                 XCTFail()
             }
@@ -32,11 +32,11 @@ extension AppFlowController_CoreTests {
         let pages = newPage("1") => newPage("2")
         let viewController = UIViewController()
         do {
-            try flowController.register(path: pages)
+            try flowController.register(pathComponents: pages)
             
             XCTAssertNil(flowController.tracker.viewController(for: "2"))
             
-            try flowController.updateCurrentPage(with: viewController, for: "2")
+            try flowController.updateCurrentPath(with: viewController, for: "2")
             
             XCTAssertEqual(flowController.tracker.viewController(for: "2"), viewController)
             

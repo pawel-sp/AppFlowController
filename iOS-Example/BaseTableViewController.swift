@@ -13,7 +13,7 @@ class BaseTableViewController: UITableViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if let path = AppFlowController.shared.currentPathComponents() {
+        if let path = AppFlowController.shared.currentPathDescription {
             print(path)
         }
     }

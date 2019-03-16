@@ -31,77 +31,79 @@ class PathStep {
     
     // MARK: - Properties
     
-    let current:AppFlowControllerPage
-    private(set) var children:[PathStep] = []
-    private(set) weak var parent:PathStep?
+    let pathComponent: FlowPathComponent
+    private(set) var children: [PathStep] = []
+    private(set) weak var parent: PathStep?
     
     // MARK: - Init
     
-    init(page:AppFlowControllerPage) {
-        self.current = page
+    init(pathComponent: FlowPathComponent) {
+        self.pathComponent = pathComponent
     }
     
     // MARK: - Utilities
     
     @discardableResult
-    func add(page:AppFlowControllerPage) -> PathStep {
-        let step = PathStep(page: page)
+    func add(pathComponent: FlowPathComponent) -> PathStep {
+        let step = PathStep(pathComponent: pathComponent)
         children.append(step)
         step.parent = self
         return step
     }
     
-    func search(page:AppFlowControllerPage) -> PathStep? {
-        return search(identifier: page.identifier)
+    func search(pathComponent: FlowPathComponent) -> PathStep? {
+        return search(identifier: pathComponent.identifier)
     }
     
-    func search(identifier:String) -> PathStep? {
-        return search(compareBlock: { $0.current.identifier == identifier })
+    func search(identifier: String) -> PathStep? {
+        return search(compare: { $0.pathComponent.identifier == identifier })
     }
     
-    func allParentPages(from step:PathStep, includeSelf:Bool = true) -> [AppFlowControllerPage] {
-        var pages:[AppFlowControllerPage] = includeSelf ? [step.current] : []
+    func allParentPathComponents(from step: PathStep, includeSelf: Bool = true) -> [FlowPathComponent] {
+        var pathComponents: [FlowPathComponent] = includeSelf ? [step.pathComponent] : []
         var current = step
         while let parent = current.parent {
             current = parent
-            pages.insert(parent.current, at: 0)
+            pathComponents.insert(parent.pathComponent, at: 0)
         }
-        return pages
+        return pathComponents
     }
     
-    func firstParentPage(where block:(AppFlowControllerPage) -> Bool) -> AppFlowControllerPage? {
-        return allParentPages(from: self, includeSelf: false).reversed().first(where: block)
+    func firstParentPathComponent(where condition: (FlowPathComponent) -> Bool) -> FlowPathComponent? {
+        return allParentPathComponents(from: self, includeSelf: false).reversed().first(where: condition)
     }
     
-    func distanceToStep(with page:AppFlowControllerPage) -> Int? {
-        
-        guard current.identifier != page.identifier else { return 0 }
-        
+    func distanceToStep(with secondPathComponent: FlowPathComponent) -> Int? {
+        guard pathComponent.identifier != secondPathComponent.identifier else {
+            return 0
+        }
+
         var counter = 0
         var currentParent = self
         
         while let parent = currentParent.parent {
             currentParent = parent
             counter += 1
-            if parent.current.identifier == page.identifier {
+            if parent.pathComponent.identifier == secondPathComponent.identifier {
                 return counter
             }
         }
+        
         return nil
     }
     
-    static func distanceBetween(step step1:PathStep, and step2:PathStep) -> (up:Int, down:Int) {
-        let step1Parents = step1.allParentPages(from: step1)
-        let step2Parents = step2.allParentPages(from: step2)
-        var commonPages:[AppFlowControllerPage] = []
+    static func distanceBetween(step step1: PathStep, and step2: PathStep) -> (up: Int, down: Int) {
+        let step1Parents = step1.allParentPathComponents(from: step1)
+        let step2Parents = step2.allParentPathComponents(from: step2)
+        var commonPathComponents: [FlowPathComponent] = []
         for step1Parent in step1Parents {
             for step2Parent in step2Parents {
                 if step1Parent.identifier == step2Parent.identifier {
-                    commonPages.append(step1Parent)
+                    commonPathComponents.append(step1Parent)
                 }
             }
         }
-        if let firtCommonItem = commonPages.last {
+        if let firtCommonItem = commonPathComponents.last {
             let step1Distance = step1.distanceToStep(with: firtCommonItem)
             let step2Distance = step2.distanceToStep(with: firtCommonItem)
             return (step1Distance ?? 0, step2Distance ?? 0)
@@ -112,12 +114,12 @@ class PathStep {
     
     // MARK: - Private
     
-    private func search(compareBlock:(PathStep) -> Bool) -> PathStep? {
-        if compareBlock(self) {
+    private func search(compare: (PathStep) -> Bool) -> PathStep? {
+        if compare(self) {
             return self
         } else {
             for child in children {
-                if let found = child.search(compareBlock: compareBlock) {
+                if let found = child.search(compare: compare) {
                     return found
                 }
             }
@@ -127,15 +129,10 @@ class PathStep {
 }
 
 extension PathStep: Equatable {
-    
-    public static func ==(lhs:PathStep, rhs:PathStep) -> Bool {
+    public static func ==(lhs: PathStep, rhs: PathStep) -> Bool {
         return
-            lhs.current == rhs.current &&
+            lhs.pathComponent == rhs.pathComponent &&
             lhs.children == rhs.children &&
-            ((lhs.parent == nil && rhs.parent == nil) || lhs.parent?.current == rhs.parent?.current)
+            ((lhs.parent == nil && rhs.parent == nil) || lhs.parent?.pathComponent == rhs.parent?.pathComponent)
     }
-    
 }
-
-
-

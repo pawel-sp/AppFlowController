@@ -9,30 +9,29 @@
 import UIKit
 import AppFlowController
 
-class ContainerTransition: NSObject, AppFlowControllerTransition {
+class ContainerTransition: FlowTransition {
     
     // MARK: - Properties
     
-    let loadPage:Bool
+    let loadPage: Bool
     
     // MARK: - Init
     
-    init(loadPage:Bool) {
+    init(loadPage: Bool) {
         self.loadPage = loadPage
-        super.init()
     }
     
-    convenience override init() {
+    convenience init() {
         self.init(loadPage: false)
     }
     
-    // MARK: - AppFlowControllerTransition
+    // MARK: - FlowTransition
     
     public func shouldPreloadViewController() -> Bool {
         return loadPage
     }
     
-    public func preloadViewController(_ viewController:UIViewController, from parentViewController:UIViewController)  {
+    public func preloadViewController(_ viewController: UIViewController, from parentViewController: UIViewController)  {
         if let containerViewController = parentViewController as? ContainerViewControllerInterface {
             containerViewController.addChildViewController(viewController)
             (containerViewController as? UIViewController)?.view.layoutSubviews() // it's necessary - without it view doesnt exists yet
@@ -40,21 +39,21 @@ class ContainerTransition: NSObject, AppFlowControllerTransition {
         }
     }
     
-    func forwardTransitionBlock(animated: Bool, completionBlock: @escaping () -> ()) -> AppFlowControllerForwardTransition.TransitionBlock {
+    func performForwardTransition(animated: Bool, completion: @escaping () -> ()) -> ForwardTransition.ForwardTransitionAction {
         return { navigationController, viewController in
             if let containerViewController = navigationController.topViewController as? ContainerViewControllerInterface {
                 containerViewController.addChildViewController(viewController)
                 containerViewController.containerView.addSubview(viewController.view)
             }
-            completionBlock()
+            completion()
         }
     }
     
-    func backwardTransitionBlock(animated: Bool, completionBlock: @escaping () -> ()) -> AppFlowControllerBackwardTransition.TransitionBlock {
+    func performBackwardTransition(animated: Bool, completion: @escaping () -> ()) -> BackwardTransition.BackwardTransitionAction {
         return { viewController in
             viewController.view.removeFromSuperview()
             viewController.removeFromParentViewController()
-            completionBlock()
+            completion()
         }
     }
 

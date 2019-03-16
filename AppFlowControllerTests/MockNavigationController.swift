@@ -9,14 +9,13 @@
 import UIKit
 
 class MockNavigationController: UINavigationController {
+    var pushViewControllerParams: (UIViewController, Bool)?
+    var popViewControllerParams: (Bool)?
+    var setViewControllersParams: ([UIViewController], Bool)?
+    var presentViewControllerParams: (UIViewController, Bool)?
+    var visibleViewControllerResult: UIViewController?
     
-    var pushViewControllerParams:(UIViewController, Bool)?
-    var popViewControllerParams:(Bool)?
-    var setViewControllersParams:([UIViewController], Bool)?
-    var presentViewControllerParams:(UIViewController, Bool)?
-    var visibleViewControllerResult:UIViewController?
-    
-    var didDismissAllPresentedViewControllers:Bool?
+    var didDismissAllPresentedViewControllers: Bool?
     
     override func pushViewController(_ viewController: UIViewController, animated: Bool) {
         pushViewControllerParams = (viewController, animated)
@@ -40,20 +39,17 @@ class MockNavigationController: UINavigationController {
         return visibleViewControllerResult ?? super.visibleViewController
     }
     
-    override func dismissAllPresentedViewControllers(completionBlock: (() -> ())?) {
+    override func dismissAllPresentedViewControllers(completion: (() -> ())?) {
         didDismissAllPresentedViewControllers = true
-        completionBlock?()
+        completion?()
     }
-    
 }
 
 class MockPopNavigationController: UINavigationController {
-    
-    var popViewControllerParams:(Bool)?
+    var popViewControllerParams: (Bool)?
     
     override func popViewController(animated: Bool) -> UIViewController? {
         popViewControllerParams = (animated)
         return nil
     }
-    
 }

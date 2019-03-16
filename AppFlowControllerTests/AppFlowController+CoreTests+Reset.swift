@@ -15,7 +15,7 @@ extension AppFlowController_CoreTests {
     
     class MockTracker: Tracker {
         
-        var resetCount:Int = 0
+        var resetCount: Int = 0
         
         override func reset() {
             resetCount += 1
@@ -52,11 +52,10 @@ extension AppFlowController_CoreTests {
     }
     
     func testReset_ShouldInvokeCompletionBlock() {
-        let exp   = expectation(description: "Block need to be invoked after dismissing all presented view controllers")
-        let block = { exp.fulfill() }
+        let exp = expectation(description: "Block need to be invoked after dismissing all presented view controllers")
         let mockNavigationController = MockNavigationController()
         flowController.prepare(for: UIWindow(), rootNavigationController: mockNavigationController)
-        flowController.reset(completionBlock: block)
+        flowController.reset(completion: exp.fulfill)
         waitForExpectations(timeout: 0) { error in
             if let error = error {
                 XCTFail(error.localizedDescription)
